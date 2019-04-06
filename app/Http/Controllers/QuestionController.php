@@ -27,7 +27,7 @@ class QuestionController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['question_status'])){
-            $all_content =  \DB::table('questions')->where(function($query){
+            $all_content =  \DB::table('question_tbl')->where(function($query){
                 if(isset($_GET['question_status'])){
                     $query->where(function ($q){
                         $q->where('question_status', $_GET['question_status']);
@@ -47,7 +47,7 @@ class QuestionController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('questions')->orderBy('id','DESC')->paginate(20);
+            $all_content=\DB::table('question_tbl')->orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/questions/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -56,7 +56,7 @@ class QuestionController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('questions')->orderby('id','desc')->get();
+        $data['all_data'] = \DB::table('question_tbl')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.question.index',$data);
@@ -67,7 +67,7 @@ class QuestionController extends Controller
      *********************************************/
     public function Create()
     {
-        $data['all_campaign'] = \DB::table('campaign')->where('campaign_status','1')->orderby('id','desc')->get();
+        $data['all_campaign'] = \DB::table('campaign_tbl')->where('campaign_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.question.create',$data);
@@ -80,16 +80,19 @@ class QuestionController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'question_title' => 'required',
+            'question_type' => 'required',
+            'question_campaign_name' => 'required',
+            'question_campaign_id' => 'required',
+            'question_position' => 'required',
+            'question_special' => 'required',
             'question_option_1' => 'required',
             'question_option_2' => 'required',
             'question_option_3' => 'required',
             'question_option_4' => 'required',
-            'question_option_5' => 'required',
-            'question_answer' => 'required',
-            'campaign_id' => 'required',
-            //'campaign_name' => 'required',
-            //'question_prize_amount' => 'required',
-            //'question_points' => 'required',
+            'question_option_new' => 'required',
+            'question_points' => 'required',
+            // 'question_prize_amount' => 'required',
+            // 'question_physical_prize' => 'required',
         ]);
 
 
@@ -99,35 +102,41 @@ class QuestionController extends Controller
 
 
                 $data['question_title']=$request->input('question_title');
+                $data['question_type']=$request->input('question_type');
+                $data['question_campaign_name']=$request->input('question_campaign_name');
+                $data['question_campaign_id']=$request->input('question_campaign_id');
+                $data['question_position']=$request->input('question_position');
+                $data['question_special']=$request->input('question_special');
                 $data['question_option_1']=$request->input('question_option_1');
                 $data['question_option_2']=$request->input('question_option_2');
                 $data['question_option_3']=$request->input('question_option_3');
                 $data['question_option_4']=$request->input('question_option_4');
-                $data['question_option_5']=$request->input('question_option_5');
-                $data['question_answer']=$request->input('question_answer');
-                $data['campaign_id']=$request->input('campaign_id');
-                $data['campaign_name']=$request->input('campaign_name');
-                $data['question_prize_amount']=$request->input('question_prize_amount');
+                $data['question_option_new']=$request->input('question_option_new');
                 $data['question_points']=$request->input('question_points');
-                $data['question_special']=1;
-                $data['question_status']=1;
+                $data['question_prize_amount']=$request->input('question_prize_amount');
+                $data['question_physical_prize']=$request->input('question_physical_prize');
+                // $data['question_published_date']='';
+                $data['question_published_status']=0;
+                $data['question_status']=0;
+                $data['question_created_by'] = \Auth::user()->id;
+                $data['question_updated_by'] = \Auth::user()->id;
                
 
-                $insert=\DB::table('questions')->insert($data);
+                // $insert=\DB::table('question_tbl')->insert($data);
 
-                /*$question_insert = \App\Blog::firstOrCreate(
+                $question_insert = \App\Question::firstOrCreate(
                     [
                         'question_title' => $data['question_title'],
                     ],
                     $data
                 );
 
-                if($question_insert->wasRecentlyCreated){*/
+                if($question_insert->wasRecentlyCreated){
 
-                    // \App\System::EventLogWrite('insert,questions',json_encode($data));
+                    // \App\System::EventLogWrite('insert,question_tbl',json_encode($data));
                     return redirect()->back()->with('message','Question Created Successfully');
 
-                // }else return redirect()->back()->with('errormessage','Blog already created.');
+                }else return redirect()->back()->with('errormessage','Blog already created.');
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
@@ -145,7 +154,7 @@ class QuestionController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this questions has any content published or not
-        $content_exists =\DB::table('questions')->where('id',$id)->first();
+        $content_exists =\DB::table('question_tbl')->where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -154,7 +163,7 @@ class QuestionController extends Controller
             } else{
                 $data['question_status']=0;
             }
-            $update=\DB::table('questions')->where('id',$id)->update($data);
+            $update=\DB::table('question_tbl')->where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -175,8 +184,8 @@ class QuestionController extends Controller
      *********************************************/
     public function Edit($id)
     {
-        $data['edit'] = \DB::table('questions')->where('id', $id)->first();
-        $data['all_campaign'] = \DB::table('campaign')->where('campaign_status','1')->orderby('id','desc')->get();
+        $data['edit'] = \DB::table('question_tbl')->where('id', $id)->first();
+        $data['all_campaign'] = \DB::table('campaign_tbl')->where('campaign_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.question.edit',$data);
@@ -189,16 +198,19 @@ class QuestionController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'question_title' => 'required',
+            'question_type' => 'required',
+            'question_campaign_name' => 'required',
+            'question_campaign_id' => 'required',
+            'question_position' => 'required',
+            'question_special' => 'required',
             'question_option_1' => 'required',
             'question_option_2' => 'required',
             'question_option_3' => 'required',
             'question_option_4' => 'required',
-            'question_option_5' => 'required',
-            'question_answer' => 'required',
-            'campaign_id' => 'required',
-            //'campaign_name' => 'required',
-            //'question_prize_amount' => 'required',
-            //'question_points' => 'required',
+            'question_option_new' => 'required',
+            'question_points' => 'required',
+            // 'question_prize_amount' => 'required',
+            // 'question_physical_prize' => 'required',
         ]);
 
         if($v->passes()){
@@ -206,26 +218,28 @@ class QuestionController extends Controller
             try
             {
 
-                $question_data= \DB::table('questions')->where('id', $id)->first();
-
-                $question_title=$request->input('question_title');
+                $question_data= \DB::table('question_tbl')->where('id', $id)->first();
 
                 $data['question_title']=$request->input('question_title');
+                $data['question_type']=$request->input('question_type');
+                $data['question_campaign_name']=$request->input('question_campaign_name');
+                $data['question_campaign_id']=$request->input('question_campaign_id');
+                $data['question_position']=$request->input('question_position');
+                $data['question_special']=$request->input('question_special');
                 $data['question_option_1']=$request->input('question_option_1');
                 $data['question_option_2']=$request->input('question_option_2');
                 $data['question_option_3']=$request->input('question_option_3');
                 $data['question_option_4']=$request->input('question_option_4');
-                $data['question_option_5']=$request->input('question_option_5');
-                $data['question_answer']=$request->input('question_answer');
-                $data['campaign_id']=$request->input('campaign_id');
-                $data['campaign_name']=$request->input('campaign_name');
-                $data['question_prize_amount']=$request->input('question_prize_amount');
+                $data['question_option_new']=$request->input('question_option_new');
                 $data['question_points']=$request->input('question_points');
+                $data['question_prize_amount']=$request->input('question_prize_amount');
+                $data['question_physical_prize']=$request->input('question_physical_prize');
+                // $data['question_published_date']='';
+                $data['question_updated_by'] = \Auth::user()->id;
 
+                $update=\DB::table('question_tbl')->where('id', $id)->update($data);
 
-                $update=\DB::table('questions')->where('id', $id)->update($data);
-
-                // \App\System::EventLogWrite('update,questions',json_encode($data));
+                // \App\System::EventLogWrite('update,question_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
@@ -243,14 +257,14 @@ class QuestionController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('questions')
+        $delete = \DB::table('question_tbl')
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,questions|Content deleted successfully.',$id);
+            // \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,questions|Content did not delete.',$id);
+            // \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

@@ -72,20 +72,44 @@
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <select id="form-field-select-3" class="form-control search-select"
-                                                            name="campaign_id">
+                                                    <select id="form-field-select-3" class="form-control search-select" name="question_campaign_id">
                                                         <option value="">&nbsp;Please Select a Campaign</option>
 
                                                         @if(!empty($all_campaign))
                                                         @foreach($all_campaign as $key =>$list)
                                                             <option value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                                            <input type="hidden" class="form-control" name="campaign_name" value="{{$list->campaign_name}}">
+                                                            <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}">
                                                         @endforeach
                                                         @endif
 
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Question Type</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <select id="form-field-select-3" class="form-control search-select" name="question_type">
+                                                        <option value="">&nbsp;Please Select a Type</option>
+                                                        <option value="easy">Easy</option>
+                                                        <option value="hard">Hard</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Question Position</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" class="form-control" name="question_position">
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Question Title</strong>
@@ -95,6 +119,7 @@
                                                     <input type="text" class="form-control" name="question_title">
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option 1</strong>
@@ -104,6 +129,7 @@
                                                     <input type="text" class="form-control" name="question_option_1">
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option 2</strong>
@@ -113,6 +139,7 @@
                                                     <input type="text" class="form-control" name="question_option_2">
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option 3</strong>
@@ -132,36 +159,28 @@
                                                     <input type="text" class="form-control" name="question_option_4">
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Option 5</strong>
+                                                    <strong>Option New</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="question_option_5">
+                                                    <input type="text" class="form-control" name="question_option_new">
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Answer</strong>
+                                                    <strong>Question Special</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="question_answer">
+                                                    <input type="radio" name="question_special" value="1"> Yes<br>
+                                                    <input type="radio" name="question_special" value="0"> No
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Question Type</strong>
-                                                </label>
-                                                <div class="col-sm-9">
-                                                    <select id="quiz_type" class="form-control search-select"
-                                                            name="quiz_type">
-                                                        <option value="text">Text</option>
-                                                        <option value="video">Video</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Prize Amount</strong>
@@ -169,6 +188,17 @@
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <input type="number" class="form-control" name="question_prize_amount">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Physical Prize</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="question_physical_prize">
                                                 </div>
                                             </div>
 
@@ -181,14 +211,7 @@
                                                     <input type="number" class="form-control" name="question_points">
                                                 </div>
                                             </div>
-                                            <!-- <div class="form-group" id="video_url">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Video URL</strong>
-                                                </label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="video_url">
-                                                </div>
-                                            </div> -->
+
                                             <div class="form-group">
                                                 <div class="col-sm-4">
                                                 </div>

@@ -1,4 +1,4 @@
-F<div class="main-navigation navbar-collapse collapse">
+<div class="main-navigation navbar-collapse collapse">
     <!-- start: MAIN MENU TOGGLER BUTTON -->
     <div class="navigation-toggler">
         <i class="clip-chevron-left"></i>

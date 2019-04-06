@@ -27,7 +27,6 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="panel-body">
 
 
                         <div class="tabbable">
@@ -52,15 +51,15 @@
                                     <div class="row">
                                         <div class="col-md-12">
 
-                                            <form method="get"  action="{{url('/dashboard/sports/question/all')}}">
+                                            <form method="get"  action="{{url('/question/list')}}">
                                                 <div class="col-md-3">
                                                     <div class="form-group has-feedback ">
                                                         <label for="search_from">
-                                                            <strong>Search by type : </strong>
+                                                            <strong>Search by status : </strong>
                                                         </label>
-                                                        <select class="form-control search-select" name="question_type">
-                                                            <option {{(isset($_GET['question_type']) && ($_GET['question_type']=="text")) ? 'selected' : ''}} value="text">Text</option>
-                                                            <option {{(isset($_GET['question_type']) && ($_GET['question_type']=="video")) ? 'selected' : ''}} value="video">Video</option>
+                                                        <select class="form-control search-select" name="question_status">
+                                                            <option {{(isset($_GET['question_status']) && ($_GET['question_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
+                                                            <option {{(isset($_GET['question_status']) && ($_GET['question_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -78,20 +77,24 @@
                         </div>
 
 
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered table-striped nopadding">
                             <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Campaign Name</th>
-                                <th>question Title</th>
+                                <th>Question Title</th>
+                                <th>Question Type</th>
+                                <th>Question Position</th>
                                 <th>Option 1</th>
                                 <th>Option 2</th>
                                 <th>Option 3</th>
                                 <th>Option 4</th>
-                                <th>Option 5</th>
-                                <th>Answer</th>
+                                <th>Special</th>
+                                <!-- <th>Prize Amount</th>
+                                <th>Physical Prize</th>
+                                <th>Points</th> -->
+                                <th>Publish Status</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -102,14 +105,19 @@
                                 @foreach($all_content as $key => $question)
                                     <tr>
                                         <td>{{($key+1+($perPage*$page))}}</td>
-                                        <td>{{str_limit($question->campaign_name, $limit=45, $end = '...')}}</td>
+                                        <td>{{$question->question_campaign_name}}</td>
                                         <td>{{$question->question_title}}</td>
+                                        <td>{{$question->question_type}}</td>
+                                        <td>{{$question->question_position}}</td>
                                         <td>{{$question->question_option_1}}</td>
                                         <td>{{$question->question_option_2}}</td>
                                         <td>{{$question->question_option_3}}</td>
                                         <td>{{$question->question_option_4}}</td>
-                                        <td>{{$question->question_option_5}}</td>
-                                        <td>{{$question->question_answer}}</td>
+                                        <td>{{$question->question_special}}</td>
+                                        <!-- <td>{{$question->question_prize_amount}}</td>
+                                        <td>{{$question->question_physical_prize}}</td>
+                                        <td>{{$question->question_points}}</td> -->
+                                        <td>{{$question->question_published_status}}</td>
                                         <td>
                                             @if($question->question_status == 1)
                                                 <span class="label label-success">
@@ -150,7 +158,7 @@
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="7">No Data available</td>
+                                    <td colspan="13">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>

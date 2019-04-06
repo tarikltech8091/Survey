@@ -23,8 +23,8 @@ class CreateCampaignParticipateTblTable extends Migration
             $table->float('payment_amount');
             $table->string('payment_transaction_id');
             $table->string('payment_status')->default(0);
-            $table->string('assign_created_by');
-            $table->string('assign_updated_by');
+            $table->string('assign_created_by')->nullable();
+            $table->string('assign_updated_by')->nullable();
             $table->timestamps();
         });
     }

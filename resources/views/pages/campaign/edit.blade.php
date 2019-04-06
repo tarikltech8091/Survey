@@ -52,20 +52,32 @@
                                 <input type="text" class="form-control" value="{{isset($edit->campaign_name)? $edit->campaign_name:''}}" name="campaign_name">
                             </div>
                         </div>
+            
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <strong>Campaign Title</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="campaign_title" value="{{isset($edit->campaign_title)? $edit->campaign_title:''}}">
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
-                                <strong>Service</strong>
+                                <strong>Requster Select</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-8">
                                 <select id="form-field-select-3" class="form-control search-select"
-                                        name="service_id">
-                                    <option value="">&nbsp;Please Select a Service</option>
+                                        name="campaign_requester_id">
+                                    <option value="">&nbsp;Please Select a Type</option>
 
-                                    @if(!empty($all_service))
-                                    @foreach($all_service as $key =>$list)
-                                        <option {{($edit->service_id == $list->service_name) ? 'selected' : ''}} value="{{$list->service_name}}">{{$list->service_name}}</option>
+                                    @if(!empty($all_requester))
+                                    @foreach($all_requester as $key =>$list)
+                                        <option {{($edit->campaign_requester_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->requester_name}}</option>
+                                        <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
+                                        <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
                                     @endforeach
                                     @endif
 
@@ -94,13 +106,57 @@
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
-                                <strong>Campaign Quiz Point</strong>
+                                <strong>Campaign Num of days</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-6">
-                                <input type="number" class="form-control" value="{{isset($edit->campaign_quiz_points)? $edit->campaign_quiz_points:''}}" name="campaign_quiz_points">
+                                <input type="number" class="form-control" value="{{isset($edit->campaign_num_of_days)? $edit->campaign_num_of_days:''}}" name="campaign_num_of_days">
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <strong>Campaign Total Cost</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" value="{{isset($edit->campaign_total_cost)? $edit->campaign_total_cost:''}}" name="campaign_total_cost">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <strong>Campaign Surveyer Cost</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" value="{{isset($edit->campaign_cost_for_surveyer)? $edit->campaign_cost_for_surveyer:''}}" name="campaign_cost_for_surveyer">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <strong>Campaign Zone</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" value="{{isset($edit->campaign_zone)? $edit->campaign_zone:''}}" name="campaign_zone">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                <strong>Campaign Number Of Zone</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" value="{{isset($edit->campaign_total_num_of_zone)? $edit->campaign_total_num_of_zone:''}}" name="campaign_total_num_of_zone">
+                            </div>
+                        </div>
+
 
 
                         <div class="form-group">
@@ -108,9 +164,11 @@
                                 <strong>Description</strong>
                             </label>
                             <div class="col-sm-9">
-                                <textarea name="campaign_description" class="form-control" cols="10" rows="7">{{isset($edit->campaign_description)? $edit->campaign_description:''}}</textarea>
+                                <textarea name="campaign_description" value="{{isset($edit->campaign_description)? $edit->campaign_description:''}}" class="form-control" cols="10" rows="7"></textarea>
                             </div>
                         </div>
+
+
 
                     
                         <div class="form-group">
@@ -168,30 +226,30 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#campaign').validate({
                 rules: {
-                    album_name: {
+                    campaign_name: {
                         required: true
                     },
-                    album_category: {
+                    campaign_title: {
                         required: true
                     },
-                    country:{
+                    campaign_requester_id:{
                         required: true
                     },
-                    /*domain_name:{
-                        required: true
-                    },*/
-                    service_name:{
+                    campaign_start_date:{
                         required: true
                     },
-                    album_tags: {
+                    campaign_end_date:{
                         required: true
                     },
-                    imdb_rating: {
-                        number: true
+                    campaign_num_of_days:{
+                        required: true
                     },
-                    album_genres: {
+                    campaign_total_cost:{
+                        required: true
+                    },
+                    campaign_total_num_of_zone:{
                         required: true
                     }
                 },

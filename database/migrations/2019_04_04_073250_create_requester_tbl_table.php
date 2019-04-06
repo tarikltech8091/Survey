@@ -29,8 +29,8 @@ class CreateRequesterTblTable extends Migration
             $table->integer('requester_number_of_success_campaign')->default(0);
             $table->float('requester_total_invest')->default(0)->nullable();
             $table->string('requester_status')->default(0);
-            $table->string('requester_created_by');
-            $table->string('requester_updated_by');
+            $table->string('requester_created_by')->nullable();
+            $table->string('requester_updated_by')->nullable();
             $table->timestamps();
         });
     }

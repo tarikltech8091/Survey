@@ -50,19 +50,44 @@
                             </label>
                             <div class="col-sm-9">
                                 <select id="form-field-select-3" class="form-control search-select"
-                                        name="campaign_id">
+                                        name="question_campaign_id">
                                     <option value="">&nbsp;Please Select a Campaign</option>
 
                                     @if(!empty($all_campaign))
                                     @foreach($all_campaign as $key =>$list)
-                                        <option {{($edit->campaign_id == $list->id) ? "selected" :''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                        <input type="hidden" class="form-control" name="campaign_name" value="{{$list->campaign_name}}">
+                                        <option {{($edit->question_campaign_id == $list->id) ? "selected" :''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
+                                        <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}">
                                     @endforeach
                                     @endif
 
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Question Type</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="form-field-select-3" class="form-control search-select" name="question_type">
+                                    <option value="">&nbsp;Please Select a Type</option>
+                                    <option {{($edit->question_type == 'easy') ? "selected" :''}} value="easy">Easy</option>
+                                    <option {{($edit->question_type == 'hard') ? "selected" :''}}  value="hard">Hard</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Question Position</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="question_position" value="{{(isset($edit->question_position) && !empty($edit->question_position))? $edit->question_position:''}}">
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Question Title</strong>
@@ -112,23 +137,28 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
-                                <strong>Option 5</strong>
+                                <strong>Option New</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="question_option_5"  value="{{(isset($edit->question_option_5) && !empty($edit->question_option_5))? $edit->question_option_5:''}}">
+                                <input type="text" class="form-control" name="question_option_new"  value="{{(isset($edit->question_option_new) && !empty($edit->question_option_new))? $edit->question_option_new:''}}">
                             </div>
                         </div>
 
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
-                                <strong>Answer</strong>
+                                <strong>Question Special</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="question_answer"  value="{{(isset($edit->question_answer) && !empty($edit->question_answer))? $edit->question_answer:''}}">
+                                <input type="radio" name="question_special" {{($edit->question_special == 1) ? "checked" :''}} value="1"> Yes<br>
+                                <input type="radio" name="question_special" {{($edit->question_special == 0) ? "checked" :''}} value="0"> No
                             </div>
                         </div>
+
+
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Prize Amount</strong>
@@ -136,6 +166,17 @@
                             </label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" name="question_prize_amount" value="{{(isset($edit->question_prize_amount) && !empty($edit->question_prize_amount))? $edit->question_prize_amount:''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Physical Prize</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="question_physical_prize" value="{{(isset($edit->question_physical_prize) && !empty($edit->question_physical_prize))? $edit->question_physical_prize:''}}">
                             </div>
                         </div>
 
@@ -148,27 +189,7 @@
                                 <input type="number" class="form-control" name="question_points" value="{{(isset($edit->question_points) && !empty($edit->question_points))? $edit->question_points:''}}">
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>question Type</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-9">
-                                <select id="question_type" class="form-control search-select"
-                                        name="question_type">
-                                    <option {{($edit->question_answer == 'text') ? 'selected' : ''}} value="text">Text</option>
-                                    <option {{($edit->question_answer == 'video') ? 'selected' : ''}} value="video">Video</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" id="video_url">
-                            <label class="col-sm-3 control-label">
-                                <strong>Video URL</strong>
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="video_url"  value="">
-                            </div>
-                        </div> -->
+
                         <div class="form-group">
                             <div class="col-sm-4">
                             </div>

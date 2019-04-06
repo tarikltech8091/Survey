@@ -76,10 +76,13 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Campaign Name</th>
-                                            <th>Service Name</th>
+                                            <th>Campaign Title</th>
+                                            <th>Requester Number</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
-                                            <th>Campaign Quiz Point</th>
+                                            <th>Total Days</th>
+                                            <th>Total Cost</th>
+                                            <th>Total Zone</th>
                                             <th>Description</th>
                                             <th>Campaign Status</th>
                                             <th>Action</th>
@@ -92,10 +95,13 @@
                                                 <tr>
                                                     <td>{{($key+1+($perPage*$page))}}</td>
                                                     <td>{{ $list->campaign_name }}</td>
-                                                    <td>{{ $list->service_id }}</td>
+                                                    <td>{{ $list->campaign_title }}</td>
+                                                    <td>{{ $list->campaign_requester_mobile }}</td>
                                                     <td>{{ $list->campaign_start_date }}</td>
                                                     <td>{{ $list->campaign_end_date }}</td>
-                                                    <td>{{ $list->campaign_quiz_points }}</td>
+                                                    <td>{{ $list->campaign_num_of_days }}</td>
+                                                    <td>{{ $list->campaign_total_cost }}</td>
+                                                    <td>{{ $list->campaign_total_num_of_zone }}</td>
                                                     <td>{{ str_limit($list->campaign_description, 15)  }}</td>
 
                                                     <td>

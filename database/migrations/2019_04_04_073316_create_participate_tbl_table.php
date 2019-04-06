@@ -36,8 +36,8 @@ class CreateParticipateTblTable extends Migration
             $table->integer('participate_number_of_gift_winner')->default(0);
             $table->string('agreed_user')->default(0);
             $table->string('participate_status')->default(0);
-            $table->string('participate_created_by');
-            $table->string('participate_updated_by');
+            $table->string('participate_created_by')->nullable();
+            $table->string('participate_updated_by')->nullable();
             $table->timestamps();
         });
     }

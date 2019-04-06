@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Requester;
 
 class CampaignController extends Controller
 {
@@ -27,7 +28,7 @@ class CampaignController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['campaign_status'])){
-            $all_content =  \DB::table('campaign')->where(function($query){
+            $all_content =  \DB::table('campaign_tbl')->where(function($query){
                 if(isset($_GET['campaign_status'])){
                     $query->where(function ($q){
                         $q->where('campaign_status', $_GET['campaign_status']);
@@ -47,7 +48,7 @@ class CampaignController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('campaign')->orderBy('id','DESC')->paginate(20);
+            $all_content=\DB::table('campaign_tbl')->orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/campaign/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -56,7 +57,7 @@ class CampaignController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('campaign')->orderby('id','desc')->get();
+        $data['all_data'] = \DB::table('campaign_tbl')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.list',$data);
@@ -67,7 +68,7 @@ class CampaignController extends Controller
      *********************************************/
     public function Create()
     {
-        $data['all_service'] = \DB::table('service')->where('service_status','1')->orderby('id','desc')->get();
+        $data['all_requester'] = \App\Requester::where('requester_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.create',$data);
@@ -80,25 +81,34 @@ class CampaignController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'campaign_name' => 'required',
-            'service_id' => 'required',
+            'campaign_title' => 'required',
+            'campaign_requester_name' => 'required',
+            'campaign_requester_id' => 'required',
+            'campaign_requester_mobile' => 'required',
+            'campaign_create_date' => 'required',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
-            // 'campaign_description' => 'required',
-            // 'campaign_banner_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
+            'campaign_num_of_days' => 'required',
+            'campaign_total_cost' => 'required',
+            'campaign_cost_for_surveyer' => 'required',
+            'campaign_zone' => 'required',
+            'campaign_total_num_of_zone' => 'required',
+            // 'campaign_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
         ]);
 
 
         if($v->passes()){
-            $campaign_banner_image="";
+            $campaign_image="";
 
             try{
+
                 $campaign_name=$request->input('campaign_name');
-                if($request->file('campaign_banner_image')!=null){
-                    #PosterImageLong
-                    $image_wide = $request->file('campaign_banner_image');
+                if($request->file('campaign_image')!=null){
+                    #ImageUpload
+                    $image_wide = $request->file('campaign_image');
                     $img_location_wide=$image_wide->getRealPath();
                     $img_ext_wide=$image_wide->getClientOriginalExtension();
-                    $campaign_banner_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
+                    $campaign_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
                 }
 
 
@@ -106,36 +116,49 @@ class CampaignController extends Controller
                 $slug=explode(' ', strtolower($request->input('campaign_name')));
                 $campaign_name_slug=implode('-', $slug);
                 $data['campaign_name_slug']=$campaign_name_slug;
-                $data['service_id']=$request->input('service_id');
+                $data['campaign_title']=$request->input('campaign_title');
+                $data['campaign_requester_name']=$request->input('campaign_requester_name');
+                $data['campaign_requester_id']=$request->input('campaign_requester_id');
+                $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
+                $data['campaign_create_date']=$request->input('campaign_create_date');
                 $data['campaign_start_date']=$request->input('campaign_start_date');
                 $data['campaign_end_date']=$request->input('campaign_end_date');
-                $data['campaign_published_date']=$request->input('campaign_published_date');
-                $data['campaign_quiz_points']=$request->input('campaign_quiz_points');
+                $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
+                $data['campaign_unique_code']= time().'-'.mt_rand();
+                $data['campaign_total_cost']=$request->input('campaign_total_cost');
+                $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
+                $data['campaign_zone']=$request->input('campaign_zone');
+                $data['campaign_total_num_of_zone']=$request->input('campaign_total_num_of_zone');
+                $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_description']=$request->input('campaign_description');
+                $data['campaign_published_status']= 0;
                 $data['campaign_status']= 0;
-                $data['campaign_banner_image'] = $campaign_banner_image;
+                $data['campaign_image'] = $campaign_image;
+                $data['campaign_created_by'] = \Auth::user()->id;
+                $data['campaign_updated_by'] = \Auth::user()->id;
 
-                $insert=\DB::table('campaign')->insert($data);
+                // $insert=\DB::table('campaign_tbl')->insert($data);
 
-                /*$campaign_insert = \App\Blog::firstOrCreate(
+                $campaign_insert = \App\Campaign::firstOrCreate(
                     [
-                        'BLOG_TITLE' => $data['BLOG_TITLE'],
+                        'campaign_name' => $data['campaign_name'],
                     ],
                     $data
                 );
 
-                if($blog_insert->wasRecentlyCreated){*/
+                if($campaign_insert->wasRecentlyCreated){
 
-                    // \App\System::EventLogWrite('insert,campaign',json_encode($data));
-                    return redirect()->back()->with('message','campaign Created Successfully');
+                    // \App\System::EventLogWrite('insert,campaign_tbl',json_encode($data));
+                    return redirect()->back()->with('message','Campaign Created Successfully');
 
-                // }else return redirect()->back()->with('errormessage','Blog already created.');
+                }else return redirect()->back()->with('errormessage','Campaign already created.');
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
                 \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
             }
+
         } else{
             return redirect()->back()->withErrors($v)->withInput();
         }
@@ -147,7 +170,7 @@ class CampaignController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this campaign has any content published or not
-        $content_exists =\DB::table('campaign')->where('id',$id)->first();
+        $content_exists =\DB::table('campaign_tbl')->where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -156,7 +179,7 @@ class CampaignController extends Controller
             } else{
                 $data['campaign_status']=0;
             }
-            $update=\DB::table('campaign')->where('id',$id)->update($data);
+            $update=\DB::table('campaign_tbl')->where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -171,14 +194,13 @@ class CampaignController extends Controller
 
     }
 
-
     /********************************************
     ##  Edit View
      *********************************************/
     public function Edit($id)
     {
-        $data['edit'] = \DB::table('campaign')->where('id', $id)->first();
-        $data['all_service'] = \DB::table('service')->where('service_status','1')->orderby('id','desc')->get();
+        $data['edit'] = \App\Campaign::where('id', $id)->first();
+        $data['all_requester'] = \App\Requester::where('requester_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.edit',$data);
@@ -191,57 +213,70 @@ class CampaignController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'campaign_name' => 'required',
-            'service_id' => 'required',
+            'campaign_title' => 'required',
+            'campaign_requester_name' => 'required',
+            'campaign_requester_id' => 'required',
+            'campaign_requester_mobile' => 'required',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
-            // 'campaign_description' => 'required',
-            // 'campaign_banner_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
+            'campaign_num_of_days' => 'required',
+            'campaign_total_cost' => 'required',
+            'campaign_cost_for_surveyer' => 'required',
+            'campaign_zone' => 'required',
+            'campaign_total_num_of_zone' => 'required',
+            // 'campaign_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
         ]);
 
         if($v->passes()){
 
-            try
-            {
+            // try{
 
-                $campaign_data= \DB::table('campaign')->where('id', $id)->first();
-
+                $campaign_data= \DB::table('campaign_tbl')->where('id', $id)->first();
 
                 $campaign_name=$request->input('campaign_name');
-                if($request->file('campaign_banner_image')!=null){
+                if($request->file('campaign_image')!=null){
                     #PosterImageLong
-                    $image_wide = $request->file('campaign_banner_image');
+                    $image_wide = $request->file('campaign_image');
                     $img_location_wide=$image_wide->getRealPath();
                     $img_ext_wide=$image_wide->getClientOriginalExtension();
-                    $blog_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
+                    $campaign_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
                 } else{
-                    $campaign_banner_image = $campaign_data->campaign_banner_image;
+                    $campaign_image = $campaign_data->campaign_image;
                 }
 
 
                 $data['campaign_name']=$request->input('campaign_name');
-                
                 $slug=explode(' ', strtolower($request->input('campaign_name')));
                 $campaign_name_slug=implode('-', $slug);
                 $data['campaign_name_slug']=$campaign_name_slug;
-                $data['service_id']=$request->input('service_id');
+                $data['campaign_title']=$request->input('campaign_title');
+                $data['campaign_requester_name']=$request->input('campaign_requester_name');
+                $data['campaign_requester_id']=$request->input('campaign_requester_id');
+                $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
                 $data['campaign_start_date']=$request->input('campaign_start_date');
                 $data['campaign_end_date']=$request->input('campaign_end_date');
-                $data['campaign_published_date']=$request->input('campaign_published_date');
-                $data['campaign_quiz_points']=$request->input('campaign_quiz_points');
+                $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
+                $data['campaign_total_cost']=$request->input('campaign_total_cost');
+                $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
+                $data['campaign_zone']=$request->input('campaign_zone');
+                $data['campaign_total_num_of_zone']=$request->input('campaign_total_num_of_zone');
+                $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_description']=$request->input('campaign_description');
-                $data['campaign_banner_image'] = $campaign_banner_image;
-                $update=\DB::table('campaign')->where('id', $id)->update($data);
+                $data['campaign_image'] = $campaign_image;
+                $data['campaign_updated_by'] = \Auth::user()->id;
 
-                // \App\System::EventLogWrite('update,campaign',json_encode($data));
+                $update=\DB::table('campaign_tbl')->where('id', $id)->update($data);
+
+                // \App\System::EventLogWrite('update,campaign_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
-            }catch (\Exception $e){
+            /*}catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
                 // \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
-            }
+            }*/
         }else return redirect()->back()->withErrors($v)->withInput();
     }
 
@@ -250,14 +285,14 @@ class CampaignController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('campaign')
+        $delete = \DB::table('campaign_tbl')
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,campaign|Content deleted successfully.',$id);
+            // \App\System::EventLogWrite('delete,campaign_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,campaign|Content did not delete.',$id);
+            // \App\System::EventLogWrite('delete,campaign_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

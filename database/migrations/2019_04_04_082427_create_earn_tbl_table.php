@@ -24,8 +24,8 @@ class CreateEarnTblTable extends Migration
             $table->string('earn_date')->nullable();
             $table->float('earn_amount');
             $table->string('earn_status')->default(0);
-            $table->string('earn_created_by');
-            $table->string('earn_updated_by');
+            $table->string('earn_created_by')->nullable();
+            $table->string('earn_updated_by')->nullable();
             $table->timestamps();
         });
     }

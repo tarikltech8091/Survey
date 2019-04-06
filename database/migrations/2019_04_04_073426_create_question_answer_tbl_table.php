@@ -29,8 +29,8 @@ class CreateQuestionAnswerTblTable extends Migration
             $table->string('question_answer_validate_type')->nullable();
             $table->string('question_answer_validate')->nullable();
             $table->string('question_answer_status')->default(0);
-            $table->string('question_answer_created_by');
-            $table->string('question_answer_updated_by');
+            $table->string('question_answer_created_by')->nullable();
+            $table->string('question_answer_updated_by')->nullable();
             $table->timestamps();
         });
     }

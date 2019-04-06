@@ -24,8 +24,8 @@ class CreateSurveyerAssignTblTable extends Migration
             $table->string('assign_campaign_complain')->nullable();
             $table->string('assign_campaign_description')->nullable();
             $table->string('assign_status')->default(0);
-            $table->string('assign_created_by');
-            $table->string('assign_updated_by');
+            $table->string('assign_created_by')->nullable();
+            $table->string('assign_updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -31,8 +31,8 @@ class CreateSurveyerTblTable extends Migration
             $table->float('surveyer_total_earn')->default(0);
             $table->float('surveyer_total_paid')->default(0);
             $table->string('surveyer_status')->default(0);
-            $table->string('surveyer_created_by');
-            $table->string('surveyer_updated_by');
+            $table->string('surveyer_created_by')->nullable();
+            $table->string('surveyer_updated_by')->nullable();
             $table->timestamps();
         });
     }

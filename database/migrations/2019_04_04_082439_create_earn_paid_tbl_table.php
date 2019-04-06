@@ -26,8 +26,8 @@ class CreateEarnPaidTblTable extends Migration
             $table->string('payment_transaction_id');
             $table->string('earn_paid_description')->nullable();
             $table->string('earn_paid_status')->default(0);
-            $table->string('earn_paid_created_by');
-            $table->string('earn_paid_updated_by');
+            $table->string('earn_paid_created_by')->nullable();
+            $table->string('earn_paid_updated_by')->nullable();
             $table->timestamps();
         });
     }

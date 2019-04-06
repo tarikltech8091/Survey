@@ -46,11 +46,11 @@
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR CREATE Blog -->
-                    <div id="create_album" class="tab-pane active">
+                    <div id="create_campaign" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
                                 <form role="form" class="form-horizontal" action="{{ url('/campaign/save') }}"
-                                      id="blog" method="post" role="form" enctype="multipart/form-data">
+                                      id="campaign" method="post" role="form" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
@@ -61,19 +61,32 @@
                                             <input type="text" class="form-control" name="campaign_name">
                                         </div>
                                     </div>
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
-                                            <strong>Service</strong>
+                                            <strong>Campaign Title</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="campaign_title">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Requster Select</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-8">
                                             <select id="form-field-select-3" class="form-control search-select"
-                                                    name="service_id">
-                                                <option value="">&nbsp;Please Select a Service</option>
+                                                    name="campaign_requester_id">
+                                                <option value="">&nbsp;Please Select a Requster</option>
 
-                                                @if(!empty($all_service))
-                                                @foreach($all_service as $key =>$list)
-                                                    <option value="{{$list->service_name}}">{{$list->service_name}}</option>
+                                                @if(!empty($all_requester))
+                                                @foreach($all_requester as $key =>$list)
+                                                    <option value="{{$list->id}}">{{$list->requester_name}}  {{$list->requester_mobile}}</option>
+                                                    <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
+                                                    <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
                                                 @endforeach
                                                 @endif
 
@@ -82,6 +95,15 @@
                                     </div>
 
                                     
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Campaign Create Date</strong>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" name="campaign_create_date">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
                                             <strong>Campaign Start Date</strong>
@@ -102,13 +124,57 @@
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
-                                            <strong>Campaign Quiz Point</strong>
+                                            <strong>Campaign Num of days</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-6">
-                                            <input type="number" class="form-control" name="campaign_quiz_points">
+                                            <input type="number" class="form-control" name="campaign_num_of_days">
                                         </div>
                                     </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Campaign Total Cost</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="campaign_total_cost">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Campaign Surveyer Cost</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="campaign_cost_for_surveyer">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Campaign Zone</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="campaign_zone">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <strong>Campaign Number Of Zone</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="campaign_total_num_of_zone">
+                                        </div>
+                                    </div>
+
 
 
                                     <div class="form-group">
@@ -123,7 +189,6 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
                                             <strong>Campaign Image </strong>(Ratio: 480x270)
-                                            <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-9">
                                             <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -141,7 +206,7 @@
                                                         <span class="fileupload-exists"><i class="fa fa-picture"></i>
                                                             Change
                                                         </span>
-                                                        <input type="file" name="BLOG_IMAGE">
+                                                        <input type="file" name="campaign_description">
                                                     </span>
                                                     <a href="#" class="btn fileupload-exists btn-light-grey" data-dismiss="fileupload">
                                                         <i class="fa fa-times"></i> Remove
@@ -173,21 +238,30 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#campaign').validate({
                 rules: {
-                    BLOG_TITLE: {
+                    campaign_name: {
                         required: true
                     },
-                    BLOG_DETAILS: {
+                    campaign_title: {
                         required: true
                     },
-                    BLOG_TAG:{
+                    campaign_requester_id:{
                         required: true
                     },
-                    BLOG_IMAGE:{
+                    campaign_start_date:{
                         required: true
                     },
-                    BLOG_TYPE:{
+                    campaign_end_date:{
+                        required: true
+                    },
+                    campaign_num_of_days:{
+                        required: true
+                    },
+                    campaign_total_cost:{
+                        required: true
+                    },
+                    campaign_total_num_of_zone:{
                         required: true
                     }
                 },

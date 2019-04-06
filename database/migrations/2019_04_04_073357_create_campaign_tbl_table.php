@@ -34,8 +34,8 @@ class CreateCampaignTblTable extends Migration
             $table->string('campaign_description')->nullable();
             $table->string('campaign_published_status')->default(0);
             $table->string('campaign_status')->default(0);
-            $table->string('campaign_created_by');
-            $table->string('campaign_updated_by');
+            $table->string('campaign_created_by')->nullable();
+            $table->string('campaign_updated_by')->nullable();
             $table->timestamps();
         });
     }

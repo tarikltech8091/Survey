@@ -25,8 +25,8 @@ class CreateCampaignFeedbackTblTable extends Migration
             $table->string('feedback_description')->nullable();
             $table->string('feedback_status')->default(0);
             $table->string('is_true')->default(0);
-            $table->string('feedback_created_by');
-            $table->string('feedback_updated_by');
+            $table->string('feedback_created_by')->nullable();
+            $table->string('feedback_updated_by')->nullable();
             $table->timestamps();
         });
     }
