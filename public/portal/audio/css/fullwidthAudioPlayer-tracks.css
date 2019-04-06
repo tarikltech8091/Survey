@@ -1,0 +1,269 @@
+/* Track Container */
+
+.fap-cover-wrapper {
+    background: #fff url(../audio.png) no-repeat center center;
+}
+
+.fap-cover-wrapper img {
+    height: inherit;
+}
+
+.fap-track-content > .fap-item-buttons {
+    margin-top: 10px;
+}
+
+/* Track Title */
+
+.fap-item-title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Simple Layout */
+
+.fap-track-simple {
+    display: block;
+}
+
+
+/* List Layout */
+
+.fap-list-item,
+.fap-list-item * {
+    max-width: 100%;
+}
+
+.fap-list-item {
+    margin-bottom: 40px;
+    clear: both;
+}
+
+.fap-list-item > .fap-cover-wrapper {
+    margin-right: 20px;
+    overflow: hidden;
+    float: left;
+}
+
+.fap-list-item .fap-track-content {
+    float: left;
+}
+
+.fap-list-item li .fap-item-title {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.fap-list-item li .fap-item-meta {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+/* Grid Layout */
+
+.fap-grid-item,
+.fap-grid-item * {
+    max-width: 100%;
+}
+
+.fap-grid-item > div {
+    overflow: hidden;
+}
+
+.fap-grid-item .fap-title-item {
+    font-size: 14px;
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+
+.fap-grid-item .fap-item-meta {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+
+/* Grid - Interactive Image */
+
+.fap-interactive-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.fap-interactive-image:hover > div {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+}
+
+.fap-interactive-image > div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 16px;
+    top: 0;
+    left: 0;
+    padding: 20px 10px;
+    background: #fff;
+    background: rgba(255,255,255,0.7);
+    box-sizing: border-box;
+    opacity: 0;
+    -webkit-transform: scale(1.4);
+    transform: scale(1.4);
+    -webkit-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
+}
+
+.fap-interactive-image > div > .fap-item-title {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.fap-interactive-image > div > .fap-item-buttons {
+    margin: 30px 0 0;
+    text-align: center;
+}
+
+/* Grid/List Icon */
+
+.fap-icons .fap-cover-wrapper {
+    float: left;
+    margin-right: 20px;
+}
+
+.fap-icons .fap-track-content {
+    float: left;
+    width: 200px;
+    line-height: 18px;
+    padding-right: 10px;
+}
+
+.fap-icons .fap-item-buttons {
+    float: left;
+}
+
+.fap-icons .fap-item-buttons > a {
+    margin: 0 0 6px;
+    display: block;
+    padding: 3px 8px 1px;
+    width: 20px;
+}
+
+.fap-icons .fap-item-buttons > a:last-child {
+    margin-bottom: 0;
+}
+
+.fap-icons .fap-item-buttons span {
+    margin: 0;
+}
+
+
+/* Buttons */
+.fap-play-button {
+    background-color: #303030;
+    color: #ffffff;
+}
+
+.fap-play-button:hover {
+    background-color: #535353;
+    color: #ffffff;
+}
+
+.fap-enqueue-button {
+    background-color: #303030;
+    color: #ffffff;
+}
+
+.fap-enqueue-button:hover {
+    background-color: #535353;
+    color: #ffffff;
+}
+
+.fap-referral-button {
+    background-color: #215D99;
+    color: #ffffff;
+}
+
+.fap-referral-button:hover {
+    background-color: #2f79c2;
+    color: #ffffff;
+}
+
+.fap-popup-player {
+    background-color: #303030;
+    color: #ffffff;
+}
+
+.ffap-popup-player:hover {
+    background-color: #535353;
+    color: #ffffff;
+}
+
+.fap-play-button,
+.fap-enqueue-button,
+.fap-referral-button,
+.fap-popup-player,
+.fap-play-button:hover,
+.fap-enqueue-button:hover,
+.fap-referral-button:hover,
+.fap-popup-player:hover {
+    text-decoration: none !important;
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 15px 3px;
+    text-transform: uppercase;
+    margin: 0 10px 5px 0;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 12px;
+    border: none;
+    line-height: 25px;
+    height: 25px;
+    vertical-align: sub;
+    cursor: pointer;
+    -webkit-transition: background-color 500ms ease-out;
+    transition: background-color 500ms ease-out;
+}
+
+.fap-play-button span,
+.fap-enqueue-button span,
+.fap-referral-button span,
+.fap-track-button span {
+    font-size: 20px;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: sub;
+}
+
+
+/* Playlists */
+
+
+.fap-in-page-playlist-grid,
+.fap-in-page-playlist-interactive-image {
+    margin: 0 auto;
+}
+
+.fap-in-page-playlist-grid .fap-grid-item,
+.fap-in-page-playlist-interactive-image .fap-grid-item,
+.fap-in-page-playlist-grid-icon .fap-grid-item {
+    float: left;
+    margin: 0 40px 40px 0;
+}
+
+.fap-add-playlist,
+.fap-add-playlist:hover {
+    margin-bottom: 20px;
+}
+
+
+/* Hidden Layout */
+
+.fap-track-hidden {
+    display: none !important;
+}
+
+.fap-external-tracklist-hidden {
+    display: none !important;
+}

@@ -1,0 +1,5 @@
+04-04-2019 07:20:29 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+04-04-2019 07:21:08 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+04-04-2019 07:21:13 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+04-04-2019 07:21:14 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+04-04-2019 07:21:52 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
