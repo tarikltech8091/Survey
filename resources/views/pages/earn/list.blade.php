@@ -34,27 +34,27 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="">
-                        <a href="{{url('/earn/create')}}">
-                            <i class="green fa fa-bell"></i> Earn earn
+                        <a href="{{url('/earn/payment')}}">
+                            <i class="green fa fa-bell"></i> Paid Payment
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{{url('/earn/list')}}">
-                            <i class="green clip-feed"></i> Earn List
+                        <a href="{{url('/earn/payment/list')}}">
+                            <i class="green clip-feed"></i> Paid Payment List
                         </a>
                     </li>
                 </ul>
                 <div class="panel-body">
-                    <form method="get"  action="{{url('/earn/list')}}">
-                        
+                    <form method="get"  action="{{url('/earn/payment/list')}}">
+                    
                         <div class="col-md-2">
                             <div class="form-group has-feedback ">
                                 <label for="search_from">
                                     <strong>Search by status : </strong>
                                 </label>
-                                <select class="form-control search-select" name="earn_status">
-                                    <option {{(isset($_GET['earn_status']) && ($_GET['earn_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
-                                    <option {{(isset($_GET['earn_status']) && ($_GET['earn_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
+                                <select class="form-control search-select" name="earn_paid_status">
+                                    <option {{(isset($_GET['earn_paid_status']) && ($_GET['earn_paid_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
+                                    <option {{(isset($_GET['earn_paid_status']) && ($_GET['earn_paid_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
                                 </select>
                             </div>
                         </div>
@@ -75,14 +75,15 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Player</th>
-                                            <th>Player Number</th>
-                                            <th>Campaign</th>
-                                            <th>Question</th>
-                                            <th>Amount</th>
-                                            <th>Earn date</th>
-                                            <th>Use Life</th>
-                                            <th>Earn Status</th>
+                                            <th>User Type</th>
+                                            <th>Surveyer Mobile</th>
+                                            <th>Participate Mobile</th>
+                                            <th>Paid Date</th>
+                                            <th>Payment Type</th>
+                                            <th>Payment Amount</th>
+                                            <th>Transaction Id</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -92,16 +93,17 @@
                                             @foreach ($all_content as $key => $list)
                                                 <tr>
                                                     <td>{{($key+1+($perPage*$page))}}</td>
-                                                    <td>{{ $list->earn_player_id }}</td>
-                                                    <td>{{ $list->earn_player_mobile_num }}</td>
-                                                    <td>{{ $list->earn_player_campaign_id }}</td>
-                                                    <td>{{ $list->earn_player_question_id }}</td>
-                                                    <td>{{ $list->earn_amount }}</td>
-                                                    <td>{{ $list->earn_date }}</td>
-                                                    <td>{{ $list->use_life }}</td>
+                                                    <td>{{ $list->earn_paid_user_type }}</td>
+                                                    <td>{{ $list->earn_paid_surveyer_mobile }}</td>
+                                                    <td>{{ $list->earn_paid_participate_mobile }}</td>
+                                                    <td>{{ $list->earn_paid_date }}</td>
+                                                    <td>{{ $list->earn_paid_payment_type }}</td>
+                                                    <td>{{ $list->earn_paid_amount }}</td>
+                                                    <td>{{ $list->payment_transaction_id }}</td>
+                                                    <td>{{ str_limit($list->earn_paid_description, 15)  }}</td>
 
                                                     <td>
-                                                        @if($list->earn_status == 1)
+                                                        @if($list->earn_paid_status == 1)
                                                             <span class="label label-success btn-squared">Published</span>
                                                         @else
                                                             <span class="label label-danger btn-squared">Unpublished</span>
@@ -111,12 +113,12 @@
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                                 <li>
-                                                                    <a href="{{url('/earn/edit/id-'.$list->id)}}">
+                                                                    <a href="{{url('/earn/payment/edit/id-'.$list->id)}}">
                                                                         <i class="fa fa-pencil"></i> Edit
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    @if($list->earn_status == 1)
+                                                                    @if($list->earn_paid_status == 1)
                                                                         <a class="status-change" data-earn-publish-status="0" data-earn-id="{{ $list->id}}" title="Click for unpublish">
                                                                             <i class="fa fa-lock"></i> Unpublish
                                                                         </a>
@@ -128,7 +130,7 @@
                                                                 </li>
                                                                 
                                                                 <li>
-                                                                    <a class="earn-delete" data-earn-id="{{$list->id}}">
+                                                                    <a class="earn_payment-delete" data-earn-payment-id="{{$list->id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
                                                                 </li>
@@ -139,7 +141,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="12">
+                                                <td colspan="11">
                                                     <div class="alert alert-success" role="alert">
                                                         <h4>No Data Available !</h4>
                                                     </div>
@@ -155,7 +157,7 @@
                     </div>
                     <!-- END PANEL FOR Album LIST -->
                     {{--<div class="text-center">
-                        {!!$all_content->links()!!}
+                        {!!$content_all->links()!!}
                     </div>--}}
                 </div>
             </div>
@@ -190,7 +192,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/earn/change/status/'+id+'/'+earn_publish_status
+                                        url: site_url+'/earn/payment/change/status/'+id+'/'+earn_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -223,7 +225,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/earn/change/status/'+id+'/'+earn_publish_status
+                                        url: site_url+'/earn/payment/change/status/'+id+'/'+earn_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -241,10 +243,10 @@
             });
 
 
-            // earn delete
-            $('.earn-delete').on('click', function (e) {
+            // earn payment delete
+            $('.earn_payment-delete').on('click', function (e) {
                 e.preventDefault();
-                var id = $(this).data('earn-id');
+                var id = $(this).data('earn-payment-id');
                 bootbox.dialog({
                     message: "Are you sure you want to delete this earn ?",
                     title: "<i class='glyphicon glyphicon-trash'></i> Delete !",
@@ -262,7 +264,7 @@
                             callback: function() {
                                 $.ajax({
                                     type: 'GET',
-                                    url: site_url+'/earn/delete/id-'+id,
+                                    url: site_url+'/earn/payment/delete/id-'+id,
                                 }).done(function(response){
                                     bootbox.alert(response,
                                         function(){

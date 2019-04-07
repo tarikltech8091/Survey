@@ -48,6 +48,19 @@
 
 
 
+    /*
+  #####################
+  ## Admins Module
+  ######################
+  */
+  Route::group(['middleware' => ['admin_auth']], function () {
+
+
+      Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
+      Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
+
+
+
       /*################
       ## Surveyer Settings
       #################*/
@@ -114,24 +127,100 @@
 
 
 
-	/*################
-	## Campaign Settings
-	#################*/
+      /*################
+      ## Campaign Settings
+      #################*/
 
-	#getAllContent
-	Route::get('/campaign/list',array('as'=>'Get All Campaign Content' , 'desc'=>'entry & Edit', 'uses' =>'CampaignController@getAllContent'));
-	#Create
+      #getAllContent
+      Route::get('/campaign/list',array('as'=>'Get All Campaign Content' , 'desc'=>'entry & Edit', 'uses' =>'CampaignController@getAllContent'));
+      #Create
       Route::get('/campaign/create',array('as'=>'Campaign Create' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Create'));
       #Store
-	Route::post('/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Store'));
-	#ChangeStatus
-	Route::get('/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@ChangePublishStatus'));
+      Route::post('/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Store'));
+      #ChangeStatus
+      Route::get('/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@ChangePublishStatus'));
       #Edit
       Route::get('/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Edit'));
-	#Update
-	Route::post('/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Update'));
+      #Update
+      Route::post('/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Update'));
       #Delete
       Route::get('/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'CampaignController@Delete'));
+
+
+
+      /*################
+      ## Campaign Payment Settings
+      #################*/
+
+      #CampaignPaymentList
+      Route::get('/campaign/payment/list',array('as'=>'Campaign Payment List' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentList'));
+
+      #CampaignPayment
+      Route::get('/campaign/payment',array('as'=>'Campaign Payment' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPayment'));
+
+      #CampaignPaymentStore
+      Route::post('/campaign/payment/save',array('as'=>'Campaign Payment Save' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentStore'));
+
+      #CampaignPaymentChangeStatus
+      Route::get('/campaign/payment/change/status/{id}/{status}',array('as'=>'Campaign Payment Status Change' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@ChangeCampaignPaymentStatus'));
+
+      #CampaignPaymentEdit
+      Route::get('/campaign/payment/edit/id-{id}',array('as'=>'Campaign Payment Edit' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentEdit'));
+
+      #CampaignPaymentUpdate
+      Route::post('/campaign/payment/update/id-{id}',array('as'=>'Campaign Payment Update' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentUpdate'));
+
+
+
+      /*################
+      ## Surveyer Assign Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/surveyer/assign/list',array('as'=>'Surveyer Assign List' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@getAllContent'));
+
+      #Create
+      Route::get('/surveyer/assign',array('as'=>'Surveyer Assign' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Create'));
+
+      #Store
+      Route::post('/surveyer/assign/save',array('as'=>'Surveyer Assign Save' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Store'));
+      #ChangeStatus
+      Route::get('/surveyer/assign/change/status/{id}/{status}',array('as'=>'Surveyer Status Change' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@ChangePublishStatus'));
+      #Edit
+      Route::get('/surveyer/assign/edit/id-{id}',array('as'=>'Surveyer Assign Edit' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Edit'));
+      #Update
+      Route::post('/surveyer/assign/update/id-{id}',array('as'=>'Surveyer Assign Update' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Update'));
+      #Delete
+      Route::get('/surveyer/assign/delete/id-{id}',array('as'=>'Surveyer Assign Delete' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Delete'));
+
+
+
+
+
+      /*################
+      ## Earn Payment Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/earn/payment/list',array('as'=>'Earn Payment List' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@getAllContent'));
+
+      #Create
+      Route::get('/earn/payment',array('as'=>'Earn Payment' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Create'));
+
+      #Store
+      Route::post('/earn/payment/save',array('as'=>'Earn Payment Save' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Store'));
+
+      #ChangePublishStatus
+      Route::get('/earn/payment/change/status/{id}/{status}',array('as'=>'Earn Payment Status Change' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@ChangePublishStatus'));
+
+      #Edit
+      Route::get('/earn/payment/edit/id-{id}',array('as'=>'Earn Payment Edit' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Edit'));
+
+      #Update
+      Route::post('/earn/payment/update/id-{id}',array('as'=>'Earn Payment Update' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Update'));
+
+      #Delete
+      Route::get('/earn/payment/delete/id-{id}',array('as'=>'Earn Payment Delete' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Delete'));
 
 
 
@@ -156,67 +245,21 @@
       Route::get('/question/delete/id-{id}',array('as'=>'Question Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionController@Delete'));
 
 
-
-      /*################
-      ## Player Settings
-      #################*/
-
-      #getAllContent
-      Route::get('/players/list',array('as'=>'Get All Player Content' , 'desc'=>'entry & Edit', 'uses' =>'PlayerController@getAllContent'));
-      #Create
-      Route::get('/players/create',array('as'=>'Player Create' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@Create'));
-      #Store
-      Route::post('/players/save',array('as'=>'Player Save' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@Store'));
-      #ChangeStatus
-      Route::get('/players/change/status/{id}/{status}',array('as'=>'Player Status Change' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@ChangePublishStatus'));
-      #Edit
-      Route::get('/players/edit/id-{id}',array('as'=>'Player Edit' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@Edit'));
-      #Update
-      Route::post('/players/update/id-{id}',array('as'=>'Player Update' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@Update'));
-      #Delete
-      Route::get('/players/delete/id-{id}',array('as'=>'Player Delete' , 'desc'=>'entry & edit', 'uses' =>'PlayerController@Delete'));
-
-
-
-
-      /*################
-      ## Earn Settings
-      #################*/
-
-      #getAllContent
-      Route::get('/earn/list',array('as'=>'Get All Earn Content' , 'desc'=>'entry & Edit', 'uses' =>'EarnController@getAllContent'));
-      #Create
-      Route::get('/earn/create',array('as'=>'Earn Create' , 'desc'=>'entry & edit', 'uses' =>'EarnController@Create'));
-      #Store
-      Route::post('/earn/save',array('as'=>'Earn Save' , 'desc'=>'entry & edit', 'uses' =>'EarnController@Store'));
-      #ChangeStatus
-      Route::get('/earn/change/status/{id}/{status}',array('as'=>'Earn Status Change' , 'desc'=>'entry & edit', 'uses' =>'EarnController@ChangePublishStatus'));
-      #Edit
-      Route::get('/earn/edit/id-{id}',array('as'=>'Earn Edit' , 'desc'=>'entry & edit', 'uses' =>'EarnController@Edit'));
-      #Update
-      Route::post('/earn/update/id-{id}',array('as'=>'Earn Update' , 'desc'=>'entry & edit', 'uses' =>'EarnController@Update'));
-      #Delete
-      Route::get('/earn/delete/id-{id}',array('as'=>'Earn Delete' , 'desc'=>'entry & edit', 'uses' =>'EarnController@Delete'));
-
  
 
-    /*
-  #####################
-  ## Admins Module
-  ######################
-  */
-  Route::group(['middleware' => ['admin_auth']], function () {
+
+
 
  
       /*################
       ## Reports
       #################*/
 
-      #Report Cashflow
+      /*#Report Cashflow
       Route::get('/reports/cash-flow',array('as'=>'Reports of Cash Flow', 'desc'=>'view & detail', 'uses'=>'ReportController@ReportCahsFlowPage'));
 
       #Report Cashflow 
-      Route::get('/reports/cash-flow/ledger',array('as'=>'Reports of Cash Flow', 'desc'=>'ledger & detail', 'uses'=>'ReportController@ReportCahsFlowLedgerPage'));
+      Route::get('/reports/cash-flow/ledger',array('as'=>'Reports of Cash Flow', 'desc'=>'ledger & detail', 'uses'=>'ReportController@ReportCahsFlowLedgerPage'));*/
 
 
 });

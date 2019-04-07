@@ -105,7 +105,7 @@
     <!-- end: REGISTER BOX -->
     <!-- start: COPYRIGHT -->
     <div class="copyright">
-        <span style="color: #fff">&copy; Copyright 2017 by Survey CMS.Powered by</span> <a href="http://www.live-technologies.net/" target="_blank"> Technologies.</a>
+        <span style="color: #fff">&copy; Copyright 2017 by Survey CMS.Powered by</span> <a href="http://www.live-technologies.net/" target="_blank">Live Technologies.</a>
     </div>
     <!-- end: COPYRIGHT -->
 </div>

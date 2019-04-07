@@ -6,7 +6,7 @@
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i>
-                    Edit Blog
+                    Edit Campaign
                     <div class="panel-tools">
                         <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                         </a>
@@ -39,53 +39,92 @@
                             {{ Session::get('errormessage') }}
                         </div>
                     @endif
-                    <form role="form" class="form-horizontal" action="{{ url('/service/update/id-'.$edit->id) }}"
-                          id="service" method="post" role="form" enctype="multipart/form-data">
+
+                    <form role="form" class="form-horizontal" action="{{ url('/campaign/payment/update/id-'.$edit->id) }}"
+                          id="campaign_payment" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Service Name</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Select Payment Campaign</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" value="{{isset($edit->service_name)? $edit->service_name:''}}" name="service_name">
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="payment_campaign_id">
+                                    <option value="">&nbsp;Please Select a Type</option>
+
+                                    @if(!empty($all_campaign))
+                                    @foreach($all_campaign as $key =>$list)
+                                        <option {{($edit->payment_campaign_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
+                                        <input type="hidden" class="form-control" name="payment_campaign_name" value="{{$list->campaign_name}}">
+                                        <input type="hidden" class="form-control" name="payment_requester_id" value="{{$list->campaign_requester_id}}">
+                                    @endforeach
+                                    @endif
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Campaign Payment Date</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" name="payment_date" value="{{isset($edit->payment_date)? $edit->payment_date:''}}">
                             </div>
                         </div>
 
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Service Start Date</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Campaign Payment Type</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" value="{{isset($edit->service_start_date)? $edit->service_start_date:''}}" name="service_start_date">
-                            </div>
-                        </div>                        
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Service End Date</strong>
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" value="{{isset($edit->service_end_date)? $edit->service_end_date:''}}" name="service_end_date">
-                            </div>
-                        </div>                        
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Service Publish Date</strong>
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" value="{{isset($edit->service_published_date)? $edit->service_published_date:''}}" name="service_published_date">
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="payment_type">
+                                    <option value="">&nbsp;Please Select a Type</option>
+                                        <option {{($edit->payment_type == 'bkash') ? 'selected' : ''}} value="bkash">BKash</option>
+                                        <option {{($edit->payment_type == 'rocket') ? 'selected' : ''}} value="rocket">Rocket</option>
+                                        <option {{($edit->payment_type == 'cash') ? 'selected' : ''}} value="cash">Cash</option>
+                                </select>
                             </div>
                         </div>
-                        
+
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Service Zone</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Campaign Payment Amount</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" value="{{isset($edit->service_zone)? $edit->service_zone:''}}" name="service_zone">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="payment_amount" value="{{isset($edit->payment_amount)? $edit->payment_amount:''}}">
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Campaign Tranaction Id</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="payment_transaction_id" value="{{isset($edit->payment_transaction_id)? $edit->payment_transaction_id:''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Payment Description</strong>
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="payment_description" class="form-control" cols="10" rows="7">{{isset($edit->payment_description)? $edit->payment_description:''}}</textarea>
+                            </div>
+                        </div>
+
 
                        
                         <div class="form-group">
@@ -96,6 +135,7 @@
                                 <input class="btn btn-success btn-squared" name="submit" value="Update" type="submit">
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -105,30 +145,21 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#campaign_payment').validate({
                 rules: {
-                    album_name: {
+                    payment_campaign_id: {
                         required: true
                     },
-                    album_category: {
+                    payment_date: {
                         required: true
                     },
-                    country:{
+                    payment_type:{
                         required: true
                     },
-                    /*domain_name:{
-                        required: true
-                    },*/
-                    service_name:{
+                    payment_amount:{
                         required: true
                     },
-                    album_tags: {
-                        required: true
-                    },
-                    imdb_rating: {
-                        number: true
-                    },
-                    album_genres: {
+                    payment_transaction_id:{
                         required: true
                     }
                 },

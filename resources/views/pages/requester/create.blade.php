@@ -62,7 +62,6 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-
                                         <form role="form" class="form-horizontal" action="{{ url('/requester/save') }}"
                                               id="requester" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -72,7 +71,7 @@
                                                     <strong>Requester Name</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="requester_name">
                                                 </div>
                                             </div>
@@ -81,7 +80,7 @@
                                                     <strong>Requester Email</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="email" class="form-control" name="requester_email">
                                                 </div>
                                             </div>
@@ -90,7 +89,7 @@
                                                     <strong>Surveyer Mobile</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="requester_mobile">
                                                 </div>
                                             </div>
@@ -99,7 +98,7 @@
                                                     <strong>Requester Join Date</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="date" class="form-control" name="requester_join_date">
                                                 </div>
                                             </div>
@@ -109,7 +108,7 @@
                                                     <strong>Requester District</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="requester_district">
                                                 </div>
                                             </div>
@@ -118,27 +117,29 @@
                                                     <strong>Requester Post Code</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="requester_post_code">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Requester Address</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
-                                                </label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="requester_address">
-                                                </div>
-                                            </div>
+
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Requester NID</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="requester_nid">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Requester Address</strong>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <textarea name="requester_address" class="form-control" cols="10" rows="7"></textarea>
                                                 </div>
                                             </div>
 
@@ -147,7 +148,7 @@
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Requester Image</strong>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <div class="fileupload fileupload-new" data-provides="fileupload">
                                                         <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;"><img src="{{asset('assets/images/profile.png')}}" alt="">
                                                         </div>

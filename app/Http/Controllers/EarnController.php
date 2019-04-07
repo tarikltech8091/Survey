@@ -131,11 +131,11 @@ class EarnController extends Controller
 
                 // }else return redirect()->back()->with('errormessage','Earn already created.');
 
-            // }catch (\Exception $e){
-            //     $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-            //     \App\System::ErrorLogWrite($message);
-            //     return redirect()->back()->with('errormessage','Something wrong happend in players_earn Upload');
-            // }
+            }catch (\Exception $e){
+                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+                \App\System::ErrorLogWrite($message);
+                return redirect()->back()->with('errormessage','Something wrong happend in players_earn Upload');
+            }
         } else{
             return redirect()->back()->withErrors($v)->withInput();
         }

@@ -67,7 +67,7 @@
                                 <strong>Surveyer Name</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="surveyer_name" value="{{isset($edit)? $edit->surveyer_name :''}}">
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                 <strong>Surveyer Email</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="email" class="form-control" name="surveyer_email" value="{{isset($edit)? $edit->surveyer_email :''}}">
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                 <strong>Surveyer Mobile</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="surveyer_mobile" value="{{isset($edit)? $edit->surveyer_mobile :''}}">
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                 <strong>Surveyer Join Date</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="date" class="form-control" name="surveyer_join_date" value="{{isset($edit)? $edit->surveyer_join_date :''}}">
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                                 <strong>Surveyer District</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="surveyer_district" value="{{isset($edit)? $edit->surveyer_district :''}}">
                             </div>
                         </div>
@@ -113,26 +113,18 @@
                                 <strong>Surveyer Post Code</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="surveyer_post_code" value="{{isset($edit)? $edit->surveyer_post_code :''}}">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Surveyer Address</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="surveyer_address" value="{{isset($edit)? $edit->surveyer_address :''}}">
-                            </div>
-                        </div>
+
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Surveyer NID</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="surveyer_nid" value="{{isset($edit)? $edit->surveyer_nid :''}}">
                             </div>
                         </div>
@@ -141,8 +133,17 @@
                             <label class="col-sm-3 control-label">
                                 <strong>Surveyer Zone</strong>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="surveyer_zone" value="{{isset($edit)? $edit->surveyer_zone :''}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Surveyer Address</strong>
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="surveyer_address" class="form-control" cols="10" rows="7">{{isset($edit)? $edit->surveyer_address :''}}</textarea>
                             </div>
                         </div>
 
@@ -150,7 +151,7 @@
                             <label class="col-sm-3 control-label">
                                 <strong>Surveyer Image</strong>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
                                     <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
                                         @if(!empty( $edit->surveyer_profile_image))

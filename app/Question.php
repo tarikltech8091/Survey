@@ -10,19 +10,18 @@ class Question extends Model
     protected $table='question_tbl';
 
     protected $fillable = [
-        'question_title',
+        'question_campaign_name',
+        'question_campaign_id',
         'question_type',
         'question_position',
+        'question_title',
         'question_option_1',
         'question_option_2',
         'question_option_3',
         'question_option_4',
         'question_option_new',
-        'question_campaign_name',
-        'question_campaign_id',
         'question_special',
         'question_points',
-        'question_prize_amount',
         'question_published_date',
         'question_published_status',
         'question_status',

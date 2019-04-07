@@ -48,7 +48,7 @@
                                 <strong>Campaign</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select"
                                         name="question_campaign_id">
                                     <option value="">&nbsp;Please Select a Campaign</option>
@@ -69,7 +69,7 @@
                                 <strong>Question Type</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select" name="question_type">
                                     <option value="">&nbsp;Please Select a Type</option>
                                     <option {{($edit->question_type == 'easy') ? "selected" :''}} value="easy">Easy</option>
@@ -83,7 +83,7 @@
                                 <strong>Question Position</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="number" class="form-control" name="question_position" value="{{(isset($edit->question_position) && !empty($edit->question_position))? $edit->question_position:''}}">
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 <strong>Question Title</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_title"  value="{{(isset($edit->question_title) && !empty($edit->question_title))? $edit->question_title:''}}">
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                 <strong>Option 1</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_1"  value="{{(isset($edit->question_option_1) && !empty($edit->question_option_1))? $edit->question_option_1:''}}">
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                 <strong>Option 2</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_2"  value="{{(isset($edit->question_option_2) && !empty($edit->question_option_2))? $edit->question_option_2:''}}">
                             </div>
                         </div>
@@ -121,7 +121,7 @@
                                 <strong>Option 3</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_3"  value="{{(isset($edit->question_option_3) && !empty($edit->question_option_3))? $edit->question_option_3:''}}">
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                 <strong>Option 4</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_4"  value="{{(isset($edit->question_option_4) && !empty($edit->question_option_4))? $edit->question_option_4:''}}">
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                                 <strong>Option New</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_new"  value="{{(isset($edit->question_option_new) && !empty($edit->question_option_new))? $edit->question_option_new:''}}">
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                 <strong>Question Special</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="radio" name="question_special" {{($edit->question_special == 1) ? "checked" :''}} value="1"> Yes<br>
                                 <input type="radio" name="question_special" {{($edit->question_special == 0) ? "checked" :''}} value="0"> No
                             </div>
@@ -164,7 +164,7 @@
                                 <strong>Prize Amount</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="number" class="form-control" name="question_prize_amount" value="{{(isset($edit->question_prize_amount) && !empty($edit->question_prize_amount))? $edit->question_prize_amount:''}}">
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                 <strong>Physical Prize</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_physical_prize" value="{{(isset($edit->question_physical_prize) && !empty($edit->question_physical_prize))? $edit->question_physical_prize:''}}">
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                 <strong>Question Point</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="number" class="form-control" name="question_points" value="{{(isset($edit->question_points) && !empty($edit->question_points))? $edit->question_points:''}}">
                             </div>
                         </div>

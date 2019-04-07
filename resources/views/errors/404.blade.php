@@ -9,7 +9,7 @@
 
 	<!-- Mirrored from www.cliptheme.com/preview/admin/clip-one/ by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 12 Apr 2015 06:25:32 GMT -->
 	<head>
-		<title>{{isset($page_title) ? $page_title.' |' : ''}} DF Tex</title>
+		<title>{{isset($page_title) ? $page_title.' |' : ''}} Survey CMS</title>
 		<!-- start: META -->
 		<meta charset="utf-8" />
 		<!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->

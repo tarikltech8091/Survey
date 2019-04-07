@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-use App\Image;
+use Image;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,33 +36,13 @@ class Admin extends Model
     public static function CommonImageUpload($img_location, $img_ext_wide, $image_type, $name)
     {
         $filename  = $name.'-'.time().'-'.rand(1111111,9999999);
-        if (!file_exists('images/user/'.$image_type.'/small/')) {
-            mkdir('images/user/admin/small/', 0777, true);
+        if (!file_exists('images/survey/'.$image_type.'/small/')) {
+            mkdir('images/survey/'.$image_type.'/small/', 0777, true);
         }
-        $path2 = 'images/user/'.$image_type.'/small/' . $filename;
-        Image::make($img_location)->resize(30, 30)->save($path2);
+        $path2 = 'images/survey/'.$image_type.'/small/' . $filename;
+        Image::make($img_location)->save($path2);
         return $path2;
     }
-
-	/********************************************
-    ## CompanyImageUpload
-    *********************************************/
-
-	 public static function CompanyImageUpload($img_location, $company_name_slug, $img_ext){
-
-	  $filename  = $company_name_slug.'-'.time().'-'.rand(1111111,9999999).'.'.$img_ext;
-
-	  /*directory create*/
-		if (!file_exists('assets/images/company/'))
-		   mkdir('assets/images/company/', 0777, true);
-
-
-	  $path = public_path('assets/images/company/' . $filename);
-	  \Image::make($img_location)->resize(117, 30)->save($path);
-
-	  $company_logo='assets/images/company/'.$filename;
-	  return $company_logo;
-	 }
 
 
     /**
@@ -91,30 +71,7 @@ class Admin extends Model
         return $path;
     }
 
-    //Image Upload for Live Streaming
-    public static function poster_image_live_streaming($img_location, $keywords_type, $img_ext)
-    {
-        $filename  = $keywords_type.'-'.time().'-'.rand(1111111,9999999).'.'.$img_ext;
 
-        if (!file_exists('images/poster-image/live-streaming/')) {
-            mkdir('images/poster-image/live-streaming/', 0777, true);
-        }
-        $path = 'images/poster-image/live-streaming/'.$filename;
-        \Image::make($img_location)->save($path);
-        return $path;
-    }
-
-    //Image Upload for Data Pack
-    public static function data_pack_image($img_location, $keywords_type, $img_ext)
-    {
-        $filename  = $keywords_type.'-'.time().'-'.rand(1111111,9999999).'.'.$img_ext;
-        if (!file_exists('images/data-pack-images/')) {
-            mkdir('images/data-pack-images/', 0777, true);
-        }
-        $path = 'images/data-pack-images/'.$filename;
-        \Image::make($img_location)->save($path);
-        return $path;
-    }
 
     public static function multiArraySerach($search,$search_key,$array){
 

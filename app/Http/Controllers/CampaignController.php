@@ -82,6 +82,7 @@ class CampaignController extends Controller
         $v = \Validator::make($request->all(), [
             'campaign_name' => 'required',
             'campaign_title' => 'required',
+            'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
             'campaign_requester_mobile' => 'required',
@@ -99,6 +100,7 @@ class CampaignController extends Controller
 
         if($v->passes()){
             $campaign_image="";
+            $image_type="campaign";
 
             try{
 
@@ -108,7 +110,8 @@ class CampaignController extends Controller
                     $image_wide = $request->file('campaign_image');
                     $img_location_wide=$image_wide->getRealPath();
                     $img_ext_wide=$image_wide->getClientOriginalExtension();
-                    $campaign_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
+                    $campaign_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$campaign_name);
+
                 }
 
 
@@ -117,6 +120,7 @@ class CampaignController extends Controller
                 $campaign_name_slug=implode('-', $slug);
                 $data['campaign_name_slug']=$campaign_name_slug;
                 $data['campaign_title']=$request->input('campaign_title');
+                $data['campaign_category']=$request->input('campaign_category');
                 $data['campaign_requester_name']=$request->input('campaign_requester_name');
                 $data['campaign_requester_id']=$request->input('campaign_requester_id');
                 $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
@@ -126,7 +130,10 @@ class CampaignController extends Controller
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_unique_code']= time().'-'.mt_rand();
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
+                $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
+                $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
+                $data['campaign_physical_prize']=$request->input('campaign_physical_prize');
                 $data['campaign_zone']=$request->input('campaign_zone');
                 $data['campaign_total_num_of_zone']=$request->input('campaign_total_num_of_zone');
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
@@ -214,6 +221,7 @@ class CampaignController extends Controller
         $v = \Validator::make($request->all(), [
             'campaign_name' => 'required',
             'campaign_title' => 'required',
+            'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
             'campaign_requester_mobile' => 'required',
@@ -229,7 +237,9 @@ class CampaignController extends Controller
 
         if($v->passes()){
 
-            // try{
+            try{
+                $campaign_image="";
+                $image_type="campaign";
 
                 $campaign_data= \DB::table('campaign_tbl')->where('id', $id)->first();
 
@@ -239,7 +249,7 @@ class CampaignController extends Controller
                     $image_wide = $request->file('campaign_image');
                     $img_location_wide=$image_wide->getRealPath();
                     $img_ext_wide=$image_wide->getClientOriginalExtension();
-                    $campaign_image=\App\Admin::blog_poster_image($img_location_wide,$img_ext_wide,$campaign_name);
+                    $campaign_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$campaign_name);
                 } else{
                     $campaign_image = $campaign_data->campaign_image;
                 }
@@ -250,6 +260,7 @@ class CampaignController extends Controller
                 $campaign_name_slug=implode('-', $slug);
                 $data['campaign_name_slug']=$campaign_name_slug;
                 $data['campaign_title']=$request->input('campaign_title');
+                $data['campaign_category']=$request->input('campaign_category');
                 $data['campaign_requester_name']=$request->input('campaign_requester_name');
                 $data['campaign_requester_id']=$request->input('campaign_requester_id');
                 $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
@@ -257,7 +268,10 @@ class CampaignController extends Controller
                 $data['campaign_end_date']=$request->input('campaign_end_date');
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
+                $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
+                $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
+                $data['campaign_physical_prize']=$request->input('campaign_physical_prize');
                 $data['campaign_zone']=$request->input('campaign_zone');
                 $data['campaign_total_num_of_zone']=$request->input('campaign_total_num_of_zone');
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
@@ -271,12 +285,12 @@ class CampaignController extends Controller
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
-            /*}catch (\Exception $e){
+            }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
                 // \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
-            }*/
+            }
         }else return redirect()->back()->withErrors($v)->withInput();
     }
 

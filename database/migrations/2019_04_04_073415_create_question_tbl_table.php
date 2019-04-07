@@ -27,8 +27,6 @@ class CreateQuestionTblTable extends Migration
             $table->string('question_option_4')->nullable();
             $table->string('question_option_new')->nullable();
             $table->integer('question_points')->default(0);
-            $table->float('question_prize_amount')->nullable();
-            $table->string('question_physical_prize')->nullable();
             $table->string('question_published_date')->nullable();
             $table->string('question_published_status')->default(0);
             $table->string('question_status')->default(0);

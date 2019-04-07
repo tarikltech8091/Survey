@@ -6,7 +6,7 @@
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i>
-                    Edit Player
+                    Edit Surveyer Assign
                     <div class="panel-tools">
                         <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                         </a>
@@ -15,7 +15,25 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="panel-body">
+
+                    <ul class="nav nav-tabs tab-bricky">
+                        <li>
+                            <a href="{{url('/surveyer/assign')}}">
+                                <i class="green fa fa-bell"></i> Assign Surveyer
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('/surveyer/assign/list')}}">
+                                <i class="green clip-feed"></i> Surveyer Assign List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="panel-body">
+
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -39,125 +57,103 @@
                             {{ Session::get('errormessage') }}
                         </div>
                     @endif
-                    <form role="form" class="form-horizontal" action="{{ url('/players/update/id-'.$edit->id) }}"
-                          id="players" method="post" role="form" enctype="multipart/form-data">
 
+                    <form role="form" class="form-horizontal" action="{{ url('/surveyer/assign/update/id-'.$edit->id) }}"
+                          id="surveyer" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player Name</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Select Campaign</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="{{$edit->players_name}}" name="players_name">
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="assign_campaign_id">
+                                    <option value="">&nbsp;Please Select a Type</option>
+
+                                    @if(!empty($all_campaign))
+                                    @foreach($all_campaign as $key =>$list)
+                                        <option {{($edit->assign_campaign_id == $list->id) ? 'selected' : ''}}  value="{{$list->id}}">{{$list->campaign_name}}</option>
+                                        <input type="hidden" class="form-control" name="assign_campaign_name" value="{{$list->campaign_name}}">
+                                    @endforeach
+                                    @endif
+
+                                </select>
                             </div>
                         </div>
+
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player TYPE</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Select Surveyer</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-4">
                                 <select id="form-field-select-3" class="form-control search-select"
-                                        name="players_type">
+                                        name="assign_surveyer_id">
                                     <option value="">&nbsp;Please Select a Type</option>
-                                    <option {{($edit->players_type == 'vip') ? 'selected' : ''}} value="vip">VIP</option>
-                                    <option {{($edit->players_type == 'general') ?'selected':''}} value="general">General</option>
+
+                                    @if(!empty($all_surveyer))
+                                    @foreach($all_surveyer as $key =>$list)
+                                        <option {{($edit->assign_surveyer_id == $list->id) ? 'selected' : ''}}  value="{{$list->id}}">{{$list->surveyer_name}}</option>
+                                        <input type="hidden" class="form-control" name="assign_surveyer_name" value="{{$list->surveyer_name}}">
+                                    @endforeach
+                                    @endif
+
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player District</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Surveyer Zone</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="{{$edit->players_district}}" name="players_district">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="assign_zone" value="{{isset($edit)? $edit->assign_zone :''}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Surveyer Target</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="assign_target" value="{{isset($edit)? $edit->assign_target :''}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Surveyer Prize Amount</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="surveyer_prize_amount" value="{{isset($edit)? $edit->surveyer_prize_amount :''}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player Address</strong>
-                                <span class="symbol required" aria-required="true"></span>
+                            <label class="col-sm-3 control-label">
+                                <strong>Assign Campaign Description</strong>
                             </label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="{{$edit->players_address}}" name="players_address">
+                            <div class="col-sm-4">
+                                <textarea name="assign_campaign_description" class="form-control" cols="10" rows="7">{{isset($edit)? $edit->assign_campaign_description :''}}</textarea>
                             </div>
                         </div>
 
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player Email</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="{{$edit->players_email}}" name="players_email">
+                            <div class="col-sm-4">
                             </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player Mobile</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" value="{{$edit->players_mobile}}" name="players_mobile">
-                            </div>
-                        </div>
-                        
-
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player Image </strong>(Ratio: 480x270)
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-9">
-                                <div class="fileupload fileupload-new" data-provides="fileupload">
-                                    <div class="fileupload-new thumbnail" style="width: 170px; height: 100px;">
-                                        @if(!empty($edit->players_mobile))
-                                            <img src="{{$edit->players_profile_image}}" alt="">
-                                        @else
-                                            <img src="{{asset('images/default.jpg')}}" alt="">
-                                        @endif
-                                    </div>
-                                    <div class="fileupload-preview fileupload-exists"
-                                         style="max-width: 150px; max-height: 150px; line-height: 20px;">
-                                    </div>
-                                    <div class="user-edit-image-buttons">
-                                        <span class="btn btn-light-grey btn-file">
-                                            <span class="fileupload-new"><i class="fa fa-picture"></i>
-                                                Select image
-                                            </span>
-                                            <span class="fileupload-exists"><i class="fa fa-picture"></i>
-                                                Change
-                                            </span>
-                                            <input type="file" name="players_profile_image">
-                                        </span>
-                                        <a href="#" class="btn fileupload-exists btn-light-grey" data-dismiss="fileupload">
-                                            <i class="fa fa-times"></i> Remove
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-6">
-                            </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input class="btn btn-danger btn-squared" name="reset" value="Reset" type="reset">
-                                <input class="btn btn-success btn-squared" name="submit" value="Save" type="submit">
+                                <input class="btn btn-success btn-squared" name="submit" value="Update" type="submit">
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                             </div>
                         </div>
-
-
                     </form>
                 </div>
             </div>
@@ -167,30 +163,30 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#surveyer').validate({
                 rules: {
-                    album_name: {
+                    surveyer_name: {
                         required: true
                     },
-                    album_category: {
+                    surveyer_mobile: {
                         required: true
                     },
-                    country:{
+                    surveyer_email: {
                         required: true
                     },
-                    /*domain_name:{
-                        required: true
-                    },*/
-                    service_name:{
+                    surveyer_join_date: {
                         required: true
                     },
-                    album_tags: {
+                    surveyer_district: {
                         required: true
                     },
-                    imdb_rating: {
-                        number: true
+                    surveyer_address: {
+                        required: true
                     },
-                    album_genres: {
+                    surveyer_post_code: {
+                        required: true
+                    },
+                    surveyer_nid: {
                         required: true
                     }
                 },
@@ -211,6 +207,7 @@
                     }
                 }
             });
+
         })
     </script>
 @endsection

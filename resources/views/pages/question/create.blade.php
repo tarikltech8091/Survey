@@ -71,7 +71,7 @@
                                                     <strong>Campaign</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <select id="form-field-select-3" class="form-control search-select" name="question_campaign_id">
                                                         <option value="">&nbsp;Please Select a Campaign</option>
 
@@ -91,7 +91,7 @@
                                                     <strong>Question Type</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <select id="form-field-select-3" class="form-control search-select" name="question_type">
                                                         <option value="">&nbsp;Please Select a Type</option>
                                                         <option value="easy">Easy</option>
@@ -105,7 +105,7 @@
                                                     <strong>Question Position</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="number" class="form-control" name="question_position">
                                                 </div>
                                             </div>
@@ -115,7 +115,7 @@
                                                     <strong>Question Title</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_title">
                                                 </div>
                                             </div>
@@ -125,7 +125,7 @@
                                                     <strong>Option 1</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_1">
                                                 </div>
                                             </div>
@@ -135,7 +135,7 @@
                                                     <strong>Option 2</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_2">
                                                 </div>
                                             </div>
@@ -145,7 +145,7 @@
                                                     <strong>Option 3</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_3">
                                                 </div>
                                             </div>
@@ -155,7 +155,7 @@
                                                     <strong>Option 4</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_4">
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                                     <strong>Option New</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_new">
                                                 </div>
                                             </div>
@@ -175,7 +175,7 @@
                                                     <strong>Question Special</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="radio" name="question_special" value="1"> Yes<br>
                                                     <input type="radio" name="question_special" value="0"> No
                                                 </div>
@@ -186,7 +186,7 @@
                                                     <strong>Prize Amount</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="number" class="form-control" name="question_prize_amount">
                                                 </div>
                                             </div>
@@ -197,7 +197,7 @@
                                                     <strong>Physical Prize</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_physical_prize">
                                                 </div>
                                             </div>
@@ -207,7 +207,7 @@
                                                     <strong>Question Point</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="number" class="form-control" name="question_points">
                                                 </div>
                                             </div>

@@ -34,27 +34,27 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="">
-                        <a href="{{url('/players/create')}}">
-                            <i class="green fa fa-bell"></i> Add playes
+                        <a href="{{url('/campaign/create')}}">
+                            <i class="green fa fa-bell"></i> Add Campaign
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{{url('/players/list')}}">
-                            <i class="green clip-feed"></i> playes List
+                        <a href="{{url('/campaign/list')}}">
+                            <i class="green clip-feed"></i> Campaign List
                         </a>
                     </li>
                 </ul>
                 <div class="panel-body">
-                    <form method="get"  action="{{url('/players/list')}}">
-                        
+                    <form method="get"  action="{{url('/campaign/list')}}">
+                    
                         <div class="col-md-2">
                             <div class="form-group has-feedback ">
                                 <label for="search_from">
                                     <strong>Search by status : </strong>
                                 </label>
-                                <select class="form-control search-select" name="players_status">
-                                    <option {{(isset($_GET['players_status']) && ($_GET['players_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
-                                    <option {{(isset($_GET['players_status']) && ($_GET['players_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
+                                <select class="form-control search-select" name="campaign_status">
+                                    <option {{(isset($_GET['campaign_status']) && ($_GET['campaign_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
+                                    <option {{(isset($_GET['campaign_status']) && ($_GET['campaign_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
                                 </select>
                             </div>
                         </div>
@@ -75,12 +75,17 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Number</th>
-                                            <th>Email</th>
-                                            <th>Address</th>
-                                            <th>Status</th>
+                                            <th>Campaign Name</th>
+                                            <th>Campaign Title</th>
+                                            <th>Requester Number</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Total Days</th>
+                                            <th>Total Cost</th>
+                                            <th>Cost Paid</th>
+                                            <th>Total Zone</th>
+                                            <th>Description</th>
+                                            <th>Campaign Status</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -90,16 +95,19 @@
                                             @foreach ($all_content as $key => $list)
                                                 <tr>
                                                     <td>{{($key+1+($perPage*$page))}}</td>
-                                                    <td>{{ $list->players_name }}</td>
-                                                    <td>{{ $list->players_mobile }}</td>
-                                                    <td>{{ $list->players_email }}</td>
-                                                    <td>{{ str_limit($list->players_address, 15)  }}</td>
-                                                    <td>
-                                                        <img src="{{ (isset($list->players_profile_image)&& !empty($list->players_profile_image))? asset($list->players_profile_image):asset('images/default.jpg') }}" style="width:100px; height: 75px;"/>
-                                                    </td>
+                                                    <td>{{ $list->campaign_name }}</td>
+                                                    <td>{{ $list->campaign_title }}</td>
+                                                    <td>{{ $list->campaign_requester_mobile }}</td>
+                                                    <td>{{ $list->campaign_start_date }}</td>
+                                                    <td>{{ $list->campaign_end_date }}</td>
+                                                    <td>{{ $list->campaign_num_of_days }}</td>
+                                                    <td>{{ $list->campaign_total_cost }}</td>
+                                                    <td>{{ $list->campaign_total_cost_paid }}</td>
+                                                    <td>{{ $list->campaign_total_num_of_zone }}</td>
+                                                    <td>{{ str_limit($list->campaign_description, 15)  }}</td>
 
                                                     <td>
-                                                        @if($list->players_status == 1)
+                                                        @if($list->campaign_status == 1)
                                                             <span class="label label-success btn-squared">Published</span>
                                                         @else
                                                             <span class="label label-danger btn-squared">Unpublished</span>
@@ -109,24 +117,24 @@
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                                 <li>
-                                                                    <a href="{{url('/players/edit/id-'.$list->id)}}">
+                                                                    <a href="{{url('/campaign/edit/id-'.$list->id)}}">
                                                                         <i class="fa fa-pencil"></i> Edit
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    @if($list->players_status == 1)
-                                                                        <a class="status-change" data-playes-publish-status="0" data-playes-id="{{ $list->id}}" title="Click for unpublish">
+                                                                    @if($list->campaign_status == 1)
+                                                                        <a class="status-change" data-campaign-publish-status="0" data-campaign-id="{{ $list->id}}" title="Click for unpublish">
                                                                             <i class="fa fa-lock"></i> Unpublish
                                                                         </a>
                                                                     @else
-                                                                        <a class="status-change " title="Click for publish" data-playes-publish-status="1" data-playes-id="{{ $list->id}}">
+                                                                        <a class="status-change " title="Click for publish" data-campaign-publish-status="1" data-campaign-id="{{ $list->id}}">
                                                                             <i class="fa fa-unlock"></i> Publish
                                                                         </a>
                                                                     @endif
                                                                 </li>
                                                                 
                                                                 <li>
-                                                                    <a class="playes-delete" data-playes-id="{{$list->id}}">
+                                                                    <a class="campaign-delete" data-campaign-id="{{$list->id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
                                                                 </li>
@@ -137,7 +145,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="12">
+                                                <td colspan="13">
                                                     <div class="alert alert-success" role="alert">
                                                         <h4>No Data Available !</h4>
                                                     </div>
@@ -153,7 +161,7 @@
                     </div>
                     <!-- END PANEL FOR Album LIST -->
                     {{--<div class="text-center">
-                        {!!$all_content->links()!!}
+                        {!!$content_all->links()!!}
                     </div>--}}
                 </div>
             </div>
@@ -168,9 +176,9 @@
             //publish and unpublish
             $('.status-change').on('click', function (e) {
                 e.preventDefault();
-                var playes_publish_status = $(this).data('playes-publish-status');
-                var id = $(this).data('playes-id');
-                if(playes_publish_status == 0) {
+                var campaign_publish_status = $(this).data('campaign-publish-status');
+                var id = $(this).data('campaign-id');
+                if(campaign_publish_status == 0) {
                     bootbox.dialog({
                         message: "Are you sure you want to unpublish ?",
                         title: "<i class='glyphicon glyphicon-eye-close'></i> Unpublish !",
@@ -188,7 +196,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/players/change/status/'+id+'/'+playes_publish_status
+                                        url: site_url+'/campaign/change/status/'+id+'/'+campaign_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -221,7 +229,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/players/change/status/'+id+'/'+playes_publish_status
+                                        url: site_url+'/campaign/change/status/'+id+'/'+campaign_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -239,12 +247,12 @@
             });
 
 
-            // playes delete
-            $('.playes-delete').on('click', function (e) {
+            // campaign delete
+            $('.campaign-delete').on('click', function (e) {
                 e.preventDefault();
-                var id = $(this).data('playes-id');
+                var id = $(this).data('campaign-id');
                 bootbox.dialog({
-                    message: "Are you sure you want to delete this playes ?",
+                    message: "Are you sure you want to delete this campaign ?",
                     title: "<i class='glyphicon glyphicon-trash'></i> Delete !",
                     buttons: {
                         success: {
@@ -260,7 +268,7 @@
                             callback: function() {
                                 $.ajax({
                                     type: 'GET',
-                                    url: site_url+'/players/delete/id-'+id,
+                                    url: site_url+'/campaign/delete/id-'+id,
                                 }).done(function(response){
                                     bootbox.alert(response,
                                         function(){

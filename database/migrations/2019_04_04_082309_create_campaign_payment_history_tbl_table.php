@@ -22,6 +22,7 @@ class CreateCampaignPaymentHistoryTblTable extends Migration
             $table->string('payment_type');
             $table->float('payment_amount');
             $table->string('payment_transaction_id');
+            $table->string('payment_description')->nullable();
             $table->string('payment_status')->default(0);
             $table->string('assign_created_by')->nullable();
             $table->string('assign_updated_by')->nullable();

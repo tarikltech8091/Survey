@@ -20,8 +20,10 @@
                     <span class="selected"></span>
                 </a>
             </li>
-            <li class="{{isset($page_title) && ($page_title=='User Management') ? 'active' : ''}} ">
-                <a href="javascript:void(0)"><i class="clip-user-plus"></i>
+
+            <li class="{{(isset($page_title) && (strpos($page_title,'User')!== false )) ? 'active' : ''}}">
+                <a href="javascript:void (0)">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
                     <span class="title"> User Management </span><i class="icon-arrow"></i>
                     <span class="selected"></span>
                 </a>
@@ -53,7 +55,6 @@
             </li>
 
 
-
             <li class="{{(isset($page_title) && (strpos($page_title,'Surveyer')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
@@ -75,6 +76,22 @@
                             <span class="selected"></span>
                         </a>
                     </li>
+
+                    <li class="{{isset($page_title) && ($page_title=='Surveyer Assign') ? 'active' : ''}}">
+                        <a href="{{url('/surveyer/assign')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Surveyer Assign </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Surveyer Assign List') ? 'active' : ''}}">
+                        <a href="{{url('/surveyer/assign/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Surveyer Assign List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+
                 </ul>
             </li>
 
@@ -138,7 +155,7 @@
                     <span class="title"> Campaign </span><i class="icon-arrow"></i>
                     <span class="selected"></span>
                 </a>
-                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Category') !== false) ) ? 'block':'active'}};">
+                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Campaign') !== false) ) ? 'block':'active'}};">
                     <li class="{{isset($page_title) && ($page_title=='Campaign Create') ? 'active' : ''}}">
                         <a href="{{url('/campaign/create')}}">
                             <i class="clip-plus-circle"></i>
@@ -146,18 +163,36 @@
                             <span class="selected"></span>
                         </a>
                     </li>
-                    <li class="{{isset($page_title) && ($page_title=='All Campaign Content List') ? 'active' : ''}}">
+                    <li class="{{isset($page_title) && ($page_title=='Campaign List') ? 'active' : ''}}">
                         <a href="{{url('/campaign/list')}}">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span class="title">Campaign List</span>
                             <span class="selected"></span>
                         </a>
                     </li>
+
+
+                    <li class="{{isset($page_title) && ($page_title=='Campaign Payment') ? 'active' : ''}}">
+                        <a href="{{url('/campaign/payment')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Add Campaign Payment </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Campaign Payment List') ? 'active' : ''}}">
+                        <a href="{{url('/campaign/payment/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Campaign Payment List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+
+
                 </ul>
             </li>
 
             
-            
+        
 
             <li class="{{(isset($page_title) && (strpos($page_title,'Question')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
@@ -192,15 +227,15 @@
                     <span class="selected"></span>
                 </a>
                 <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Earn') !== false) ) ? 'block':'active'}};">
-                    <li class="{{isset($page_title) && ($page_title=='Add Earn') ? 'active' : ''}}">
-                        <a href="{{url('/earn/create')}}">
+                    <li class="{{isset($page_title) && ($page_title=='Earn Payment') ? 'active' : ''}}">
+                        <a href="{{url('/earn/payment')}}">
                             <i class="clip-plus-circle"></i>
                             <span class="title"> Add Earn </span>
                             <span class="selected"></span>
                         </a>
                     </li>
-                    <li class="{{isset($page_title) && ($page_title=='All Earn List') ? 'active' : ''}}">
-                        <a href="{{url('/earn/list')}}">
+                    <li class="{{isset($page_title) && ($page_title=='Earn Payment List') ? 'active' : ''}}">
+                        <a href="{{url('/earn/payment/list')}}">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span class="title">Earn List</span>
                             <span class="selected"></span>

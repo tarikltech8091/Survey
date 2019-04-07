@@ -34,60 +34,40 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="active">
-                        <a href="{{url('/life/create')}}">
-                            <i class="green fa fa-bell"></i> Add Life
+                        <a href="{{url('/campaign/payment/create')}}">
+                            <i class="green fa fa-bell"></i> Add Campaign Payment
                         </a>
                     </li>
                     <li class="">
-                        <a href="{{url('/life/list')}}">
-                            <i class="green clip-feed"></i> Life List
+                        <a href="{{url('/campaign/payment/list')}}">
+                            <i class="green clip-feed"></i> Campaign Payment List
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <!-- PANEL FOR CREATE Life -->
-                    <div id="create_album" class="tab-pane active">
+                    <!-- PANEL FOR CREATE Blog -->
+                    <div id="create_campaign_payment" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
-                                <form role="form" class="form-horizontal" action="{{ url('/life/save') }}"
-                                      id="Life" method="post" role="form" enctype="multipart/form-data">
+                                <form role="form" class="form-horizontal" action="{{ url('/campaign/payment/save') }}"
+                                      id="campaign_payment" method="post" role="form" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
+
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life Pack Name</strong>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Select Payment Campaign</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="life_pack_name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life TYPE</strong>
-                                            <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="life_buy_type">
+                                        <div class="col-sm-4">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="payment_campaign_id">
                                                 <option value="">&nbsp;Please Select a Type</option>
-                                                <option value="free">Free</option>
-                                                <option value="buy">Buy</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Player</strong>
-                                            <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="player_id">
-                                                <option value="">&nbsp;Please Select a Player</option>
-
-                                                @if(!empty($all_player))
-                                                @foreach($all_player as $key =>$list)
-                                                    <option value="{{$list->id}}">{{$list->player_name}}</option>
+                                                @if(!empty($all_campaign))
+                                                @foreach($all_campaign as $key =>$list)
+                                                    <option value="{{$list->id}}">{{$list->campaign_name}}</option>
+                                                    <input type="hidden" class="form-control" name="payment_campaign_name" value="{{$list->campaign_name}}">
+                                                    <input type="hidden" class="form-control" name="payment_requester_id" value="{{$list->campaign_requester_id}}">
                                                 @endforeach
                                                 @endif
 
@@ -95,80 +75,77 @@
                                         </div>
                                     </div>
 
-                                    
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Number Of Life </strong>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" name="num_of_life">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life Price </strong>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" name="life_price">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life Payment TYPE</strong>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Campaign Payment Date</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="payment_type">
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" name="payment_date">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Campaign Payment Type</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="payment_type">
                                                 <option value="">&nbsp;Please Select a Type</option>
-                                                <option value="bkash">Bkash</option>
+                                                    <option value="bkash">BKash</option>
+                                                    <option value="rocket">Rocket</option>
+                                                    <option value="cash">Cash</option>
                                             </select>
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Payment Transaction Id </strong>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Campaign Payment Amount</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="payment_amount">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Campaign Tranaction Id</strong>
+                                            <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" name="payment_transaction_id">
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life Buy Date</strong>
-                                            <span class="symbol required" aria-required="true"></span>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Payment Description</strong>
                                         </label>
-                                        <div class="col-sm-6">
-                                            <input type="date" class="form-control" name="life_buy_date">
+                                        <div class="col-sm-4">
+                                            <textarea name="payment_description" class="form-control" cols="10" rows="7"></textarea>
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Life Buy End Date</strong>
-                                            <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-6">
-                                            <input type="date" class="form-control" name="life_buy_end_date">
+                                        <div class="col-sm-4">
                                         </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                        </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <input class="btn btn-danger btn-squared" name="reset" value="Reset" type="reset">
                                             <input class="btn btn-success btn-squared" name="submit" value="Save" type="submit">
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -181,21 +158,21 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#Life').validate({
+            $('#campaign_payment').validate({
                 rules: {
-                    Life_TITLE: {
+                    payment_campaign_id: {
                         required: true
                     },
-                    Life_DETAILS: {
+                    payment_date: {
                         required: true
                     },
-                    Life_TAG:{
+                    payment_type:{
                         required: true
                     },
-                    Life_IMAGE:{
+                    payment_amount:{
                         required: true
                     },
-                    Life_TYPE:{
+                    payment_transaction_id:{
                         required: true
                     }
                 },

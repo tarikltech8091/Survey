@@ -6,7 +6,7 @@
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i>
-                    Edit Earn
+                    Edit Paid Payment
                     <div class="panel-tools">
                         <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                         </a>
@@ -39,104 +39,131 @@
                             {{ Session::get('errormessage') }}
                         </div>
                     @endif
-                    <form role="form" class="form-horizontal" action="{{ url('/earn/update/id-'.$edit->id) }}"
-                          id="blog" method="post" role="form" enctype="multipart/form-data">
+
+                    <form role="form" class="form-horizontal" action="{{ url('/earn/payment/update/id-'.$edit->id) }}"
+                          id="earn_payment" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
-                           
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Player</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>User Type</strong>
                                 <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-8">
-                                <select id="form-field-select-3" class="form-control search-select" name="earn_player_id">
-                                    <option value="">&nbsp;Please Select a Player</option>
-
-                                    @if(!empty($all_players))
-                                    @foreach($all_players as $key =>$list)
-                                        <option {{($edit->earn_player_id == $list->id)?'selected':''}} value="{{$list->id}}">{{$list->player_name}}</option>
-                                        <input type="hidden" class="form-control" value="{{$list->players_mobile}}" name="earn_player_mobile_num">
-                                    @endforeach
-                                    @endif
-
-                                </select>
-                            </div>
-                        </div>
-
-                       
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Campaign</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-8">
-                                <select id="form-field-select-3" class="form-control search-select" name="earn_player_campaign_id">
-                                    <option value="">&nbsp;Please Select a Player</option>
-
-                                    @if(!empty($all_campaign))
-                                    @foreach($all_campaign as $key =>$list)
-                                        <option {{($edit->earn_player_campaign_id == $list->id)?'selected':''}}  value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                        <input type="hidden" class="form-control" value="{{$list->campaign_name}}" name="earn_player_campaign_name">
-
-                                    @endforeach
-                                    @endif
-
-                                </select>
-                            </div>
-                        </div>
-
-
-                        
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Question</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-8">
-                                <select id="form-field-select-3" class="form-control search-select" name="earn_player_question_id">
-                                    <option value="">&nbsp;Please Select a Player</option>
-
-                                    @if(!empty($all_questions))
-                                    @foreach($all_questions as $key =>$list)
-                                        <option {{($edit->earn_player_question_id == $list->id)?'selected':''}} value="{{$list->id}}">{{$list->question_name}}</option>
-                                    @endforeach
-                                    @endif
-
-                                </select>
-                            </div>
-                        </div>
-
-                        
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Earn Date</strong>
                             </label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" value="{{$edit->earn_date}}" name="earn_date">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Earn Amount</strong>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" value="{{$edit->earn_amount}}" name="earn_amount">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="earn_paid_user_type">
+                                    <option value="">&nbsp;Please Select a Type</option>
+                                        <option {{($edit->earn_paid_user_type == 'surveyer') ? 'selected' : ''}} value="surveyer">Surveyer</option>
+                                        <option {{($edit->earn_paid_user_type == 'participate') ? 'selected' : ''}} value="participate">Participater</option>
+                                </select>
                             </div>
                         </div>
 
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                <strong>Use Life</strong>
+                            <label class="col-sm-3 control-label">
+                                <strong>Select Surveyer</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" value="{{$edit->use_life}}" name="use_life">
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="earn_paid_surveyer_id">
+                                    <option value="">&nbsp;Please Select a Type</option>
+
+                                    @if(!empty($all_surveyer))
+                                    @foreach($all_surveyer as $key =>$list)
+                                        <option {{($edit->earn_paid_surveyer_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->surveyer_name}}</option>
+                                        <input type="hidden" class="form-control" name="earn_paid_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                    @endforeach
+                                    @endif
+
+                                </select>
                             </div>
                         </div>
 
-                       
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Select Participate Member</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="earn_paid_participate_id">
+                                    <option value="">&nbsp;Please Select a Type</option>
+
+                                    @if(!empty($all_participate))
+                                    @foreach($all_participate as $key =>$value)
+                                        <option {{($edit->earn_paid_participate_id == $list->id) ? 'selected' : ''}} value="{{$value->id}}">{{$value->participate_name}}</option>
+                                        <input type="hidden" class="form-control" name="earn_paid_participate_mobile" value="{{$value->participate_mobile}}">
+                                    @endforeach
+                                    @endif
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Paid date</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" name="earn_paid_date" value="{{isset($edit->earn_paid_date)? $edit->earn_paid_date:''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Paid Type</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="earn_paid_payment_type">
+                                    <option value="">&nbsp;Please Select a Type</option>
+                                        <option {{($edit->earn_paid_payment_type == 'bkash') ? 'selected' : ''}} value="bkash">BKash</option>
+                                        <option {{($edit->earn_paid_payment_type == 'rocket') ? 'selected' : ''}} value="rocket">Rocket</option>
+                                        <option {{($edit->earn_paid_payment_type == 'cash') ? 'selected' : ''}} value="cash">Cash</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Paid Amount</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="earn_paid_amount" value="{{isset($edit->earn_paid_amount)? $edit->earn_paid_amount:''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Paid Tranaction Id</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="payment_transaction_id" value="{{isset($edit->payment_transaction_id)? $edit->payment_transaction_id:''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Paid Description</strong>
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="earn_paid_description" class="form-control" cols="10" rows="7">{{isset($edit->earn_paid_description)? $edit->earn_paid_description:''}}</textarea>
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <div class="col-sm-5">
                             </div>
@@ -145,6 +172,7 @@
                                 <input class="btn btn-success btn-squared" name="submit" value="Update" type="submit">
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -154,30 +182,21 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#earn_payment').validate({
                 rules: {
-                    album_name: {
+                    earn_paid_user_type: {
                         required: true
                     },
-                    album_category: {
+                    earn_paid_date: {
                         required: true
                     },
-                    country:{
+                    earn_paid_payment_type:{
                         required: true
                     },
-                    /*domain_name:{
-                        required: true
-                    },*/
-                    service_name:{
+                    earn_paid_amount:{
                         required: true
                     },
-                    album_tags: {
-                        required: true
-                    },
-                    imdb_rating: {
-                        number: true
-                    },
-                    album_genres: {
+                    payment_transaction_id:{
                         required: true
                     }
                 },

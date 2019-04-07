@@ -14,6 +14,8 @@ class SurveyerAssign extends Model
         'assign_surveyer_name',
         'assign_campaign_id',
         'assign_campaign_name',
+        'assign_zone',
+        'assign_target',
         'surveyer_prize_amount',
         'validate_refference',
         'assign_campaign_complain',

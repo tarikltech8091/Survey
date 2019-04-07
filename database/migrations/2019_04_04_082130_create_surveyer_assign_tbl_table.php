@@ -19,6 +19,9 @@ class CreateSurveyerAssignTblTable extends Migration
             $table->string('assign_surveyer_name');
             $table->bigInteger('assign_campaign_id')->unsigned();
             $table->string('assign_campaign_name');
+            $table->string('assign_zone');
+            $table->integer('assign_target')->default(0);
+            $table->integer('complete_target')->default(0);
             $table->float('surveyer_prize_amount')->nullable();
             $table->string('validate_refference')->nullable();
             $table->string('assign_campaign_complain')->nullable();

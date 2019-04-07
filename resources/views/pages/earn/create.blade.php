@@ -34,128 +34,157 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="active">
-                        <a href="{{url('/earn/create')}}">
-                            <i class="green fa fa-bell"></i> Add Earn
+                        <a href="{{url('/earn/payment')}}">
+                            <i class="green fa fa-bell"></i> Paid Payment
                         </a>
                     </li>
                     <li class="">
-                        <a href="{{url('/earn/list')}}">
-                            <i class="green clip-feed"></i> Earn List
+                        <a href="{{url('/earn/payment/list')}}">
+                            <i class="green clip-feed"></i> Paid Payment List
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR CREATE Blog -->
-                    <div id="create_album" class="tab-pane active">
+                    <div id="create_paid_payment" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
-                                <form role="form" class="form-horizontal" action="{{ url('/earn/save') }}"
-                                      id="blog" method="post" role="form" enctype="multipart/form-data">
+                                <form role="form" class="form-horizontal" action="{{ url('/earn/payment/save') }}"
+                                      id="earn_payment" method="post" role="form" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                    
+
+
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Player</strong>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>User Type</strong>
                                             <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="earn_player_id">
-                                                <option value="">&nbsp;Please Select a Player</option>
-
-                                                @if(!empty($all_players))
-                                                @foreach($all_players as $key =>$list)
-                                                    <option value="{{$list->id}}">{{$list->player_name}}</option>
-                                                    <input type="hidden" class="form-control" value="{{$list->players_mobile}}" name="earn_player_mobile_num">
-                                                @endforeach
-                                                @endif
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                   
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Campaign</strong>
-                                            <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="earn_player_campaign_id">
-                                                <option value="">&nbsp;Please Select a Player</option>
-
-                                                @if(!empty($all_campaign))
-                                                @foreach($all_campaign as $key =>$list)
-                                                    <option value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                                    <input type="hidden" class="form-control" value="{{$list->campaign_name}}" name="earn_player_campaign_name">
-
-                                                @endforeach
-                                                @endif
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Question</strong>
-                                            <span class="symbol required" aria-required="true"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select" name="earn_player_question_id">
-                                                <option value="">&nbsp;Please Select a Player</option>
-
-                                                @if(!empty($all_questions))
-                                                @foreach($all_questions as $key =>$list)
-                                                    <option value="{{$list->id}}">{{$list->question_name}}</option>
-                                                @endforeach
-                                                @endif
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Earn Date</strong>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="date" class="form-control" name="earn_date">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Earn Amount</strong>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="earn_amount">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="earn_paid_user_type">
+                                                <option value="">&nbsp;Please Select a Type</option>
+                                                    <option value="surveyer">Surveyer</option>
+                                                    <option value="participate">Participater</option>
+                                            </select>
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            <strong>Use Life</strong>
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Select Surveyer</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control" name="use_life">
+                                        <div class="col-sm-4">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="earn_paid_surveyer_id">
+                                                <option value="">&nbsp;Please Select a Type</option>
+
+                                                @if(!empty($all_surveyer))
+                                                @foreach($all_surveyer as $key =>$list)
+                                                    <option value="{{$list->id}}">{{$list->surveyer_name}}</option>
+                                                    <input type="hidden" class="form-control" name="earn_paid_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                                @endforeach
+                                                @endif
+
+                                            </select>
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
-                                        <div class="col-sm-6">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Select Participate Member</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="earn_paid_participate_id">
+                                                <option value="">&nbsp;Please Select a Type</option>
+
+                                                @if(!empty($all_participate))
+                                                @foreach($all_participate as $key =>$value)
+                                                    <option value="{{$value->id}}">{{$value->participate_name}}</option>
+                                                    <input type="hidden" class="form-control" name="earn_paid_participate_mobile" value="{{$value->participate_mobile}}">
+                                                @endforeach
+                                                @endif
+
+                                            </select>
                                         </div>
-                                        <div class="col-sm-3">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Paid date</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" name="earn_paid_date">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Paid Type</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select id="form-field-select-3" class="form-control search-select"
+                                                    name="earn_paid_payment_type">
+                                                <option value="">&nbsp;Please Select a Type</option>
+                                                    <option value="bkash">BKash</option>
+                                                    <option value="rocket">Rocket</option>
+                                                    <option value="cash">Cash</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Paid Amount</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="earn_paid_amount">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Paid Tranaction Id</strong>
+                                            <span class="symbol required" aria-required="true"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="payment_transaction_id">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <strong>Paid Description</strong>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <textarea name="earn_paid_description" class="form-control" cols="10" rows="7"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-4">
                                             <input class="btn btn-danger btn-squared" name="reset" value="Reset" type="reset">
                                             <input class="btn btn-success btn-squared" name="submit" value="Save" type="submit">
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -168,21 +197,21 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#blog').validate({
+            $('#earn_payment').validate({
                 rules: {
-                    BLOG_TITLE: {
+                    earn_paid_user_type: {
                         required: true
                     },
-                    BLOG_DETAILS: {
+                    earn_paid_date: {
                         required: true
                     },
-                    BLOG_TAG:{
+                    earn_paid_payment_type:{
                         required: true
                     },
-                    BLOG_IMAGE:{
+                    earn_paid_amount:{
                         required: true
                     },
-                    BLOG_TYPE:{
+                    payment_transaction_id:{
                         required: true
                     }
                 },

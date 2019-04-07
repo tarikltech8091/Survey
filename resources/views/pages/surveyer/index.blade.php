@@ -27,61 +27,59 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="panel-body">
 
 
-                        <div class="tabbable">
+                    <div class="tabbable">
 
 
-                            <ul id="myTab" class="nav nav-tabs tab-bricky">
-                                <li>
-                                    <a href="{{url('/surveyer/create')}}">
-                                        <i class="green fa fa-bell"></i> Add Surveyer
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="{{url('/surveyer/list')}}">
-                                        <i class="green clip-feed"></i> Surveyer List
-                                    </a>
-                                </li>
-                            </ul>
+                        <ul id="myTab" class="nav nav-tabs tab-bricky">
+                            <li>
+                                <a href="{{url('/surveyer/create')}}">
+                                    <i class="green fa fa-bell"></i> Add Surveyer
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{{url('/surveyer/list')}}">
+                                    <i class="green clip-feed"></i> Surveyer List
+                                </a>
+                            </li>
+                        </ul>
 
 
-                            <div class="tab-content">
-                                <div id="create_surveyer" class="tab-pane active">
-                                    <div class="row">
-                                        <div class="col-md-12">
+                        <div class="tab-content">
+                            <div id="create_surveyer" class="tab-pane active">
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                                            <form method="get"  action="{{url('/surveyer/list')}}">
-                                                
-                                                <div class="col-md-3">
-                                                    <div class="form-group has-feedback ">
-                                                        <label for="search_from">
-                                                            <strong>Search by status : </strong>
-                                                        </label>
-                                                        <select class="form-control search-select" name="surveyer_status">
-                                                            <option {{(isset($_GET['surveyer_status']) && ($_GET['surveyer_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
-                                                            <option {{(isset($_GET['surveyer_status']) && ($_GET['surveyer_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1" style="margin-top:22px;">
-                                                    <div class="form-group">
-                                                        <input type="submit" class="btn btn-primary btn-squared" value="Search">
-                                                    </div>
-                                                </div>
-
-
-                                            </form>
+                                        <form method="get"  action="{{url('/surveyer/list')}}">
                                             
-                                        </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group has-feedback ">
+                                                    <label for="search_from">
+                                                        <strong>Search by status : </strong>
+                                                    </label>
+                                                    <select class="form-control search-select" name="surveyer_status">
+                                                        <option {{(isset($_GET['surveyer_status']) && ($_GET['surveyer_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
+                                                        <option {{(isset($_GET['surveyer_status']) && ($_GET['surveyer_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1" style="margin-top:22px;">
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-primary btn-squared" value="Search">
+                                                </div>
+                                            </div>
+
+
+                                        </form>
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
+
+
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered table-striped nopadding">
                             <thead>

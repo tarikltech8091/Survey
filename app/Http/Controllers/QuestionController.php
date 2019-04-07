@@ -91,8 +91,6 @@ class QuestionController extends Controller
             'question_option_4' => 'required',
             'question_option_new' => 'required',
             'question_points' => 'required',
-            // 'question_prize_amount' => 'required',
-            // 'question_physical_prize' => 'required',
         ]);
 
 
@@ -113,8 +111,6 @@ class QuestionController extends Controller
                 $data['question_option_4']=$request->input('question_option_4');
                 $data['question_option_new']=$request->input('question_option_new');
                 $data['question_points']=$request->input('question_points');
-                $data['question_prize_amount']=$request->input('question_prize_amount');
-                $data['question_physical_prize']=$request->input('question_physical_prize');
                 // $data['question_published_date']='';
                 $data['question_published_status']=0;
                 $data['question_status']=0;
@@ -209,8 +205,6 @@ class QuestionController extends Controller
             'question_option_4' => 'required',
             'question_option_new' => 'required',
             'question_points' => 'required',
-            // 'question_prize_amount' => 'required',
-            // 'question_physical_prize' => 'required',
         ]);
 
         if($v->passes()){
@@ -232,8 +226,6 @@ class QuestionController extends Controller
                 $data['question_option_4']=$request->input('question_option_4');
                 $data['question_option_new']=$request->input('question_option_new');
                 $data['question_points']=$request->input('question_points');
-                $data['question_prize_amount']=$request->input('question_prize_amount');
-                $data['question_physical_prize']=$request->input('question_physical_prize');
                 // $data['question_published_date']='';
                 $data['question_updated_by'] = \Auth::user()->id;
 

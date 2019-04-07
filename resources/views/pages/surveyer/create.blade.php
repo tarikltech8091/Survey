@@ -72,7 +72,7 @@
                                                     <strong>Surveyer Name</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="surveyer_name">
                                                 </div>
                                             </div>
@@ -81,7 +81,7 @@
                                                     <strong>Surveyer Email</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="email" class="form-control" name="surveyer_email">
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@
                                                     <strong>Surveyer Mobile</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="surveyer_mobile">
                                                 </div>
                                             </div>
@@ -99,7 +99,7 @@
                                                     <strong>Surveyer Join Date</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="date" class="form-control" name="surveyer_join_date">
                                                 </div>
                                             </div>
@@ -109,7 +109,7 @@
                                                     <strong>Surveyer District</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="surveyer_district">
                                                 </div>
                                             </div>
@@ -118,17 +118,8 @@
                                                     <strong>Surveyer Post Code</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="surveyer_post_code">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Surveyer Address</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
-                                                </label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="surveyer_address">
                                                 </div>
                                             </div>
 
@@ -137,7 +128,7 @@
                                                     <strong>Surveyer NID</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="surveyer_nid">
                                                 </div>
                                             </div>
@@ -146,8 +137,18 @@
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Zone</strong>
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control" name="surveyer_zone">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Surveyer Address</strong>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <textarea name="surveyer_address" class="form-control" cols="10" rows="7"></textarea>
                                                 </div>
                                             </div>
 

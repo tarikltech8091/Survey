@@ -67,7 +67,7 @@
                                 <strong>Participate Name</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="participate_name" value="{{isset($edit)? $edit->participate_name :''}}">
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                 <strong>Participate Email</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="email" class="form-control" name="participate_email" value="{{isset($edit)? $edit->participate_email :''}}">
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                 <strong>Participate Mobile</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <input type="text" class="form-control" name="participate_mobile" value="{{isset($edit)? $edit->participate_mobile :''}}">
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 <strong>Participate Gender</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select"
                                         name="participate_gender">
                                     <option value="">&nbsp;Please Select a Type</option>
@@ -112,7 +112,7 @@
                                 <strong>Participate Age</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select" name="participate_age">
                                     <option value="">&nbsp;Please Select a Type</option>
                                     <option {{($edit->participate_age == '0-18')? 'selected' :''}}   value="0-18">0-18</option>
@@ -130,7 +130,7 @@
                                 <strong>Participate Religion</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select"
                                         name="participate_religion">
                                     <option value="">&nbsp;Please Select a Type</option>
@@ -148,7 +148,7 @@
                                 <strong>Participate Occupation</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select"
                                         name="participate_occupation">
                                     <option value="">&nbsp;Please Select a Type</option>
@@ -167,7 +167,7 @@
                                 <strong>Participate Join Date</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="date" class="form-control" name="participate_join_date" value="{{isset($edit)? $edit->participate_join_date :''}}">
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                                 <strong>Participate District</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="participate_district" value="{{isset($edit)? $edit->participate_district :''}}">
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                                 <strong>Participate Zone</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="participate_zone" value="{{isset($edit)? $edit->participate_zone :''}}">
                             </div>
                         </div>
@@ -197,37 +197,38 @@
                                 <strong>Participate Post Code</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="participate_post_code" value="{{isset($edit)? $edit->participate_post_code :''}}">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Participate Address</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="participate_address" value="{{isset($edit)? $edit->participate_address :''}}">
-                            </div>
-                        </div>
+
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Participate NID</strong>
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" name="participate_nid" value="{{isset($edit)? $edit->participate_nid :''}}">
                             </div>
                         </div>
 
 
+                                            
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Participate Address</strong>
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="participate_address" class="form-control" cols="10" rows="7">{{isset($edit)? $edit->participate_address :''}}</textarea>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Participate Image</strong>
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
                                     <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
                                         @if(!empty( $edit->participate_profile_image))
