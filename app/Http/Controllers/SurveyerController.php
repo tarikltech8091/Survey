@@ -38,9 +38,10 @@ class SurveyerController extends Controller
                 ->paginate(20);
 
             $surveyer_status = isset($_GET['surveyer_status'])? $_GET['surveyer_status']:0;
+            $surveyer_mobile = isset($_GET['surveyer_mobile'])? $_GET['surveyer_mobile']:0;
 
             $all_content->setPath(url('/surveyer/list'));
-            $pagination = $all_content->appends(['surveyer_status' => $surveyer_status])->render();
+            $pagination = $all_content->appends(['surveyer_status' => $surveyer_status, 'surveyer_mobile' => $surveyer_mobile])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -104,11 +105,11 @@ class SurveyerController extends Controller
                 $data['surveyer_name_slug']=$surveyer_name_slug;
 
                 if($request->file('surveyer_profile_image')!=null){
-                    #PosterImageLong
-                    $image_wide = $request->file('surveyer_profile_image');
-                    $img_location_wide=$image_wide->getRealPath();
-                    $img_ext_wide=$image_wide->getClientOriginalExtension();
-                    $surveyer_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$surveyer_name);
+                    #Image
+                    $image = $request->file('surveyer_profile_image');
+                    $img_location=$image->getRealPath();
+                    $img_ext=$image->getClientOriginalExtension();
+                    $surveyer_profile_image=\App\Admin::CommonImageUpload($img_location,$img_ext,$image_type,$surveyer_name);
                 }
 
                 $data['surveyer_name']=$request->input('surveyer_name');

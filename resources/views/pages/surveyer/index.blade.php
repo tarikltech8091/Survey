@@ -64,6 +64,26 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            
+                                            <div class="col-md-3">
+                                                <div class="form-group has-feedback ">
+                                                    <label for="search_from">
+                                                        <strong>Search by Mobile : </strong>
+                                                    </label>
+                                                    <select class="form-control search-select" name="surveyer_mobile">
+                                                        <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']==0)) ? 'selected' : ''}} value="0">Select Mobile Number</option>
+
+                                                        @if(!empty($all_content) && count($all_content) > 0)
+                                                        @foreach($all_content as $key => $list)
+                                                            <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']== $list->surveyer_mobile)) ? 'selected' : ''}} value="{{$list->surveyer_mobile}}">{{$list->surveyer_mobile}}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
                                             <div class="col-md-1" style="margin-top:22px;">
                                                 <div class="form-group">
                                                     <input type="submit" class="btn btn-primary btn-squared" value="Search">

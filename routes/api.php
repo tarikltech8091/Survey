@@ -17,17 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 
-/*Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
+	Route::group(['middleware' => 'jwt-auth'], function () {
 
-    Route::get('getdata',function (){
-        echo "Hello API";
-    });
+	    Route::post('getdata',function (){
+	        echo "Hello API";
+	    });
+	});
 
-    Route::group(['middleware' => 'jwt-auth'], function () {
-        Route::post('getdata',function (){
-            echo "Hello API";
-        });
-    });
-});
-*/
+// });
+
