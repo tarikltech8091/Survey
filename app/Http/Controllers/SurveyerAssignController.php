@@ -97,6 +97,7 @@ class SurveyerAssignController extends Controller
 
                 $data['assign_surveyer_id']=$request->input('assign_surveyer_id');
                 $data['assign_surveyer_name']=$request->input('assign_surveyer_name');
+                $data['assign_surveyer_mobile']=$request->input('assign_surveyer_mobile');
                 $data['assign_campaign_id']=$request->input('assign_campaign_id');
                 $data['assign_campaign_name']=$request->input('assign_campaign_name');
                 $data['assign_zone']=$request->input('assign_zone');
@@ -196,6 +197,7 @@ class SurveyerAssignController extends Controller
 
                 $data['assign_surveyer_id']=$request->input('assign_surveyer_id');
                 $data['assign_surveyer_name']=$request->input('assign_surveyer_name');
+                $data['assign_surveyer_mobile']=$request->input('assign_surveyer_mobile');
                 $data['assign_campaign_id']=$request->input('assign_campaign_id');
                 $data['assign_campaign_name']=$request->input('assign_campaign_name');
                 $data['assign_zone']=$request->input('assign_zone');

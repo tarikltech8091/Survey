@@ -69,6 +69,7 @@ class CampaignController extends Controller
     public function Create()
     {
         $data['all_requester'] = \App\Requester::where('requester_status','1')->orderby('id','desc')->get();
+        $data['all_category'] = \App\Category::where('category_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.create',$data);
@@ -91,9 +92,9 @@ class CampaignController extends Controller
             'campaign_end_date' => 'required',
             'campaign_num_of_days' => 'required',
             'campaign_total_cost' => 'required',
-            'campaign_cost_for_surveyer' => 'required',
-            'campaign_zone' => 'required',
-            'campaign_total_num_of_zone' => 'required',
+            // 'campaign_cost_for_surveyer' => 'required',
+            // 'campaign_zone' => 'required',
+            // 'campaign_total_num_of_zone' => 'required',
             // 'campaign_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
         ]);
 
@@ -130,7 +131,8 @@ class CampaignController extends Controller
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_unique_code']= time().'-'.mt_rand();
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
-                $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
+                // $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
+                $data['campaign_total_cost_paid']=0;
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
                 $data['campaign_physical_prize']=$request->input('campaign_physical_prize');
@@ -208,6 +210,7 @@ class CampaignController extends Controller
     {
         $data['edit'] = \App\Campaign::where('id', $id)->first();
         $data['all_requester'] = \App\Requester::where('requester_status','1')->orderby('id','desc')->get();
+        $data['all_category'] = \App\Category::where('category_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.edit',$data);
@@ -229,9 +232,9 @@ class CampaignController extends Controller
             'campaign_end_date' => 'required',
             'campaign_num_of_days' => 'required',
             'campaign_total_cost' => 'required',
-            'campaign_cost_for_surveyer' => 'required',
-            'campaign_zone' => 'required',
-            'campaign_total_num_of_zone' => 'required',
+            // 'campaign_cost_for_surveyer' => 'required',
+            // 'campaign_zone' => 'required',
+            // 'campaign_total_num_of_zone' => 'required',
             // 'campaign_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=480,height=270|max:1024',
         ]);
 
@@ -268,7 +271,8 @@ class CampaignController extends Controller
                 $data['campaign_end_date']=$request->input('campaign_end_date');
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
-                $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
+                // $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
+                $data['campaign_total_cost_paid']=0;
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
                 $data['campaign_physical_prize']=$request->input('campaign_physical_prize');

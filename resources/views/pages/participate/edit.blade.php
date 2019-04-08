@@ -178,7 +178,17 @@
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="participate_district" value="{{isset($edit)? $edit->participate_district :''}}">
+                                <select id="form-field-select-3" class="form-control search-select"
+                                        name="participate_district">
+                                    <option value="">&nbsp;Please Select a Type</option>
+
+                                    @if(!empty($all_district))
+                                    @foreach($all_district as $key =>$list)
+                                        <option {{ ($edit->participate_district == $list)?'selected' :''}} value="{{$list}}">{{$list}}</option>
+                                    @endforeach
+                                    @endif
+
+                                </select>
                             </div>
                         </div>
 

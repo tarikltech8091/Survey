@@ -149,6 +149,32 @@
 
 
 
+            <li class="{{(isset($page_title) && (strpos($page_title,'Category')!== false )) ? 'active' : ''}}">
+                <a href="javascript:void (0)">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span class="title"> Category </span><i class="icon-arrow"></i>
+                    <span class="selected"></span>
+                </a>
+                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Category') !== false) ) ? 'block':'active'}};">
+                    <li class="{{isset($page_title) && ($page_title=='Add Category') ? 'active' : ''}}">
+                        <a href="{{url('/category/create')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Add Category </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Category List') ? 'active' : ''}}">
+                        <a href="{{url('/category/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Category List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+
             <li class="{{(isset($page_title) && (strpos($page_title,'Campaign')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>

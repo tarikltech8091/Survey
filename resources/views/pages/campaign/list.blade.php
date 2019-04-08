@@ -133,11 +133,11 @@
                                                                     @endif
                                                                 </li>
                                                                 
-                                                                <li>
+                                                                <!-- <li>
                                                                     <a class="campaign-delete" data-campaign-id="{{$list->id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
-                                                                </li>
+                                                                </li> -->
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -248,7 +248,7 @@
 
 
             // campaign delete
-            $('.campaign-delete').on('click', function (e) {
+            /*$('.campaign-delete').on('click', function (e) {
                 e.preventDefault();
                 var id = $(this).data('campaign-id');
                 bootbox.dialog({
@@ -282,7 +282,8 @@
                         }
                     }
                 });
-            });
+            });*/
+            
         })
     </script>
 @endsection

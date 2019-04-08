@@ -16,6 +16,20 @@
                     </div>
                 </div>
                 <div class="panel-body">
+                    <ul class="nav nav-tabs tab-bricky">
+                        <li>
+                            <a href="{{url('/question/create')}}">
+                                <i class="green fa fa-bell"></i> Add Question
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('/question/list')}}">
+                                <i class="green clip-feed"></i> Question List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -78,15 +92,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Question Position</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" name="question_position" value="{{(isset($edit->question_position) && !empty($edit->question_position))? $edit->question_position:''}}">
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
@@ -97,6 +102,19 @@
                                 <input type="text" class="form-control" name="question_title"  value="{{(isset($edit->question_title) && !empty($edit->question_title))? $edit->question_title:''}}">
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Question Position</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" name="question_position" value="{{(isset($edit->question_position) && !empty($edit->question_position))? $edit->question_position:''}}">
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Option 1</strong>
@@ -106,6 +124,7 @@
                                 <input type="text" class="form-control" name="question_option_1"  value="{{(isset($edit->question_option_1) && !empty($edit->question_option_1))? $edit->question_option_1:''}}">
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Option 2</strong>
@@ -125,10 +144,10 @@
                                 <input type="text" class="form-control" name="question_option_3"  value="{{(isset($edit->question_option_3) && !empty($edit->question_option_3))? $edit->question_option_3:''}}">
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Option 4</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_4"  value="{{(isset($edit->question_option_4) && !empty($edit->question_option_4))? $edit->question_option_4:''}}">
@@ -138,7 +157,6 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Option New</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_new"  value="{{(isset($edit->question_option_new) && !empty($edit->question_option_new))? $edit->question_option_new:''}}">
@@ -157,28 +175,6 @@
                             </div>
                         </div>
 
-
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Prize Amount</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" name="question_prize_amount" value="{{(isset($edit->question_prize_amount) && !empty($edit->question_prize_amount))? $edit->question_prize_amount:''}}">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Physical Prize</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" name="question_physical_prize" value="{{(isset($edit->question_physical_prize) && !empty($edit->question_physical_prize))? $edit->question_physical_prize:''}}">
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
@@ -211,10 +207,16 @@
         $(function () {
             $('#question').validate({
                 rules: {
-                    campaign_id: {
+                    question_campaign_id: {
+                        required: true
+                    },
+                    question_type: {
                         required: true
                     },
                     question_title: {
+                        required: true
+                    },
+                    question_position: {
                         required: true
                     },
                     question_option_1: {
@@ -223,13 +225,13 @@
                     question_option_2: {
                         required: true
                     },
-                    question_answer: {
+                    question_option_3: {
                         required: true
                     },
-                    question_type: {
+                    question_special: {
                         required: true
                     },
-                    video_url: {
+                    question_points: {
                         required: true
                     }
                 },

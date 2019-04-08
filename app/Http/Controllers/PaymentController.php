@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Exception;
 
 class PaymentController extends Controller
 {
@@ -85,7 +86,6 @@ class PaymentController extends Controller
             'payment_type' => 'required',
             'payment_amount' => 'required',
             'payment_transaction_id' => 'required',
-            // 'payment_description' => 'required',
         ]);
 
 
@@ -93,7 +93,58 @@ class PaymentController extends Controller
 
             try{
 
-                $data['payment_campaign_id']=$request->input('payment_campaign_id');
+                $success = \DB::transaction(function () use($request) {
+
+                    $data['payment_campaign_id']=$request->input('payment_campaign_id');
+                    $data['payment_campaign_name']=$request->input('payment_campaign_name');
+                    $data['payment_requester_id']=$request->input('payment_requester_id');
+                    $data['payment_date']=$request->input('payment_date');
+                    $data['payment_type']=$request->input('payment_type');
+                    $data['payment_amount']=$request->input('payment_amount');
+                    $data['payment_transaction_id']=$request->input('payment_transaction_id');
+                    $data['payment_description']=$request->input('payment_description');
+                    $data['payment_status']= 0;
+                    $data['assign_created_by'] = \Auth::user()->id;
+                    $data['assign_updated_by'] = \Auth::user()->id;
+
+
+                    $campaign_info=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->first();
+                    $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid + $data['payment_amount'] ;
+                    $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+
+                    $campaign_update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($campaign_data);
+
+                    $requester_info=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->first();
+                    $requester_data['requester_total_paid']=$requester_info->requester_total_paid + $data['payment_amount'] ;
+                    $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+                    $requester_update=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->update($requester_data);
+
+                    $insert=\DB::table('campaign_payment_history_tbl')->insert($data);
+
+                    if(!$campaign_update || !$requester_data || !$insert){
+                        $error=1;
+                    }
+
+                    if(!isset($error)){
+                        /*\App\System::EventLogWrite('insert,campaign_payment_history_tbl',json_encode($data));
+                        \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
+                        \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                        \DB::commit();
+                        
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+                });
+
+                return redirect()->back()->with('message','Campaign Payment Created Successfully');
+
+
+
+
+                /*$data['payment_campaign_id']=$request->input('payment_campaign_id');
                 $data['payment_campaign_name']=$request->input('payment_campaign_name');
                 $data['payment_requester_id']=$request->input('payment_requester_id');
                 $data['payment_date']=$request->input('payment_date');
@@ -105,17 +156,26 @@ class PaymentController extends Controller
                 $data['assign_created_by'] = \Auth::user()->id;
                 $data['assign_updated_by'] = \Auth::user()->id;
 
-                // $campaign_info=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->first();
-                // $requester_info=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->first();
-                // $campaign_update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($data);
-                // $requester_update=\DB::table('requester_tbl')->where('id', $data['payment_campaign_id'])->update($data);
 
-                
+
+                $campaign_info=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->first();
+                $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid + $data['payment_amount'] ;
+                $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+
+                $campaign_update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($campaign_data);
+
+                $requester_info=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->first();
+                $requester_data['requester_total_paid']=$requester_info->requester_total_paid + $data['payment_amount'] ;
+                $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+                $requester_update=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->update($requester_data);
+
                 $insert=\DB::table('campaign_payment_history_tbl')->insert($data);
 
 
-                // \App\System::EventLogWrite('insert,campaign_payment_history_tbl',json_encode($data));
-                return redirect()->back()->with('message','Campaign Created Successfully');
+                \App\System::EventLogWrite('insert,campaign_payment_history_tbl',json_encode($data));
+                return redirect()->back()->with('message','Campaign Created Successfully');*/
 
 
             }catch (\Exception $e){
@@ -184,7 +244,6 @@ class PaymentController extends Controller
             'payment_type' => 'required',
             'payment_amount' => 'required',
             'payment_transaction_id' => 'required',
-            // 'payment_description' => 'required',
         ]);
 
         if($v->passes()){
@@ -196,7 +255,65 @@ class PaymentController extends Controller
                 if(empty($current_data))
 				return redirect()->back()->with('message','Content Not Found !!');
 
-                $data['payment_campaign_id']=$request->input('payment_campaign_id');
+                $success = \DB::transaction(function () use($request, $current_data, $id){
+
+                    $data['payment_campaign_id']=$request->input('payment_campaign_id');
+                    $data['payment_campaign_name']=$request->input('payment_campaign_name');
+                    $data['payment_requester_id']=$request->input('payment_requester_id');
+                    $data['payment_date']=$request->input('payment_date');
+                    $data['payment_type']=$request->input('payment_type');
+                    $data['payment_amount']=$request->input('payment_amount');
+                    $data['payment_transaction_id']=$request->input('payment_transaction_id');
+                    $data['payment_description']=$request->input('payment_description');
+                    $data['payment_status']= 0;
+                    $data['assign_updated_by'] = \Auth::user()->id;
+
+
+                    $campaign_info=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->first();
+                    $campaign_data['campaign_total_cost_paid']=($campaign_info->campaign_total_cost_paid) + ($data['payment_amount']) - ($current_data->payment_amount);
+                    $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+                    $campaign_update=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->update($campaign_data);
+
+
+
+                    $requester_info=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->first();
+                    $requester_data['requester_total_paid']=($requester_info->requester_total_paid) + ($data['payment_amount']) - ($current_data->payment_amount) ;
+                    $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+                    $requester_update=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->update($requester_data);
+
+
+
+                    $update=\DB::table('campaign_payment_history_tbl')->where('id', $id)->update($data);
+
+                    if($current_data->payment_amount == $data['payment_amount']){
+                        if(!$update){
+                            $error=1;
+                        }
+                    }else{
+                        if(!$campaign_update || !$requester_data || !$update){
+                            $error=1;
+                        }
+                    }
+
+                    if(!isset($error)){
+                        /*\App\System::EventLogWrite('update,campaign_payment_history_tbl',json_encode($data));
+                        \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
+                        \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                        \DB::commit();
+                        
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+                });
+
+                return redirect()->back()->with('message','Campaign Payment Updated Successfully');
+
+
+
+                /*$data['payment_campaign_id']=$request->input('payment_campaign_id');
                 $data['payment_campaign_name']=$request->input('payment_campaign_name');
                 $data['payment_requester_id']=$request->input('payment_requester_id');
                 $data['payment_date']=$request->input('payment_date');
@@ -207,11 +324,26 @@ class PaymentController extends Controller
                 $data['payment_status']= 0;
                 $data['assign_updated_by'] = \Auth::user()->id;
 
+                $campaign_info=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->first();
+                $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid + $data['payment_amount'] - $current_data->payment_amount;
+                $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+
+                $campaign_update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($campaign_data);
+
+                $requester_info=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->first();
+                $requester_data['requester_total_paid']=$requester_info->requester_total_paid + $data['payment_amount'] - $current_data->payment_amount ;
+                $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+                $requester_update=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->update($requester_data);
+
+
+
                 $update=\DB::table('campaign_payment_history_tbl')->where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,campaign_payment_history_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,campaign_payment_history_tbl',json_encode($data));
 
-                return redirect()->back()->with('message','Content Updated Successfully !!');
+                return redirect()->back()->with('message','Content Updated Successfully !!');*/
 
             }catch (\Exception $e){
 
@@ -223,20 +355,86 @@ class PaymentController extends Controller
     }
 
     /********************************************
-    ## Delete
+    ## CampaignPaymentDelete
      *********************************************/
-    public function Delete($id)
+    public function CampaignPaymentDelete($id)
     {
+
+
+        $current_data= \DB::table('campaign_payment_history_tbl')->where('id', $id)->first();
+
+        if(empty($current_data))
+        return redirect()->back()->with('message','Content Not Found !!'); 
+
+
+        $success = \DB::transaction(function () use($current_data){
+
+
+            $campaign_info=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->first();
+            $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid - $current_data->payment_amount;
+            $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+
+            $campaign_update=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->update($campaign_data);
+
+            $requester_info=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->first();
+            $requester_data['requester_total_paid']=$requester_info->requester_total_paid - $current_data->payment_amount ;
+            $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+            $requester_update=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->update($requester_data);
+
+            $delete = \DB::table('campaign_payment_history_tbl')
+                ->where('id',$id)
+                ->delete();
+
+
+            if(!$campaign_update || !$requester_data || !$delete){
+                $error=1;
+            }
+
+            if(!isset($error)){
+                /*\App\System::EventLogWrite('delete,campaign_payment_history_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
+                \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                \DB::commit();
+                
+            }else{
+                \DB::rollback();
+                throw new Exception("Error Processing Request", 1);
+            }
+        });
+
+        if($delete) {
+            echo 'Content deleted successfully.';
+        } else {
+            echo 'Content did not delete successfully.';
+        }
+
+
+        /*$campaign_info=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->first();
+        $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid - $current_data->payment_amount;
+        $campaign_data['campaign_updated_by'] = \Auth::user()->id;
+
+
+        $campaign_update=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->update($campaign_data);
+
+        $requester_info=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->first();
+        $requester_data['requester_total_paid']=$requester_info->requester_total_paid - $current_data->payment_amount ;
+        $requester_data['requester_updated_by'] = \Auth::user()->id;
+
+        $requester_update=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->update($requester_data);
+
         $delete = \DB::table('campaign_payment_history_tbl')
             ->where('id',$id)
             ->delete();
+
         if($delete) {
-            // \App\System::EventLogWrite('delete,campaign_payment_history_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,campaign_payment_history_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,campaign_payment_history_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,campaign_payment_history_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
-        }
+        }*/
     }
 
 

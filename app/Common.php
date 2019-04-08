@@ -43,4 +43,96 @@ class Common extends Model
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
+
+
+        /**
+     * Common District.
+     *
+     * @param 
+     * @return string
+     */
+    public static function AllDistrict()
+    {
+
+        $string = array(
+                        'Dhaka',
+                        'Faridpur',
+                        'Gazipur',
+                        'Gopalganj',
+                        'Jamalpur',
+                        'Kishoreganj',
+                        'Madaripur',
+                        'Manikganj',
+                        'Munshiganj',
+                        'Mymensingh',
+                        'Narayanganj',
+                        'Narsingdi',
+                        'Netrokona',
+                        'Rajbari',
+                        'Shariatpur',
+                        'Sherpur',
+                        'Tangail',
+                        'Bogura',
+                        'Joypurhat',
+                        'Naogaon',
+                        'Natore',
+                        'Chapainawabganj',
+                        'Pabna',
+                        'Rajshahi',
+                        'Sirajgonj',
+                        'Dinajpur',
+                        'Gaibandha',
+                        'Kurigram',
+                        'Lalmonirhat',
+                        'Nilphamari',
+                        'Panchagarh',
+                        'Rangpur',
+                        'Thakurgaon',
+                        'Barguna',
+                        'Barishal',
+                        'Bhola',
+                        'Jhalokati',
+                        'Patuakhali',
+                        'Pirojpur',
+                        'Bandarban',
+                        'Brahmanbaria',
+                        'Chandpur',
+                        'Chattogram',
+                        'Cumilla',
+                        'Coxsbazar',
+                        'Feni',
+                        'Khagrachhari',
+                        'Lakshmipur',
+                        'Noakhali',
+                        'Rangamati',
+                        'Habiganj',
+                        'Moulvibazar',
+                        'Sunamganj',
+                        'Sylhet',
+                        'Bagerhat',
+                        'Chuadanga',
+                        'Jashore',
+                        'Jhenaidah',
+                        'Khulna',
+                        'Kushtia',
+                        'Magura',
+                        'Meherpur',
+                        'Narail',
+                        'Satkhira'
+                    );
+
+        return $string;
+
+        /*foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now'*/;
+    }
+
+
 }

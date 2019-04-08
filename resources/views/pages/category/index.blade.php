@@ -17,7 +17,7 @@
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i>
-                    question
+                    Category
                     <div class="panel-tools">
                         <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                         </a>
@@ -29,52 +29,55 @@
                 <div class="panel-body">
 
 
-                        <div class="tabbable">
+                    <div class="tabbable">
 
 
-                            <ul id="myTab" class="nav nav-tabs tab-bricky">
-                                <li>
-                                    <a href="{{url('/question/create')}}">
-                                        <i class="green fa fa-bell"></i> Add Question
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="{{url('/question/list')}}">
-                                        <i class="green clip-feed"></i> Question List
-                                    </a>
-                                </li>
-                            </ul>
+                        <ul id="myTab" class="nav nav-tabs tab-bricky">
+                            <li>
+                                <a href="{{url('/category/create')}}">
+                                    <i class="green fa fa-bell"></i> Add Category
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="{{url('/category/list')}}">
+                                    <i class="green clip-feed"></i> Category List
+                                </a>
+                            </li>
+                        </ul>
 
 
-                            <div class="tab-content">
-                                <div id="create_album" class="tab-pane active">
-                                    <div class="row">
-                                        <div class="col-md-12">
+                        <div class="tab-content">
+                            <div id="create_category" class="tab-pane active">
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                                            <form method="get"  action="{{url('/question/list')}}">
-                                                <div class="col-md-3">
-                                                    <div class="form-group has-feedback ">
-                                                        <label for="search_from">
-                                                            <strong>Search by status : </strong>
-                                                        </label>
-                                                        <select class="form-control search-select" name="question_status">
-                                                            <option {{(isset($_GET['question_status']) && ($_GET['question_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
-                                                            <option {{(isset($_GET['question_status']) && ($_GET['question_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1" style="margin-top:22px;">
-                                                    <div class="form-group">
-                                                        <input type="submit" class="btn btn-primary btn-squared" value="Search">
-                                                    </div>
-                                                </div>
-                                            </form>
+                                        <form method="get"  action="{{url('/category/list')}}">
                                             
-                                        </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group has-feedback ">
+                                                    <label for="search_from">
+                                                        <strong>Search by status : </strong>
+                                                    </label>
+                                                    <select class="form-control search-select" name="category_status">
+                                                        <option {{(isset($_GET['category_status']) && ($_GET['category_status']==1)) ? 'selected' : ''}} value="1">Publish</option>
+                                                        <option {{(isset($_GET['category_status']) && ($_GET['category_status']==0)) ? 'selected' : ''}} value="0">Unpublish</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1" style="margin-top:22px;">
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-primary btn-squared" value="Search">
+                                                </div>
+                                            </div>
+
+
+                                        </form>
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
                     <div class="table-responsive">
@@ -82,17 +85,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Campaign Name</th>
-                                <th>Question Title</th>
-                                <th>Question Type</th>
-                                <th>Question Position</th>
-                                <th>Option 1</th>
-                                <th>Option 2</th>
-                                <th>Option 3</th>
-                                <th>Option 4</th>
-                                <th>Special</th>
-                                <!-- <th>Points</th> -->
-                                <th>Publish Status</th>
+                                <th>Category Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -100,22 +93,12 @@
                             <tbody>
                             @if(!empty($all_content) && count($all_content) > 0)
                                 <?php $page=isset($_GET['page'])? ($_GET['page']-1):0;?>
-                                @foreach($all_content as $key => $question)
+                                @foreach($all_content as $key => $category)
                                     <tr>
                                         <td>{{($key+1+($perPage*$page))}}</td>
-                                        <td>{{$question->question_campaign_name}}</td>
-                                        <td>{{$question->question_title}}</td>
-                                        <td>{{$question->question_type}}</td>
-                                        <td>{{$question->question_position}}</td>
-                                        <td>{{$question->question_option_1}}</td>
-                                        <td>{{$question->question_option_2}}</td>
-                                        <td>{{$question->question_option_3}}</td>
-                                        <td>{{$question->question_option_4}}</td>
-                                        <td>{{$question->question_special}}</td>
-                                        <!-- <td>{{$question->question_points}}</td> -->
-                                        <td>{{$question->question_published_status}}</td>
+                                        <td>{{$category->category_name}}</td>
                                         <td>
-                                            @if($question->question_status == 1)
+                                            @if($category->category_status == 1)
                                                 <span class="label label-success">
                                                     Published
                                                 </span>
@@ -128,22 +111,22 @@
                                         <td style="width:14%">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
-                                                    <li><a href="{{url('/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Edit</a></li>
+                                                    <li><a href="{{url('/category/edit/id-'.$category->id)}}"><i class="fa fa-pencil"></i> Edit</a></li>
                                                     <li>
-                                                        @if($question->question_status == 1)
+                                                        @if($category->category_status == 1)
                                                             <a class="status-change"
-                                                               data-publish-status="0" data-question-id="{{ $question->id}}" title="Click for unpublish">
+                                                               data-publish-status="0" data-category-id="{{ $category->id}}" title="Click for unpublish">
                                                                 <i class="fa fa-unlock"></i> Un Publish
                                                             </a>
                                                         @else
                                                             <a class="status-change " title="Click for publish"
-                                                               data-publish-status="1" data-question-id="{{ $question->id}}">
+                                                               data-publish-status="1" data-category-id="{{ $category->id}}">
                                                                 <i class="fa fa-lock"></i> Publish
                                                             </a>
                                                         @endif
                                                     </li>
                                                     <li>
-                                                        <a class="question-delete" data-question-id="{{ $question->id}}">
+                                                        <a class="category-delete" data-category-id="{{ $category->id}}">
                                                             <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                         </a>
                                                     </li>
@@ -154,7 +137,7 @@
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="11">No Data available</td>
+                                    <td colspan="3">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>
@@ -184,10 +167,10 @@
             $('.status-change').on('click', function (e) {
                 e.preventDefault();
                 var status = $(this).data('publish-status');
-                var id = $(this).data('question-id');
+                var id = $(this).data('category-id');
                 if(status == 0) {
                     bootbox.dialog({
-                        message: "Are you sure you want to unpublish this question ?",
+                        message: "Are you sure you want to unpublish this category ?",
                         title: "<i class='glyphicon glyphicon-eye-close'></i> Unpublish !",
                         buttons: {
                             danger: {
@@ -203,7 +186,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/change/status/'+id+'/'+status
+                                        url: site_url+'/category/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -220,7 +203,7 @@
                     });
                 } else {
                     bootbox.dialog({
-                        message: "Are you sure you want to publish this question ?",
+                        message: "Are you sure you want to publish this category?",
                         title: "<i class='glyphicon glyphicon-eye-open'></i> Publish !",
                         buttons: {
                             danger: {
@@ -236,7 +219,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/change/status/'+id+'/'+status
+                                        url: site_url+'/category/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -252,12 +235,12 @@
                     });
                 }
             });
-            // question delete
-            $('.question-delete').on('click', function (e) {
+            // category delete
+            $('.category-delete').on('click', function (e) {
                 e.preventDefault();
-                var id = $(this).data('question-id');
+                var id = $(this).data('category-id');
                 bootbox.dialog({
-                    message: "Are you sure you want to delete this question ?",
+                    message: "Are you sure to delete this category ?",
                     title: "<i class='glyphicon glyphicon-trash'></i> Delete !",
                     buttons: {
                         success: {
@@ -273,7 +256,7 @@
                             callback: function() {
                                 $.ajax({
                                     type: 'GET',
-                                    url: site_url+'/question/delete/id-'+id,
+                                    url: site_url+'/category/delete/id-'+id,
                                 }).done(function(response){
                                     bootbox.alert(response,
                                         function(){

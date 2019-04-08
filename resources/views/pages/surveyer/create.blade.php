@@ -69,6 +69,13 @@
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
+                                                    (  <span class="symbol required" aria-required="true"></span>  required field  )
+                                                </label>
+                                                <div class="col-sm-9"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Name</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
@@ -110,9 +117,20 @@
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" name="surveyer_district">
+                                                    <select id="form-field-select-3" class="form-control search-select"
+                                                            name="surveyer_district">
+                                                        <option value="">&nbsp;Please Select a Type</option>
+
+                                                        @if(!empty($all_district))
+                                                        @foreach($all_district as $key =>$list)
+                                                            <option value="{{$list}}">{{$list}}</option>
+                                                        @endforeach
+                                                        @endif
+
+                                                    </select>
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Post Code</strong>
@@ -146,6 +164,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Address</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
                                                     <textarea name="surveyer_address" class="form-control" cols="10" rows="7"></textarea>

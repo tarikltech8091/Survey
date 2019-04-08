@@ -17,12 +17,13 @@ class CreateSurveyerAssignTblTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('assign_surveyer_id')->unsigned();
             $table->string('assign_surveyer_name');
+            $table->string('assign_surveyer_mobile');
             $table->bigInteger('assign_campaign_id')->unsigned();
             $table->string('assign_campaign_name');
             $table->string('assign_zone');
             $table->integer('assign_target')->default(0);
             $table->integer('complete_target')->default(0);
-            $table->float('surveyer_prize_amount')->nullable();
+            $table->float('surveyer_prize_amount')->default(0);
             $table->string('validate_refference')->nullable();
             $table->string('assign_campaign_complain')->nullable();
             $table->string('assign_campaign_description')->nullable();

@@ -125,6 +125,24 @@
       Route::get('/participate/delete/id-{id}',array('as'=>'Participate Delete' , 'desc'=>'entry & edit', 'uses' =>'ParticipateController@Delete'));
 
 
+      /*################
+      ## Category Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/category/list',array('as'=>' Category List' , 'desc'=>'entry & Edit', 'uses' =>'CategoryController@getAllContent'));
+      #Create
+      Route::get('/category/create',array('as'=>'Category Create' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Create'));
+      #Store
+      Route::post('/category/save',array('as'=>'Category Save' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Store'));
+      #ChangeStatus
+      Route::get('/category/change/status/{id}/{status}',array('as'=>'Category Status Change' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@ChangePublishStatus'));
+      #Edit
+      Route::get('/category/edit/id-{id}',array('as'=>'Category Edit' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Edit'));
+      #Update
+      Route::post('/category/update/id-{id}',array('as'=>'Category Update' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Update'));
+      #Delete
+      Route::get('/category/delete/id-{id}',array('as'=>'Category Delete' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Delete'));
 
 
       /*################
@@ -170,6 +188,9 @@
       #CampaignPaymentUpdate
       Route::post('/campaign/payment/update/id-{id}',array('as'=>'Campaign Payment Update' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentUpdate'));
 
+      #CampaignPaymentDelete
+      Route::get('/campaign/payment/delete/id-{id}',array('as'=>'Campaign Payment Delete' , 'desc'=>'entry & edit', 'uses' =>'PaymentController@CampaignPaymentDelete'));
+
 
 
       /*################
@@ -206,6 +227,9 @@
 
       #Create
       Route::get('/earn/payment',array('as'=>'Earn Payment' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Create'));
+
+      #AjaxTypeSelect
+      Route::get('/ajax/payment/user/{user_type}',array('as'=>'Ajax Payment User Type' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@AjaxPaymentUserType'));
 
       #Store
       Route::post('/earn/payment/save',array('as'=>'Earn Payment Save' , 'desc'=>'entry & edit', 'uses' =>'EarnPaidController@Store'));

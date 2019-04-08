@@ -88,8 +88,6 @@ class QuestionController extends Controller
             'question_option_1' => 'required',
             'question_option_2' => 'required',
             'question_option_3' => 'required',
-            'question_option_4' => 'required',
-            'question_option_new' => 'required',
             'question_points' => 'required',
         ]);
 
@@ -202,8 +200,6 @@ class QuestionController extends Controller
             'question_option_1' => 'required',
             'question_option_2' => 'required',
             'question_option_3' => 'required',
-            'question_option_4' => 'required',
-            'question_option_new' => 'required',
             'question_points' => 'required',
         ]);
 

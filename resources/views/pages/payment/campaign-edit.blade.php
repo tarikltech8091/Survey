@@ -15,6 +15,22 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="panel-body">
+                    <ul class="nav nav-tabs tab-bricky">
+                        <li>
+                            <a href="{{url('/campaign/payment')}}">
+                                <i class="green fa fa-bell"></i> Add Campaign Payment
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{url('/campaign/payment/list')}}">
+                                <i class="green clip-feed"></i> Campaign Payment List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="panel-body">
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">

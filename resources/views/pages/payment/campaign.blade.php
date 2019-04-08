@@ -34,7 +34,7 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="active">
-                        <a href="{{url('/campaign/payment/create')}}">
+                        <a href="{{url('/campaign/payment')}}">
                             <i class="green fa fa-bell"></i> Add Campaign Payment
                         </a>
                     </li>

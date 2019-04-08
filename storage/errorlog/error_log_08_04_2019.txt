@@ -1,0 +1,3 @@
+08-04-2019 05:33:46 - error_log --> 127.0.0.1|1|http://localhost:41/category/save|Message : Undefined index: category_mobile, File : /var/www/html/php72/Survey/app/Http/Controllers/CategoryController.php, Line : 107
+08-04-2019 05:33:50 - error_log --> 127.0.0.1|1|http://localhost:41/category/save|Message : Undefined index: category_mobile, File : /var/www/html/php72/Survey/app/Http/Controllers/CategoryController.php, Line : 107
+08-04-2019 07:25:47 - error_log --> 127.0.0.1|1|http://localhost:41/campaign/payment/save|Message : Undefined variable: request, File : /var/www/html/php72/Survey/app/Http/Controllers/PaymentController.php, Line : 98

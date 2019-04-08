@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Common;
 class SurveyerController extends Controller
 {
 
@@ -66,7 +66,7 @@ class SurveyerController extends Controller
      *********************************************/
     public function Create()
     {
-
+        $data['all_district']=\App\Common::AllDistrict();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.surveyer.create',$data);
@@ -93,7 +93,7 @@ class SurveyerController extends Controller
 
         if($v->passes()){
 
-            // try{
+            try{
 
         	    $surveyer_profile_image='';
         	    $image_type='surveyer';
@@ -143,11 +143,11 @@ class SurveyerController extends Controller
 
                 }else return redirect()->back()->with('errormessage','surveyer already created.');
 
-            // }catch (\Exception $e){
-            //     $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-            //     \App\System::ErrorLogWrite($message);
-            //     return redirect()->back()->with('errormessage','Something wrong happend in surveyer Upload');
-            // }
+            }catch (\Exception $e){
+                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+                \App\System::ErrorLogWrite($message);
+                return redirect()->back()->with('errormessage','Something wrong happend in surveyer Upload');
+            }
         } else{
             return redirect()->back()->withErrors($v)->withInput();
         }
@@ -189,6 +189,7 @@ class SurveyerController extends Controller
      *********************************************/
     public function Edit($id)
     {
+        $data['all_district']=\App\Common::AllDistrict();
         $data['edit'] = \DB::table('surveyer_tbl')->where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;

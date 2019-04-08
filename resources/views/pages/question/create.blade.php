@@ -64,7 +64,7 @@
 
 
                                         <form role="form" class="form-horizontal" action="{{ url('/question/save') }}"
-                                              id="quiz" method="post" role="form" enctype="multipart/form-data">
+                                              id="question" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
@@ -100,15 +100,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Question Position</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
-                                                </label>
-                                                <div class="col-sm-6">
-                                                    <input type="number" class="form-control" name="question_position">
-                                                </div>
-                                            </div>
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
@@ -117,6 +108,16 @@
                                                 </label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_title">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Question Position</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-6">
+                                                    <input type="number" class="form-control" name="question_position">
                                                 </div>
                                             </div>
 
@@ -153,7 +154,6 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option 4</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_4">
@@ -163,7 +163,6 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option New</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_new">
@@ -177,28 +176,7 @@
                                                 </label>
                                                 <div class="col-sm-6">
                                                     <input type="radio" name="question_special" value="1"> Yes<br>
-                                                    <input type="radio" name="question_special" value="0"> No
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Prize Amount</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
-                                                </label>
-                                                <div class="col-sm-6">
-                                                    <input type="number" class="form-control" name="question_prize_amount">
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">
-                                                    <strong>Physical Prize</strong>
-                                                    <span class="symbol required" aria-required="true"></span>
-                                                </label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control" name="question_physical_prize">
+                                                    <input type="radio" name="question_special" value="0" checked=""> No
                                                 </div>
                                             </div>
 
@@ -238,12 +216,18 @@
 @section('JScript')
     <script>
         $(function () {
-            $('#quiz').validate({
+            $('#question').validate({
                 rules: {
-                    question_id: {
+                    question_campaign_id: {
                         required: true
                     },
-                    quiz_title: {
+                    question_type: {
+                        required: true
+                    },
+                    question_title: {
+                        required: true
+                    },
+                    question_position: {
                         required: true
                     },
                     question_option_1: {
@@ -252,13 +236,13 @@
                     question_option_2: {
                         required: true
                     },
-                    quiz_answer: {
+                    question_option_3: {
                         required: true
                     },
-                    quiz_type: {
+                    question_special: {
                         required: true
                     },
-                    video_url: {
+                    question_points: {
                         required: true
                     }
                 },

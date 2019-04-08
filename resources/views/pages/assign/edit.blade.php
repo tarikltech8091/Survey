@@ -99,6 +99,8 @@
                                     @foreach($all_surveyer as $key =>$list)
                                         <option {{($edit->assign_surveyer_id == $list->id) ? 'selected' : ''}}  value="{{$list->id}}">{{$list->surveyer_name}}</option>
                                         <input type="hidden" class="form-control" name="assign_surveyer_name" value="{{$list->surveyer_name}}">
+                                        <input type="hidden" class="form-control" name="assign_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+
                                     @endforeach
                                     @endif
 
@@ -165,28 +167,19 @@
         $(function () {
             $('#surveyer').validate({
                 rules: {
-                    surveyer_name: {
+                    assign_campaign_id: {
                         required: true
                     },
-                    surveyer_mobile: {
+                    assign_surveyer_id: {
                         required: true
                     },
-                    surveyer_email: {
+                    assign_zone: {
                         required: true
                     },
-                    surveyer_join_date: {
+                    assign_target: {
                         required: true
                     },
-                    surveyer_district: {
-                        required: true
-                    },
-                    surveyer_address: {
-                        required: true
-                    },
-                    surveyer_post_code: {
-                        required: true
-                    },
-                    surveyer_nid: {
+                    surveyer_prize_amount: {
                         required: true
                     }
                 },

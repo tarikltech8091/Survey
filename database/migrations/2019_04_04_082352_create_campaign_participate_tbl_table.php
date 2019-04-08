@@ -20,7 +20,8 @@ class CreateCampaignParticipateTblTable extends Migration
             $table->bigInteger('payment_requester_id')->unsigned();
             $table->string('payment_date');
             $table->string('payment_type');
-            $table->float('payment_amount');
+            $table->float('payment_amount')->default(0);
+            $table->integer('campaign_participate_point')->default(0);
             $table->string('payment_transaction_id');
             $table->string('payment_status')->default(0);
             $table->string('assign_created_by')->nullable();

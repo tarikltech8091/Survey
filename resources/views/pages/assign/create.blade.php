@@ -62,12 +62,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-
                                         <form role="form" class="form-horizontal" action="{{ url('/surveyer/assign/save') }}"
                                               id="surveyer_assign" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-
-
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
@@ -105,6 +102,8 @@
                                                         @foreach($all_surveyer as $key =>$list)
                                                             <option value="{{$list->id}}">{{$list->surveyer_name}}</option>
                                                             <input type="hidden" class="form-control" name="assign_surveyer_name" value="{{$list->surveyer_name}}">
+                                                            <input type="hidden" class="form-control" name="assign_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                                            
                                                         @endforeach
                                                         @endif
 
@@ -178,28 +177,19 @@
         $(function () {
             $('#surveyer').validate({
                 rules: {
-                    surveyer_name: {
+                    assign_campaign_id: {
                         required: true
                     },
-                    surveyer_mobile: {
+                    assign_surveyer_id: {
                         required: true
                     },
-                    surveyer_email: {
+                    assign_zone: {
                         required: true
                     },
-                    surveyer_join_date: {
+                    assign_target: {
                         required: true
                     },
-                    surveyer_district: {
-                        required: true
-                    },
-                    surveyer_address: {
-                        required: true
-                    },
-                    surveyer_post_code: {
-                        required: true
-                    },
-                    surveyer_nid: {
+                    surveyer_prize_amount: {
                         required: true
                     }
                 },

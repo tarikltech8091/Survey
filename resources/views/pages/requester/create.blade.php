@@ -103,15 +103,26 @@
                                                 </div>
                                             </div>
 
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Requester District</strong>
+                                                    <strong>Participate District</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" name="requester_district">
+                                                    <select id="form-field-select-3" class="form-control search-select" name="requester_district">
+                                                        <option value="">&nbsp;Please Select a Type</option>
+
+                                                        @if(!empty($all_district))
+                                                        @foreach($all_district as $key =>$list)
+                                                            <option value="{{$list}}">{{$list}}</option>
+                                                        @endforeach
+                                                        @endif
+
+                                                    </select>
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Requester Post Code</strong>
@@ -137,6 +148,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Requester Address</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
                                                     <textarea name="requester_address" class="form-control" cols="10" rows="7"></textarea>

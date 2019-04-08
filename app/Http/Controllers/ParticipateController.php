@@ -66,7 +66,7 @@ class ParticipateController extends Controller
      *********************************************/
     public function Create()
     {
-
+        $data['all_district']=\App\Common::AllDistrict();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.participate.create',$data);
@@ -197,6 +197,7 @@ class ParticipateController extends Controller
      *********************************************/
     public function Edit($id)
     {
+        $data['all_district']=\App\Common::AllDistrict();
         $data['edit'] = \DB::table('participate_tbl')->where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;

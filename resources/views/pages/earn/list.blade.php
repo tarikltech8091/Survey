@@ -130,7 +130,7 @@
                                                                 </li>
                                                                 
                                                                 <li>
-                                                                    <a class="earn_payment-delete" data-earn-payment-id="{{$list->id}}">
+                                                                    <a class="earn-delete" data-earn-id="{{$list->id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
                                                                 </li>
@@ -141,9 +141,9 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="11">
+                                                <td colspan="11" class="text-center">
                                                     <div class="alert alert-success" role="alert">
-                                                        <h4>No Data Available !</h4>
+                                                        No Data Available !
                                                     </div>
                                                 </td>
                                             </tr>
@@ -243,12 +243,12 @@
             });
 
 
-            // earn payment delete
-            $('.earn_payment-delete').on('click', function (e) {
+            // earn delete
+            $('.earn-delete').on('click', function (e) {
                 e.preventDefault();
-                var id = $(this).data('earn-payment-id');
+                var id = $(this).data('earn-id');
                 bootbox.dialog({
-                    message: "Are you sure you want to delete this earn ?",
+                    message: "Are you sure to delete this earn ?",
                     title: "<i class='glyphicon glyphicon-trash'></i> Delete !",
                     buttons: {
                         success: {
@@ -279,6 +279,8 @@
                     }
                 });
             });
+
+
         })
     </script>
 @endsection

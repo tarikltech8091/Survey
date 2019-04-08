@@ -47,6 +47,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Name</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" value="{{isset($edit->campaign_name)? $edit->campaign_name:''}}" name="campaign_name">
@@ -72,8 +73,11 @@
                             <div class="col-sm-4">
                                 <select id="form-field-select-3" class="form-control search-select" name="campaign_category">
                                     <option value="">&nbsp;Please Select a Type</option>
-                                        <option {{($edit->campaign_requester_id == 'telecom') ? 'selected' : ''}} value="telecom">Telecom</option>
-                                        <option {{($edit->campaign_requester_id == 'generel') ? 'selected' : ''}} value="generel">Generel</option>
+                                        @if(!empty($all_category))
+                                        @foreach($all_category as $key =>$value)
+                                            <option {{($edit->campaign_category == $value->category_name) ? 'selected' : ''}} value="{{$value->category_name}}">{{$value->category_name}}</option>
+                                        @endforeach
+                                        @endif
                                 </select>
                             </div>
                         </div>
@@ -104,6 +108,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Start Date</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" value="{{isset($edit->campaign_start_date)? $edit->campaign_start_date:''}}" name="campaign_start_date">
@@ -113,6 +118,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign End Date</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" value="{{isset($edit->campaign_end_date)? $edit->campaign_end_date:''}}" name="campaign_end_date">
@@ -140,7 +146,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Total Paid Cost</strong>
                                 <span class="symbol required" aria-required="true"></span>
@@ -148,12 +154,11 @@
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" name="campaign_total_cost_paid" value="{{isset($edit->campaign_total_cost_paid)? $edit->campaign_total_cost_paid:''}}">
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Surveyer Cost</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" value="{{isset($edit->campaign_cost_for_surveyer)? $edit->campaign_cost_for_surveyer:''}}" name="campaign_cost_for_surveyer">
@@ -164,7 +169,6 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Prize Amount</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" name="campaign_prize_amount" value="{{isset($edit->campaign_prize_amount)? $edit->campaign_prize_amount:''}}">
@@ -175,7 +179,6 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Physical Prize</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="campaign_physical_prize" value="{{isset($edit->campaign_physical_prize)? $edit->campaign_physical_prize:''}}">
@@ -186,7 +189,6 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Zone</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" value="{{isset($edit->campaign_zone)? $edit->campaign_zone:''}}" name="campaign_zone">
@@ -197,7 +199,6 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Number Of Zone</strong>
-                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" value="{{isset($edit->campaign_total_num_of_zone)? $edit->campaign_total_num_of_zone:''}}" name="campaign_total_num_of_zone">
@@ -297,9 +298,6 @@
                         required: true
                     },
                     campaign_total_cost:{
-                        required: true
-                    },
-                    campaign_total_num_of_zone:{
                         required: true
                     }
                 },

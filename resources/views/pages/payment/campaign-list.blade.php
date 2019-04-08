@@ -34,7 +34,7 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="">
-                        <a href="{{url('/campaign/payment/create')}}">
+                        <a href="{{url('/campaign/payment')}}">
                             <i class="green fa fa-bell"></i> Add Campaign Payment
                         </a>
                     </li>
@@ -132,6 +132,7 @@
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
                                                                 </li> -->
+
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -139,10 +140,8 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="13">
-                                                    <div class="alert alert-success" role="alert">
-                                                        <h4>No Data Available !</h4>
-                                                    </div>
+                                                <td colspan="13" class="text-center">
+                                                    <h4>No Data Available !</h4>
                                                 </td>
                                             </tr>
                                         @endif

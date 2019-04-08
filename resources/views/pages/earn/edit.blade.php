@@ -15,6 +15,22 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="panel-body">
+                    <ul id="myTab" class="nav nav-tabs tab-bricky">
+                        <li>
+                            <a href="{{url('/earn/payment')}}">
+                                <i class="green fa fa-bell"></i> Paid Payment
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{url('/earn/payment/list')}}">
+                                <i class="green clip-feed"></i> Paid Payment List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="panel-body">
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">
@@ -50,7 +66,17 @@
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
-                                <select id="form-field-select-3" class="form-control search-select"
+                                <input type="text" class="form-control" name="earn_paid_user_type" value="{{isset($edit->earn_paid_user_type)? $edit->earn_paid_user_type:''}}" readonly="">
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>User Type</strong>
+                                <span class="symbol required" aria-required="true"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select id="form-field-select-3" class="form-control search-select user_type"
                                         name="earn_paid_user_type">
                                     <option value="">&nbsp;Please Select a Type</option>
                                         <option {{($edit->earn_paid_user_type == 'surveyer') ? 'selected' : ''}} value="surveyer">Surveyer</option>
@@ -59,49 +85,54 @@
                             </div>
                         </div>
 
+                        <div class="user_type_details">
+                            
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Select Surveyer</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select id="form-field-select-3" class="form-control search-select"
-                                        name="earn_paid_surveyer_id">
-                                    <option value="">&nbsp;Please Select a Type</option>
+                        </div> -->
 
-                                    @if(!empty($all_surveyer))
-                                    @foreach($all_surveyer as $key =>$list)
-                                        <option {{($edit->earn_paid_surveyer_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->surveyer_name}}</option>
-                                        <input type="hidden" class="form-control" name="earn_paid_surveyer_mobile" value="{{$list->surveyer_mobile}}">
-                                    @endforeach
-                                    @endif
+                        @if($edit->earn_paid_user_type == "surveyer")
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <strong>Select Surveyer</strong>
+                                    <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <select id="form-field-select-3" class="form-control search-select"
+                                            name="earn_paid_surveyer_id">
+                                        <option value="">&nbsp;Please Select a Type</option>
 
-                                </select>
+                                        @if(!empty($all_surveyer))
+                                        @foreach($all_surveyer as $key =>$list)
+                                            <option {{($edit->earn_paid_surveyer_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->surveyer_name}}</option>
+                                            <input type="hidden" class="form-control" name="earn_paid_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                        @endforeach
+                                        @endif
+
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        @elseif($edit->earn_paid_user_type == "participate")
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <strong>Select Participate Member</strong>
+                                    <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <select id="form-field-select-3" class="form-control search-select"
+                                            name="earn_paid_participate_id">
+                                        <option value="">&nbsp;Please Select a Type</option>
 
+                                        @if(!empty($all_participate))
+                                        @foreach($all_participate as $key =>$value)
+                                            <option {{($edit->earn_paid_participate_id == $list->id) ? 'selected' : ''}} value="{{$value->id}}">{{$value->participate_name}}</option>
+                                            <input type="hidden" class="form-control" name="earn_paid_participate_mobile" value="{{$value->participate_mobile}}">
+                                        @endforeach
+                                        @endif
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                <strong>Select Participate Member</strong>
-                                <span class="symbol required" aria-required="true"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select id="form-field-select-3" class="form-control search-select"
-                                        name="earn_paid_participate_id">
-                                    <option value="">&nbsp;Please Select a Type</option>
-
-                                    @if(!empty($all_participate))
-                                    @foreach($all_participate as $key =>$value)
-                                        <option {{($edit->earn_paid_participate_id == $list->id) ? 'selected' : ''}} value="{{$value->id}}">{{$value->participate_name}}</option>
-                                        <input type="hidden" class="form-control" name="earn_paid_participate_mobile" value="{{$value->participate_mobile}}">
-                                    @endforeach
-                                    @endif
-
-                                </select>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
 
                         <div class="form-group">
@@ -182,6 +213,35 @@
 @section('JScript')
     <script>
         $(function () {
+
+
+            /* ===============================
+                User Type view Ajax
+           * ============================= */
+
+            /*jQuery('.user_type').change(function(){
+
+                var user_type = jQuery(this).val();
+                var site_url = jQuery('.site_url').val();
+                if(user_type.length !=0){
+
+                    var request_url = site_url+'/ajax/payment/user/'+user_type;
+
+                    jQuery.ajax({
+                        url: request_url,
+                        type: "get",
+                        success:function(data){
+
+                            jQuery('.user_type_details').html(data);
+                        }
+                    });
+
+                }else alert("Please Select User Type");
+
+            });*/
+
+
+
             $('#earn_payment').validate({
                 rules: {
                     earn_paid_user_type: {
