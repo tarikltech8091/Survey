@@ -18,14 +18,20 @@ class CreateCampaignTblTable extends Migration
             $table->string('campaign_name')->index();
             $table->string('campaign_name_slug');
             $table->string('campaign_category')->nullable();
+            $table->foreign('campaign_category')->references('category_name')
+                ->on('category_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('campaign_title')->nullable();
             $table->string('campaign_requester_name');
             $table->bigInteger('campaign_requester_id')->unsigned();
+            $table->foreign('campaign_requester_id')->references('id')
+                ->on('requester_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('campaign_requester_mobile');
+            $table->foreign('campaign_requester_mobile')->references('requester_mobile')
+                ->on('requester_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('campaign_create_date');
             $table->string('campaign_start_date');
             $table->string('campaign_end_date');
-            $table->integer('campaign_num_of_days')->default(0);
+            $table->integer('campaign_num_of_days')->nullable()->default(0);
             $table->string('campaign_unique_code')->nullable();
             $table->float('campaign_total_cost');
             $table->float('campaign_total_cost_paid')->default(0);
@@ -33,7 +39,7 @@ class CreateCampaignTblTable extends Migration
             $table->float('campaign_prize_amount')->nullable();
             $table->string('campaign_physical_prize')->nullable();
             $table->string('campaign_zone')->nullable();
-            $table->integer('campaign_total_num_of_zone')->default(0);
+            $table->integer('campaign_total_num_of_zone')->nullable()->default(0);
             $table->integer('campaign_target_user')->nullable();
             $table->string('campaign_image')->nullable();
             $table->string('campaign_description')->nullable();

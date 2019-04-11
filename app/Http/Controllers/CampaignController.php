@@ -100,6 +100,7 @@ class CampaignController extends Controller
 
 
         if($v->passes()){
+            
             $campaign_image="";
             $image_type="campaign";
 

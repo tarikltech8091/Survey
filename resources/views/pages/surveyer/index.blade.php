@@ -72,11 +72,11 @@
                                                         <strong>Search by Mobile : </strong>
                                                     </label>
                                                     <select class="form-control search-select" name="surveyer_mobile">
-                                                        <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']==0)) ? 'selected' : ''}} value="0">Select Mobile Number</option>
+                                                        <!-- <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']==0)) ? 'selected' : ''}} value="0">Select Mobile Number</option> -->
 
-                                                        @if(!empty($all_content) && count($all_content) > 0)
-                                                        @foreach($all_content as $key => $list)
-                                                            <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']== $list->surveyer_mobile)) ? 'selected' : ''}} value="{{$list->surveyer_mobile}}">{{$list->surveyer_mobile}}</option>
+                                                        @if(!empty($all_data) && count($all_data) > 0)
+                                                        @foreach($all_data as $key => $list)
+                                                            <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile'] == $list->surveyer_mobile)) ? 'selected' : ''}} value="{{$list->surveyer_mobile}}">{{$list->surveyer_mobile}}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -130,15 +130,16 @@
                                         <td>{{$surveyer->surveyer_district}}</td>
                                         <td>{{$surveyer->surveyer_nid}}</td>
                                         <td>{{$surveyer->surveyer_zone}}</td>
-                                        <td>{{$surveyer->surveyer_address}}</td>
+                                        <td>{{ str_limit($surveyer->surveyer_address, 15) }}</td>
+                                        
                                         <td>
                                             @if($surveyer->surveyer_status == 1)
                                                 <span class="label label-success">
-                                                    Published
+                                                    Active
                                                 </span>
                                             @else
                                                 <span class="label label-danger">
-                                                    Un-published
+                                                    Block
                                                 </span>
                                             @endif
                                         </td>
@@ -149,13 +150,13 @@
                                                     <li>
                                                         @if($surveyer->surveyer_status == 1)
                                                             <a class="status-change"
-                                                               data-publish-status="0" data-surveyer-id="{{ $surveyer->id}}" title="Click for unpublish">
-                                                                <i class="fa fa-unlock"></i> Un Publish
+                                                               data-publish-status="-1" data-surveyer-id="{{ $surveyer->id}}" title="Click for block">
+                                                                <i class="fa fa-unlock"></i> Block
                                                             </a>
                                                         @else
-                                                            <a class="status-change " title="Click for publish"
+                                                            <a class="status-change " title="Click for Active"
                                                                data-publish-status="1" data-surveyer-id="{{ $surveyer->id}}">
-                                                                <i class="fa fa-lock"></i> Publish
+                                                                <i class="fa fa-lock"></i> Unblock
                                                             </a>
                                                         @endif
                                                     </li>
@@ -204,8 +205,8 @@
                 var id = $(this).data('surveyer-id');
                 if(status == 0) {
                     bootbox.dialog({
-                        message: "Are you sure you want to unpublish this surveyer ?",
-                        title: "<i class='glyphicon glyphicon-eye-close'></i> Unpublish !",
+                        message: "Are you sure you want to active this surveyer ?",
+                        title: "<i class='glyphicon glyphicon-eye-close'></i> Active !",
                         buttons: {
                             danger: {
                                 label: "No!",
@@ -237,7 +238,7 @@
                     });
                 } else {
                     bootbox.dialog({
-                        message: "Are you sure you want to publish this surveyer?",
+                        message: "Are you sure to change  this surveyer status?",
                         title: "<i class='glyphicon glyphicon-eye-open'></i> Publish !",
                         buttons: {
                             danger: {

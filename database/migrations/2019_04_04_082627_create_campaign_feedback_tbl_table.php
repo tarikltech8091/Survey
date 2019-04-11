@@ -16,7 +16,11 @@ class CreateCampaignFeedbackTblTable extends Migration
         Schema::create('campaign_feedback_tbl', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('feedback_question_id')->unsigned();
+            $table->foreign('feedback_question_id')->references('id')
+                ->on('question_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('feedback_campaign_id')->unsigned();
+            $table->foreign('feedback_campaign_id')->references('id')
+                ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('feedback_user_type')->nullable();
             $table->string('feedback_mobile_number');
             $table->string('feedback_district')->nullable();

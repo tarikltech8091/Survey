@@ -17,9 +17,17 @@ class CreateEarnPaidTblTable extends Migration
             $table->bigIncrements('id');
             $table->string('earn_paid_user_type');
             $table->bigInteger('earn_paid_surveyer_id')->unsigned()->nullable();
-            $table->string('earn_paid_surveyer_mobile')->nullable();            
+            $table->foreign('earn_paid_surveyer_id')->references('id')
+                ->on('surveyer_tbl')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('earn_paid_surveyer_mobile')->nullable();
+            $table->foreign('earn_paid_surveyer_mobile')->references('surveyer_mobile')
+                ->on('surveyer_tbl')->onDelete('cascade')->onUpdate('cascade');            
             $table->bigInteger('earn_paid_participate_id')->unsigned()->nullable();
+            $table->foreign('earn_paid_participate_id')->references('id')
+                ->on('participate_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('earn_paid_participate_mobile')->nullable();
+            $table->foreign('earn_paid_participate_mobile')->references('participate_mobile')
+                ->on('participate_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('earn_paid_date')->nullable();
             $table->string('earn_paid_payment_type');
             $table->float('earn_paid_amount');

@@ -188,7 +188,7 @@
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
-                                <strong>Campaign Zone</strong>
+                                <strong>Campaign Zone Dertails</strong>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" value="{{isset($edit->campaign_zone)? $edit->campaign_zone:''}}" name="campaign_zone">

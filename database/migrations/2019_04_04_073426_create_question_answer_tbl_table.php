@@ -16,8 +16,14 @@ class CreateQuestionAnswerTblTable extends Migration
         Schema::create('question_answer_tbl', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('campaign_id')->unsigned();
-            $table->bigInteger('question_id')->unsigned();            
+            $table->foreign('campaign_id')->references('id')
+                ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('question_id')->unsigned();
+            $table->foreign('question_id')->references('id')
+                ->on('question_tbl')->onDelete('cascade')->onUpdate('cascade');            
             $table->bigInteger('participate_id')->unsigned();
+            $table->foreign('participate_id')->references('id')
+                ->on('participate_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('participate_mobile');
             $table->string('question_answer_type');
             $table->string('question_title');

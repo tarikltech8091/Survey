@@ -19,6 +19,8 @@ class CreateQuestionTblTable extends Migration
             $table->string('question_type');
             $table->string('question_campaign_name');
             $table->bigInteger('question_campaign_id')->unsigned();
+            $table->foreign('question_campaign_id')->references('id')
+                ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('question_position');
             $table->string('question_special')->nullable();
             $table->string('question_option_1');

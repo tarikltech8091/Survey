@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Common;
+use App\Surveyer;
+
 class SurveyerController extends Controller
 {
 
@@ -27,11 +29,16 @@ class SurveyerController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['surveyer_status'])){
-            $all_content =  \DB::table('surveyer_tbl')->where(function($query){
+            $all_content =  \App\Surveyer::where(function($query){
                 if(isset($_GET['surveyer_status'])){
                     $query->where(function ($q){
                         $q->where('surveyer_status', $_GET['surveyer_status']);
                     });
+                }
+                if(isset($_GET['surveyer_mobile'])){
+                    $query->where(function ($q){
+                        $q->where('surveyer_mobile', $_GET['surveyer_mobile']);
+                    });  
                 }
             })
                 ->orderBy('id','DESC')
@@ -47,7 +54,7 @@ class SurveyerController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('surveyer_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content=\App\Surveyer::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/surveyer/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -56,7 +63,7 @@ class SurveyerController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('surveyer_tbl')->orderby('id','desc')->get();
+        $data['all_data'] = \App\Surveyer::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.surveyer.index',$data);
@@ -128,7 +135,7 @@ class SurveyerController extends Controller
                 $data['surveyer_updated_by']=\Auth::user()->id;
                
 
-                // $insert=\DB::table('surveyer_tbl')->insert($data);
+                // $insert=\App\Surveyer::insert($data);
 
                 $surveyer_insert = \App\Surveyer::firstOrCreate(
                     [
@@ -160,7 +167,7 @@ class SurveyerController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this surveyer has any content published or not
-        $content_exists =\DB::table('surveyer_tbl')->where('id',$id)->first();
+        $content_exists =\App\Surveyer::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -169,7 +176,7 @@ class SurveyerController extends Controller
             } else{
                 $data['surveyer_status']=0;
             }
-            $update=\DB::table('surveyer_tbl')->where('id',$id)->update($data);
+            $update=\App\Surveyer::where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -191,7 +198,7 @@ class SurveyerController extends Controller
     public function Edit($id)
     {
         $data['all_district']=\App\Common::AllDistrict();
-        $data['edit'] = \DB::table('surveyer_tbl')->where('id', $id)->first();
+        $data['edit'] = \App\Surveyer::where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.surveyer.edit',$data);
@@ -220,7 +227,7 @@ class SurveyerController extends Controller
             try
             {
 
-                $current_data= \DB::table('surveyer_tbl')->where('id', $id)->first();
+                $current_data= \App\Surveyer::where('id', $id)->first();
 
                 if(!empty($current_data)){
 	                
@@ -256,7 +263,7 @@ class SurveyerController extends Controller
 	                $data['surveyer_updated_by']=\Auth::user()->id;
 
 
-	                $update=\DB::table('surveyer_tbl')->where('id', $id)->update($data);
+	                $update=\App\Surveyer::where('id', $id)->update($data);
 
 	                // \App\System::EventLogWrite('update,surveyer_tbl',json_encode($data));
 

@@ -29,7 +29,6 @@ class User extends Authenticatable implements JWTSubject
         'last_login',
         'email',
         'password',
-        ''
     ];
 
     /**
@@ -75,17 +74,6 @@ class User extends Authenticatable implements JWTSubject
             return $loginstatuschange;
         }
     }
-
-
-    public function getJWTIdentifier() {
-        return $this->getKey();
-    }
-    
-    public function getJWTCustomClaims() {
-        return [];
-    }
-
-
 
 
 }

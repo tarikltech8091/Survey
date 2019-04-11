@@ -60,6 +60,49 @@
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
 
 
+      /*################
+      ## Category Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/category/list',array('as'=>' Category List' , 'desc'=>'entry & Edit', 'uses' =>'CategoryController@getAllContent'));
+      #Create
+      Route::get('/category/create',array('as'=>'Category Create' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Create'));
+      #Store
+      Route::post('/category/save',array('as'=>'Category Save' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Store'));
+      #ChangeStatus
+      Route::get('/category/change/status/{id}/{status}',array('as'=>'Category Status Change' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@ChangePublishStatus'));
+      #Edit
+      Route::get('/category/edit/id-{id}',array('as'=>'Category Edit' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Edit'));
+      #Update
+      Route::post('/category/update/id-{id}',array('as'=>'Category Update' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Update'));
+      #Delete
+      Route::get('/category/delete/id-{id}',array('as'=>'Category Delete' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Delete'));
+
+
+
+
+      /*################
+      ## Zone Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/zone/list',array('as'=>' Zone List' , 'desc'=>'entry & Edit', 'uses' =>'ZoneController@getAllContent'));
+      #Create
+      Route::get('/zone/create',array('as'=>'Zone Create' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Create'));
+      #Store
+      Route::post('/zone/save',array('as'=>'Zone Save' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Store'));
+      #ChangeStatus
+      Route::get('/zone/change/status/{id}/{status}',array('as'=>'Zone Status Change' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@ChangePublishStatus'));
+      #Edit
+      Route::get('/zone/edit/id-{id}',array('as'=>'Zone Edit' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Edit'));
+      #Update
+      Route::post('/zone/update/id-{id}',array('as'=>'Zone Update' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Update'));
+      #Delete
+      Route::get('/zone/delete/id-{id}',array('as'=>'Zone Delete' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Delete'));
+
+
+
 
       /*################
       ## Surveyer Settings
@@ -123,26 +166,6 @@
       Route::post('/participate/update/id-{id}',array('as'=>'Participate Update' , 'desc'=>'entry & edit', 'uses' =>'ParticipateController@Update'));
       #Delete
       Route::get('/participate/delete/id-{id}',array('as'=>'Participate Delete' , 'desc'=>'entry & edit', 'uses' =>'ParticipateController@Delete'));
-
-
-      /*################
-      ## Category Settings
-      #################*/
-
-      #getAllContent
-      Route::get('/category/list',array('as'=>' Category List' , 'desc'=>'entry & Edit', 'uses' =>'CategoryController@getAllContent'));
-      #Create
-      Route::get('/category/create',array('as'=>'Category Create' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Create'));
-      #Store
-      Route::post('/category/save',array('as'=>'Category Save' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Store'));
-      #ChangeStatus
-      Route::get('/category/change/status/{id}/{status}',array('as'=>'Category Status Change' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@ChangePublishStatus'));
-      #Edit
-      Route::get('/category/edit/id-{id}',array('as'=>'Category Edit' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Edit'));
-      #Update
-      Route::post('/category/update/id-{id}',array('as'=>'Category Update' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Update'));
-      #Delete
-      Route::get('/category/delete/id-{id}',array('as'=>'Category Delete' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Delete'));
 
 
       /*################
@@ -214,6 +237,9 @@
       #Delete
       Route::get('/surveyer/assign/delete/id-{id}',array('as'=>'Surveyer Assign Delete' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@Delete'));
 
+      #SuccessConfirm
+      Route::get('/surveyer/success/confirm/{id}/{status}',array('as'=>'Surveyer Success Confirme' , 'desc'=>'entry & edit', 'uses' =>'SurveyerAssignController@SuccessConfirm'));
+
 
 
 
@@ -267,6 +293,30 @@
       Route::post('/question/update/id-{id}',array('as'=>'Question Update' , 'desc'=>'entry & edit', 'uses' =>'QuestionController@Update'));
       #Delete
       Route::get('/question/delete/id-{id}',array('as'=>'Question Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionController@Delete'));
+
+
+ 
+
+      /*#######################
+      ## Question Answer Settings
+      #########################*/
+
+      #getAllContent
+      Route::get('/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllContent'));
+      #Create
+      Route::get('/question/answer/create',array('as'=>'Question Answer Create' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Create'));
+      Route::get('/question/answer/{surveyer_id}/{campaign_id}/{question_id}/',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@QuestionAnswer'));
+      
+      #Store
+      Route::post('/question/answer/save',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Store'));
+      #ChangeStatus
+      Route::get('/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangePublishStatus'));
+      #Edit
+      Route::get('/question/answer/edit/id-{id}',array('as'=>'Question Answer Edit' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Edit'));
+      #Update
+      Route::post('/question/answer/update/id-{id}',array('as'=>'Question Answer Update' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Update'));
+      #Delete
+      Route::get('/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Delete'));
 
 
  

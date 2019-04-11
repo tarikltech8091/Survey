@@ -132,8 +132,8 @@ class SurveyerAssignController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this campaign payment has any content published or not
-        $content_exists =\DB::table('surveyer_assign_tbl')->where('id',$id)->first();
-        if($content_exists)
+        $content_data =\DB::table('surveyer_assign_tbl')->where('id',$id)->first();
+        if($content_data)
         {
             $now = date('Y-m-d H:i:s');
             if($status=='1'){
@@ -141,6 +141,7 @@ class SurveyerAssignController extends Controller
             } else{
                 $data['assign_status']=0;
             }
+
             $update=\DB::table('surveyer_assign_tbl')->where('id',$id)->update($data);
 
             if($update) {
@@ -151,10 +152,73 @@ class SurveyerAssignController extends Controller
                 // \App\System::EventLogWrite('update,assign_status|Status did not updated.',$id);
             }
         } else{
-            echo 'There is no published content for this campaign. Please upload and publish any content to publish this content.';
+            echo 'There is no published content for this content. Please upload and publish any content to publish this content.';
         }
 
     }
+
+
+
+    /********************************************
+    ## Success Confirm for individual.
+     *********************************************/
+    public function SuccessConfirm($id, $status)
+    {
+
+        $now = date('Y-m-d H:i:s');
+
+        $current_data =\DB::table('surveyer_assign_tbl')->where('id',$id)->first();
+
+        if($current_data)
+        {
+            try{
+
+                $success = \DB::transaction(function () use($id, $status, $current_data){
+
+                    $assign_surveyer_id=$current_data->assign_surveyer_id;
+                    $surveyer_privious_earn=$current_data->surveyer_prize_amount;
+                    $current_surveyer_data =\DB::table('surveyer_tbl')->where('id',$assign_surveyer_id)->first();
+
+
+                    $data['success_status']=1;
+                    $surveyer_data['surveyer_total_earn']=$surveyer_privious_earn + $current_surveyer_data->surveyer_total_earn;
+
+                    
+                    $surveyer_assign_update=\DB::table('surveyer_assign_tbl')->where('id',$id)->update($data);
+                    $surveyer_update=\DB::table('surveyer_tbl')->where('id',$assign_surveyer_id)->update($surveyer_data);
+
+
+
+                    if(!$surveyer_assign_update || !$surveyer_update ){
+                        $error=1;
+                    }
+
+                    if(!isset($error)){
+                        /*\App\System::EventLogWrite('update,surveyer_assign_tbl',json_encode($data));
+                        \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));*/
+                        \DB::commit();
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+                });
+
+                echo 'Success Status updated successfully.';
+
+            }catch (\Exception $e){
+                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+                // \App\System::ErrorLogWrite($message);
+                echo 'Something wrong happend in Success Published.';
+
+            }
+
+        } else{
+            echo 'There is no assign content for this campaign. Please assign any campaign to publish this ststus.';
+        }
+
+    }
+
+
 
     /********************************************
     ##  Edit View

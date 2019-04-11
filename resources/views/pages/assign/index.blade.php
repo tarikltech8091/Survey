@@ -91,6 +91,7 @@
                                 <th>Target</th>
                                 <th>Prize</th>
                                 <th>Description</th>
+                                <th>Prize</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -109,6 +110,21 @@
                                         <td>{{$surveyer->surveyer_prize_amount}}</td>
                                         <td>{{ str_limit($surveyer->assign_campaign_description, 15)  }}</td>
                                         <td>
+                                            @if($surveyer->success_status == 1)
+                                                <span class="label label-success">
+                                                    Complete
+                                                </span>
+                                            @elseif($surveyer->success_status == -1)
+                                                <span class="label label-danger">
+                                                    Reject
+                                                </span>
+                                            @else
+                                                <span class="label label-warning">
+                                                    Waiting
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             @if($surveyer->assign_status == 1)
                                                 <span class="label label-success">
                                                     Published
@@ -121,7 +137,8 @@
                                         </td>
                                         <td style="width:14%">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
+                                                <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" role="menu">
                                                     <li><a href="{{url('/surveyer/assign/edit/id-'.$surveyer->id)}}"><i class="fa fa-pencil"></i> Edit</a></li>
                                                     <li>
                                                         @if($surveyer->assign_status == 1)
@@ -137,6 +154,12 @@
                                                         @endif
                                                     </li>
                                                     <li>
+                                                        <a class="success-status" data-success-status="1" data-surveyer-id="{{ $surveyer->id}}" title="Click for unpublish"><i class="fa fa-pencil"></i> Prize Confirm</a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-toggle="modal" data-target="#RejectDetailsModal"  data-id="" class="text_none" href=""><i class="fa fa-external-link"></i> Prize Reject</a>
+                                                    </li>
+                                                    <li>
                                                         <a class="surveyer-delete" data-surveyer-id="{{ $surveyer->id}}">
                                                             <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                         </a>
@@ -148,17 +171,45 @@
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="11">No Data available</td>
+                                    <td colspan="12">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>
                         </table>
                         {{isset($pagination)? $pagination:""}}
                     </div>
+
+
+
+
+                    <!-- Modal -->
+                    <div id="RejectDetailsModal" class="modal fade" role="dialog">
+                         <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Reject Details</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="coupon_details">
+
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
     </div>
+
+
+
+
+
     <style type="text/css">
         .table .tbl_image {
             width: 10%;
@@ -171,8 +222,41 @@
 
 @section('JScript')
     <script>
+
         $(function () {
             var site_url = $('.site_url').val();
+
+
+
+            // model view
+            $('.coupon_details_show').click(function(){
+
+                var coupon_id = jQuery(this).data('id');
+
+                var site_url = jQuery('.site_url').val();
+
+                var request_url  = site_url+'/dashboard/coupon-details/id-'+coupon_id;
+
+                jQuery.ajax({
+
+                  url: request_url,
+
+                  aysnc:false,
+
+                  type: 'get',
+
+                  success:function(data){
+
+                      jQuery('.coupon_details').html(data);
+
+                       // $("#CouponDetailsModal").modal('toggle');
+                  }
+
+                });
+
+            });
+
+
 
             //publish and unpublish
             $('.status-change').on('click', function (e) {
@@ -246,6 +330,52 @@
                     });
                 }
             });
+
+
+
+            //Prize publish and unpublish
+            $('.success-status').on('click', function (e) {
+                e.preventDefault();
+                var status = $(this).data('success-status');
+                var id = $(this).data('surveyer-id');
+                    bootbox.dialog({
+                        message: "Are you sure to confirm surveyer prize?",
+                        title: "<i class='glyphicon glyphicon-eye-close'></i> Unpublish !",
+                        buttons: {
+                            danger: {
+                                label: "No!",
+                                className: "btn-danger btn-squared",
+                                callback: function() {
+                                    $('.bootbox').modal('hide');
+                                }
+                            },
+                            success: {
+                                label: "Yes!",
+                                className: "btn-success btn-squared",
+                                callback: function() {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: site_url+'/surveyer/success/confirm/'+id+'/'+status
+                                    }).done(function(response){
+                                        bootbox.alert(response,
+                                            function(){
+                                                location.reload(true);
+                                            }
+                                        );
+
+                                    }).fail(function(response){
+                                        bootbox.alert(response);
+                                    })
+                                }
+                            }
+                        }
+                    });
+
+            });
+
+
+
+
             // surveyer delete
             $('.surveyer-delete').on('click', function (e) {
                 e.preventDefault();

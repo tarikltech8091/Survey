@@ -190,7 +190,6 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
                                             <strong>Campaign Prize Amount</strong>
-                                            <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="number" class="form-control" name="campaign_prize_amount">
@@ -210,7 +209,7 @@
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
-                                            <strong>Campaign Zone</strong>
+                                            <strong>Campaign Zone Dertails</strong>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" name="campaign_zone">

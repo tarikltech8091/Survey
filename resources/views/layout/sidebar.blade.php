@@ -55,6 +55,58 @@
             </li>
 
 
+
+
+            <li class="{{(isset($page_title) && (strpos($page_title,'Category')!== false )) ? 'active' : ''}}">
+                <a href="javascript:void (0)">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span class="title"> Category </span><i class="icon-arrow"></i>
+                    <span class="selected"></span>
+                </a>
+                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Category') !== false) ) ? 'block':'active'}};">
+                    <li class="{{isset($page_title) && ($page_title=='Add Category') ? 'active' : ''}}">
+                        <a href="{{url('/category/create')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Add Category </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Category List') ? 'active' : ''}}">
+                        <a href="{{url('/category/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Category List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <!-- <li class="{{(isset($page_title) && (strpos($page_title,'Zone')!== false )) ? 'active' : ''}}">
+                <a href="javascript:void (0)">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span class="title"> Zone </span><i class="icon-arrow"></i>
+                    <span class="selected"></span>
+                </a>
+                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Zone') !== false) ) ? 'block':'active'}};">
+                    <li class="{{isset($page_title) && ($page_title=='Add Zone') ? 'active' : ''}}">
+                        <a href="{{url('/zone/create')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Add Zone </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Zone List') ? 'active' : ''}}">
+                        <a href="{{url('/zone/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Zone List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li> -->
+
+
             <li class="{{(isset($page_title) && (strpos($page_title,'Surveyer')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
@@ -115,58 +167,6 @@
                         <a href="{{url('/requester/list')}}">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span class="title">Requester List</span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-
-
-            <li class="{{(isset($page_title) && (strpos($page_title,'Participate')!== false )) ? 'active' : ''}}">
-                <a href="javascript:void (0)">
-                    <i class="fa fa-file-text" aria-hidden="true"></i>
-                    <span class="title"> Participate </span><i class="icon-arrow"></i>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Participate') !== false) ) ? 'block':'active'}};">
-                    <li class="{{isset($page_title) && ($page_title=='Add Participate') ? 'active' : ''}}">
-                        <a href="{{url('/participate/create')}}">
-                            <i class="clip-plus-circle"></i>
-                            <span class="title"> Add Participate </span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
-                    <li class="{{isset($page_title) && ($page_title=='Participate List') ? 'active' : ''}}">
-                        <a href="{{url('/participate/list')}}">
-                            <i class="fa fa-tasks" aria-hidden="true"></i>
-                            <span class="title">Participate List</span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-
-
-            <li class="{{(isset($page_title) && (strpos($page_title,'Category')!== false )) ? 'active' : ''}}">
-                <a href="javascript:void (0)">
-                    <i class="fa fa-file-text" aria-hidden="true"></i>
-                    <span class="title"> Category </span><i class="icon-arrow"></i>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Category') !== false) ) ? 'block':'active'}};">
-                    <li class="{{isset($page_title) && ($page_title=='Add Category') ? 'active' : ''}}">
-                        <a href="{{url('/category/create')}}">
-                            <i class="clip-plus-circle"></i>
-                            <span class="title"> Add Category </span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
-                    <li class="{{isset($page_title) && ($page_title=='Category List') ? 'active' : ''}}">
-                        <a href="{{url('/category/list')}}">
-                            <i class="fa fa-tasks" aria-hidden="true"></i>
-                            <span class="title">Category List</span>
                             <span class="selected"></span>
                         </a>
                     </li>
@@ -246,10 +246,36 @@
 
 
 
+            <li class="{{(isset($page_title) && (strpos($page_title,'Participate')!== false )) ? 'active' : ''}}">
+                <a href="javascript:void (0)">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span class="title"> Participate </span><i class="icon-arrow"></i>
+                    <span class="selected"></span>
+                </a>
+                <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Participate') !== false) ) ? 'block':'active'}};">
+                    <li class="{{isset($page_title) && ($page_title=='Add Participate') ? 'active' : ''}}">
+                        <a href="{{url('/participate/create')}}">
+                            <i class="clip-plus-circle"></i>
+                            <span class="title"> Add Participate </span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Participate List') ? 'active' : ''}}">
+                        <a href="{{url('/participate/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Participate List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+
             <li class="{{(isset($page_title) && (strpos($page_title,'Earn')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
-                    <span class="title"> Earn </span><i class="icon-arrow"></i>
+                    <span class="title"> Earn  </span><i class="icon-arrow"></i>
                     <span class="selected"></span>
                 </a>
                 <ul class="sub-menu" style="display: {{( isset($page_title) && (strpos($page_title,'Earn') !== false) ) ? 'block':'active'}};">
