@@ -17,7 +17,7 @@
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i>
-                    question
+                    Question Answer List
                     <div class="panel-tools">
                         <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                         </a>
@@ -32,7 +32,7 @@
                         <div class="tabbable">
 
 
-                            <ul id="myTab" class="nav nav-tabs tab-bricky">
+                            <!-- <ul id="myTab" class="nav nav-tabs tab-bricky">
                                 <li>
                                     <a href="{{url('/question/create')}}">
                                         <i class="green fa fa-bell"></i> Add Question
@@ -43,7 +43,7 @@
                                         <i class="green clip-feed"></i> Question List
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
 
 
                             <div class="tab-content">

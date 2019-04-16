@@ -15,18 +15,20 @@ class CreateQuestionAnswerTblTable extends Migration
     {
         Schema::create('question_answer_tbl', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('campaign_id')->unsigned();
-            $table->foreign('campaign_id')->references('id')
+            $table->bigInteger('answer_campaign_id')->unsigned();
+            $table->foreign('answer_campaign_id')->references('id')
                 ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
-            $table->bigInteger('question_id')->unsigned();
-            $table->foreign('question_id')->references('id')
+            $table->bigInteger('answer_surveyer_id')->unsigned();
+            $table->foreign('answer_surveyer_id')->references('id')
+                ->on('surveyer_tbl')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('answer_question_id')->unsigned();
+            $table->foreign('answer_question_id')->references('id')
                 ->on('question_tbl')->onDelete('cascade')->onUpdate('cascade');            
-            $table->bigInteger('participate_id')->unsigned();
-            $table->foreign('participate_id')->references('id')
+            $table->string('answer_participate_mobile');
+            $table->foreign('answer_participate_mobile')->references('participate_mobile')
                 ->on('participate_tbl')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('participate_mobile');
             $table->string('question_answer_type');
-            $table->string('question_title');
+            $table->string('question_answer_title');
             $table->string('question_answer_option_1')->nullable();
             $table->string('question_answer_option_2')->nullable();
             $table->string('question_answer_option_3')->nullable();

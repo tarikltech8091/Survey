@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Requester;
+use App\Campaign;
 
 class CampaignController extends Controller
 {
@@ -28,7 +29,7 @@ class CampaignController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['campaign_status'])){
-            $all_content =  \DB::table('campaign_tbl')->where(function($query){
+            $all_content =  \App\Campaign::where(function($query){
                 if(isset($_GET['campaign_status'])){
                     $query->where(function ($q){
                         $q->where('campaign_status', $_GET['campaign_status']);
@@ -48,7 +49,7 @@ class CampaignController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('campaign_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content= \App\Campaign::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/campaign/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -57,7 +58,7 @@ class CampaignController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('campaign_tbl')->orderby('id','desc')->get();
+        $data['all_data'] =  \App\Campaign::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.campaign.list',$data);
@@ -180,7 +181,7 @@ class CampaignController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this campaign has any content published or not
-        $content_exists =\DB::table('campaign_tbl')->where('id',$id)->first();
+        $content_exists = \App\Campaign::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -245,7 +246,7 @@ class CampaignController extends Controller
                 $campaign_image="";
                 $image_type="campaign";
 
-                $campaign_data= \DB::table('campaign_tbl')->where('id', $id)->first();
+                $campaign_data=  \App\Campaign::where('id', $id)->first();
 
                 $campaign_name=$request->input('campaign_name');
                 if($request->file('campaign_image')!=null){
@@ -284,7 +285,7 @@ class CampaignController extends Controller
                 $data['campaign_image'] = $campaign_image;
                 $data['campaign_updated_by'] = \Auth::user()->id;
 
-                $update=\DB::table('campaign_tbl')->where('id', $id)->update($data);
+                $update= \App\Campaign::where('id', $id)->update($data);
 
                 // \App\System::EventLogWrite('update,campaign_tbl',json_encode($data));
 
@@ -304,8 +305,7 @@ class CampaignController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('campaign_tbl')
-            ->where('id',$id)
+        $delete =  \App\Campaign::where('id',$id)
             ->delete();
         if($delete) {
             // \App\System::EventLogWrite('delete,campaign_tbl|Content deleted successfully.',$id);

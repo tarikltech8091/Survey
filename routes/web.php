@@ -303,12 +303,17 @@
 
       #getAllContent
       Route::get('/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllContent'));
+
       #Create
-      Route::get('/question/answer/create',array('as'=>'Question Answer Create' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Create'));
-      Route::get('/question/answer/{surveyer_id}/{campaign_id}/{question_id}/',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@QuestionAnswer'));
+      Route::get('/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@FirstQuestionAnswer'));
+
+      Route::get('/all/question/answer/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@QuestionAnswer'));
       
       #Store
-      Route::post('/question/answer/save',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Store'));
+      Route::post('/question/answer/save/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Store'));
+
+      Route::post('/question/answer/save/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@QuestionAnswerStore'));
+
       #ChangeStatus
       Route::get('/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangePublishStatus'));
       #Edit
