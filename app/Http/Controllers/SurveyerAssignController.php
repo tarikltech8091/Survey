@@ -33,14 +33,21 @@ class SurveyerAssignController extends Controller
                         $q->where('assign_status', $_GET['assign_status']);
                     });
                 }
+
+                if(isset($_GET['assign_campaign_id']) && ($_GET['assign_campaign_id'] != 0) ){
+                    $query->where(function ($q){
+                        $q->where('assign_campaign_id', $_GET['assign_campaign_id']);
+                    });
+                }
             })
                 ->orderBy('id','DESC')
                 ->paginate(20);
 
             $assign_status = isset($_GET['assign_status'])? $_GET['assign_status']:0;
+            $assign_campaign_id = isset($_GET['assign_campaign_id'])? $_GET['assign_campaign_id']:0;
 
             $all_content->setPath(url('/surveyer/assign/list'));
-            $pagination = $all_content->appends(['assign_status' => $assign_status])->render();
+            $pagination = $all_content->appends(['assign_status' => $assign_status, 'assign_campaign_id'=> $assign_campaign_id])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -55,7 +62,7 @@ class SurveyerAssignController extends Controller
             $data['all_content'] = $all_content;
 
         }
-
+        $data['all_campaign'] = \App\Campaign::where('campaign_status','1')->orderby('id','desc')->get();
         $data['all_data'] = \DB::table('surveyer_assign_tbl')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
@@ -69,6 +76,7 @@ class SurveyerAssignController extends Controller
     {
         $data['all_campaign'] = \App\Campaign::where('campaign_status','1')->orderby('id','desc')->get();
         $data['all_surveyer'] = \App\Surveyer::where('surveyer_status','1')->orderby('id','desc')->get();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.assign.create',$data);
@@ -228,6 +236,7 @@ class SurveyerAssignController extends Controller
         $data['edit'] = \App\SurveyerAssign::where('id', $id)->first();
         $data['all_campaign'] = \App\Campaign::where('campaign_status','1')->orderby('id','desc')->get();
         $data['all_surveyer'] = \App\Surveyer::where('surveyer_status','1')->orderby('id','desc')->get();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.assign.edit',$data);

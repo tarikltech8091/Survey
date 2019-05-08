@@ -72,8 +72,7 @@
                                                         <strong>Search by Mobile : </strong>
                                                     </label>
                                                     <select class="form-control search-select" name="surveyer_mobile">
-                                                        <!-- <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']==0)) ? 'selected' : ''}} value="0">Select Mobile Number</option> -->
-
+                                                        <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile']==0)) ? 'selected' : ''}} value="0">All</option>
                                                         @if(!empty($all_data) && count($all_data) > 0)
                                                         @foreach($all_data as $key => $list)
                                                             <option {{(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile'] == $list->surveyer_mobile)) ? 'selected' : ''}} value="{{$list->surveyer_mobile}}">{{$list->surveyer_mobile}}</option>

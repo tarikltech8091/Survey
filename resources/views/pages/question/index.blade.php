@@ -63,6 +63,25 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group has-feedback ">
+                                                        <label for="search_from">
+                                                            <strong>Search by Campaign : </strong>
+                                                        </label>
+                                                        <select id="form-field-select-3" class="form-control search-select" name="question_campaign_id">
+                                                            <option value="0">&nbsp;All</option>
+
+                                                            @if(!empty($all_campaign))
+                                                            @foreach($all_campaign as $key =>$list)
+                                                                <option{{(isset($_GET['question_campaign_id']) && ($_GET['question_campaign_id']== $list->id)) ? 'selected' : ''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
+                                                            @endforeach
+                                                            @endif
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-1" style="margin-top:22px;">
                                                     <div class="form-group">
                                                         <input type="submit" class="btn btn-primary btn-squared" value="Search">

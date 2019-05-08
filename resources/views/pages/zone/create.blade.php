@@ -66,9 +66,20 @@
                                               id="zone" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
 
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong> District</strong>
+                                                    <strong>Zone Name</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" name="zone_name">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong> Zone District</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
@@ -86,23 +97,35 @@
                                             </div>
 
 
-                                            <div class="form-group">
+
+                                            <!-- <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Zone Name</strong>
+                                                    <strong>Zone Upzilla</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" name="zone_name">
+                                                    <input type="text" class="form-control" name="zone_upzilla">
+                                                </div>
+                                            </div> -->
+
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Zip Code</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <input type="number" class="form-control" name="zone_zip_code">
                                                 </div>
                                             </div>
 
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Zone Details</strong>
+                                                    <strong>Zone Address Details</strong>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <textarea name="zone_details" class="form-control" cols="10" rows="7"></textarea>
+                                                    <textarea name="zone_address_details" class="form-control" cols="10" rows="7"></textarea>
                                                 </div>
                                             </div>
 
@@ -141,7 +164,9 @@
                     zone_name: {
                         required: true
                     },
-
+                    zone_zip_code: {
+                        required: true
+                    },
                     zone_address: {
                         required: true
                     }

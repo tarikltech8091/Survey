@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Db;
 
-
-class QuestionAnswerController extends Controller
+class PortalController extends Controller
 {
 
     /**
@@ -37,7 +36,23 @@ class QuestionAnswerController extends Controller
         $data['all_content'] = $all_content;
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
-        return view('pages.question-answer.campaign-list',$data);
+        return view('portal.campaign.index',$data);
+    }
+
+
+    /********************************************
+    ## Show Campaign Details
+     *********************************************/
+    public function getCampaignDetails()
+    {
+
+        $all_content= \App\Campaign::where('campaign_status',1)->orderBy('id','DESC')->get();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
+        $data['all_district']=\App\Common::AllDistrict();
+        $data['all_content'] = $all_content;
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.details',$data);
     }
 
     /********************************************
@@ -616,6 +631,4 @@ class QuestionAnswerController extends Controller
             echo 'Content did not delete successfully.';
         }
     }
-
-
 }

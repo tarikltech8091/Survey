@@ -25,6 +25,8 @@ class CreateSurveyerTblTable extends Migration
             $table->string('surveyer_post_code');
             $table->string('surveyer_nid')->index();
             $table->string('surveyer_zone')->nullable();
+            $table->foreign('surveyer_zone')->references('zone_name')
+                ->on('zone_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('surveyer_profile_image')->nullable();
             $table->integer('surveyer_total_participate')->default(0);
             $table->integer('surveyer_total_success_participate')->nullable();

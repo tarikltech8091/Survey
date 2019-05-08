@@ -87,6 +87,7 @@
                                 <th>#</th>
                                 <th>Zone Name</th>
                                 <th>District</th>
+                                <th>Zip Code</th>
                                 <th>Zone Details</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -99,8 +100,9 @@
                                     <tr>
                                         <td>{{($key+1+($perPage*$page))}}</td>
                                         <td>{{$zone->zone_name}}</td>
+                                        <td>{{$zone->zone_zip_code}}</td>
                                         <td>{{$zone->zone_district}}</td>
-                                        <td>{{ str_limit($zone->zone_details, 15) }}</td>
+                                        <td>{{ str_limit($zone->zone_address_details, 15) }}</td>
                                         <td>
                                             @if($zone->zone_status == 1)
                                                 <span class="label label-success">

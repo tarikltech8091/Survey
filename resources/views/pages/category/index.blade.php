@@ -137,7 +137,7 @@
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="3">No Data available</td>
+                                    <td colspan="4">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>

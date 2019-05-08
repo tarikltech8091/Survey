@@ -27,7 +27,7 @@ class RequesterController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['requester_status'])){
-            $all_content =  \DB::table('requester_tbl')->where(function($query){
+            $all_content = \App\Requester::where(function($query){
                 if(isset($_GET['requester_status'])){
                     $query->where(function ($q){
                         $q->where('requester_status', $_GET['requester_status']);
@@ -46,7 +46,7 @@ class RequesterController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('requester_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content=\App\Requester::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/requester/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -55,7 +55,7 @@ class RequesterController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('requester_tbl')->orderby('id','desc')->get();
+        $data['all_data'] = \App\Requester::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.requester.index',$data);
@@ -125,7 +125,7 @@ class RequesterController extends Controller
                 $data['requester_updated_by']=\Auth::user()->id;
                
 
-                // $insert=\DB::table('requester_tbl')->insert($data);
+                // $insert=\App\Requester::insert($data);
 
                 $requester_insert = \App\Requester::firstOrCreate(
                     [
@@ -157,7 +157,7 @@ class RequesterController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this requester has any content published or not
-        $content_exists =\DB::table('requester_tbl')->where('id',$id)->first();
+        $content_exists =\App\Requester::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -166,7 +166,7 @@ class RequesterController extends Controller
             } else{
                 $data['requester_status']=0;
             }
-            $update=\DB::table('requester_tbl')->where('id',$id)->update($data);
+            $update=\App\Requester::where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -188,7 +188,7 @@ class RequesterController extends Controller
     public function Edit($id)
     {
         $data['all_district']=\App\Common::AllDistrict();
-        $data['edit'] = \DB::table('requester_tbl')->where('id', $id)->first();
+        $data['edit'] = \App\Requester::where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.requester.edit',$data);
@@ -216,7 +216,7 @@ class RequesterController extends Controller
             try
             {
 
-                $current_data= \DB::table('requester_tbl')->where('id', $id)->first();
+                $current_data= \App\Requester::where('id', $id)->first();
 
                 if(!empty($current_data)){
                     
@@ -251,7 +251,7 @@ class RequesterController extends Controller
                     $data['requester_updated_by']=\Auth::user()->id;
 
 
-                    $update=\DB::table('requester_tbl')->where('id', $id)->update($data);
+                    $update=\App\Requester::where('id', $id)->update($data);
 
                     // \App\System::EventLogWrite('update,requester_tbl',json_encode($data));
 
@@ -273,9 +273,7 @@ class RequesterController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('requester_tbl')
-            ->where('id',$id)
-            ->delete();
+        $delete = \App\Requester::where('id',$id)->delete();
         if($delete) {
             // \App\System::EventLogWrite('delete,requester_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';

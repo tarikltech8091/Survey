@@ -208,12 +208,8 @@
                     <br>
                 </ul>
             </div>
-            @if($page_title == 'নাজাত'
-                    || $page_title == 'মেনু'
-                    || $page_title == 'মসজিদ'
-                    || $page_title == 'নামাযের সময়'
-                    || $page_title == 'ভিডিও'
-                    || $page_title == 'লাইভ'
+            @if($page_title == 'Home'
+                    || $page_title == 'Menu'
                 )
 <!--                 <img src="{{ url('portal/img/icons/Icon.png') }}" width="45px" height="auto"
                      style="float: left; margin: 4px auto;"> -->

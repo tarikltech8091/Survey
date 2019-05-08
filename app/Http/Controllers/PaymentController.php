@@ -28,7 +28,7 @@ class PaymentController extends Controller
     public function CampaignPaymentList()
     {
         if(isset($_GET['payment_status'])){
-            $all_content =  \DB::table('campaign_payment_history_tbl')->where(function($query){
+            $all_content =  \App\CampaignPayment::where(function($query){
                 if(isset($_GET['payment_status'])){
                     $query->where(function ($q){
                         $q->where('payment_status', $_GET['payment_status']);
@@ -47,7 +47,7 @@ class PaymentController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('campaign_payment_history_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content= \App\CampaignPayment::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/campaign/payment/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -56,7 +56,7 @@ class PaymentController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('campaign_payment_history_tbl')->orderby('id','desc')->get();
+        $data['all_data'] =  \App\CampaignPayment::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.payment.campaign-list',$data);
@@ -91,7 +91,7 @@ class PaymentController extends Controller
 
         if($v->passes()){
 
-            try{
+            // try{
 
                 $success = \DB::transaction(function () use($request) {
 
@@ -108,20 +108,20 @@ class PaymentController extends Controller
                     $data['assign_updated_by'] = \Auth::user()->id;
 
 
-                    $campaign_info=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->first();
+                    $campaign_info= \App\Campaign::where('id', $data['payment_campaign_id'])->first();
                     $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid + $data['payment_amount'] ;
                     $campaign_data['campaign_updated_by'] = \Auth::user()->id;
 
 
-                    $campaign_update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($campaign_data);
+                    $campaign_update=\App\Campaign::where('id', $data['payment_campaign_id'])->update($campaign_data);
 
-                    $requester_info=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->first();
+                    $requester_info=\App\Requester::where('id', $data['payment_requester_id'])->first();
                     $requester_data['requester_total_paid']=$requester_info->requester_total_paid + $data['payment_amount'] ;
                     $requester_data['requester_updated_by'] = \Auth::user()->id;
 
-                    $requester_update=\DB::table('requester_tbl')->where('id', $data['payment_requester_id'])->update($requester_data);
+                    $requester_update=\App\Requester::where('id', $data['payment_requester_id'])->update($requester_data);
 
-                    $insert=\DB::table('campaign_payment_history_tbl')->insert($data);
+                    $insert= \App\CampaignPayment::insert($data);
 
                     if(!$campaign_update || !$requester_data || !$insert){
                         $error=1;
@@ -178,11 +178,11 @@ class PaymentController extends Controller
                 return redirect()->back()->with('message','Campaign Created Successfully');*/
 
 
-            }catch (\Exception $e){
+            /*}catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
                 \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
-            }
+            }*/
 
         } else{
             return redirect()->back()->withErrors($v)->withInput();
@@ -195,7 +195,7 @@ class PaymentController extends Controller
     public function ChangeCampaignPaymentStatus($id, $status)
     {
         //check if this campaign payment has any content published or not
-        $content_exists =\DB::table('campaign_payment_history_tbl')->where('id',$id)->first();
+        $content_exists = \App\CampaignPayment::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -204,7 +204,7 @@ class PaymentController extends Controller
             } else{
                 $data['payment_status']=0;
             }
-            $update=\DB::table('campaign_payment_history_tbl')->where('id',$id)->update($data);
+            $update= \App\CampaignPayment::where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -250,7 +250,7 @@ class PaymentController extends Controller
 
             try{
 
-                $current_data= \DB::table('campaign_payment_history_tbl')->where('id', $id)->first();
+                $current_data= \App\CampaignPayment::where('id', $id)->first();
 
                 if(empty($current_data))
 				return redirect()->back()->with('message','Content Not Found !!');
@@ -269,23 +269,23 @@ class PaymentController extends Controller
                     $data['assign_updated_by'] = \Auth::user()->id;
 
 
-                    $campaign_info=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->first();
+                    $campaign_info=\App\Campaign::where('id', $current_data->payment_campaign_id)->first();
                     $campaign_data['campaign_total_cost_paid']=($campaign_info->campaign_total_cost_paid) + ($data['payment_amount']) - ($current_data->payment_amount);
                     $campaign_data['campaign_updated_by'] = \Auth::user()->id;
 
-                    $campaign_update=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->update($campaign_data);
+                    $campaign_update=\App\Campaign::where('id', $current_data->payment_campaign_id)->update($campaign_data);
 
 
 
-                    $requester_info=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->first();
+                    $requester_info=\App\Requester::where('id', $current_data->payment_requester_id)->first();
                     $requester_data['requester_total_paid']=($requester_info->requester_total_paid) + ($data['payment_amount']) - ($current_data->payment_amount) ;
                     $requester_data['requester_updated_by'] = \Auth::user()->id;
 
-                    $requester_update=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->update($requester_data);
+                    $requester_update=\App\Requester::where('id', $current_data->payment_requester_id)->update($requester_data);
 
 
 
-                    $update=\DB::table('campaign_payment_history_tbl')->where('id', $id)->update($data);
+                    $update= \App\CampaignPayment::where('id', $id)->update($data);
 
                     if($current_data->payment_amount == $data['payment_amount']){
                         if(!$update){
@@ -361,7 +361,7 @@ class PaymentController extends Controller
     {
 
 
-        $current_data= \DB::table('campaign_payment_history_tbl')->where('id', $id)->first();
+        $current_data= \App\CampaignPayment::where('id', $id)->first();
 
         if(empty($current_data))
         return redirect()->back()->with('message','Content Not Found !!'); 
@@ -370,22 +370,20 @@ class PaymentController extends Controller
         $success = \DB::transaction(function () use($current_data){
 
 
-            $campaign_info=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->first();
+            $campaign_info=\App\Campaign::where('id', $current_data->payment_campaign_id)->first();
             $campaign_data['campaign_total_cost_paid']=$campaign_info->campaign_total_cost_paid - $current_data->payment_amount;
             $campaign_data['campaign_updated_by'] = \Auth::user()->id;
 
 
-            $campaign_update=\DB::table('campaign_tbl')->where('id', $current_data->payment_campaign_id)->update($campaign_data);
+            $campaign_update=\App\Campaign::where('id', $current_data->payment_campaign_id)->update($campaign_data);
 
-            $requester_info=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->first();
+            $requester_info=\App\Requester::where('id', $current_data->payment_requester_id)->first();
             $requester_data['requester_total_paid']=$requester_info->requester_total_paid - $current_data->payment_amount ;
             $requester_data['requester_updated_by'] = \Auth::user()->id;
 
-            $requester_update=\DB::table('requester_tbl')->where('id', $current_data->payment_requester_id)->update($requester_data);
+            $requester_update=\App\Requester::where('id', $current_data->payment_requester_id)->update($requester_data);
 
-            $delete = \DB::table('campaign_payment_history_tbl')
-                ->where('id',$id)
-                ->delete();
+            $delete =  \App\CampaignPayment::where('id',$id)->delete();
 
 
             if(!$campaign_update || !$requester_data || !$delete){

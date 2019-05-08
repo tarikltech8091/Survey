@@ -17,7 +17,8 @@
 
 
 
-	Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@LoginPage'));
+      Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemAuthController@authLogin'));
+	// Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@LoginPage'));
 	Route::post('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@AuthenticationCheck'));
 
       Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
@@ -48,12 +49,16 @@
 
 
 
-    /*
-  #####################
-  ## Admins Module
-  ######################
-  */
-  Route::group(['middleware' => ['admin_auth']], function () {
+      #getAllCampaign
+      Route::get('/home',array('as'=>'Home' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getAllCampaign'));
+      Route::get('/campaign/details',array('as'=>'Campaign Details' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getCampaignDetails'));
+
+/*
+#####################
+## Admins Module
+######################
+*/
+Route::group(['middleware' => ['admin_auth']], function () {
 
 
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
@@ -300,6 +305,9 @@
       /*#######################
       ## Question Answer Settings
       #########################*/
+
+      #getAllCampaign
+      Route::get('/participate/campaign/list',array('as'=>'Active Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllCampaign'));
 
       #getAllContent
       Route::get('/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllContent'));

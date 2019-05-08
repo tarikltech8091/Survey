@@ -72,7 +72,7 @@
 
                                     @if(!empty($all_district))
                                     @foreach($all_district as $key =>$list)
-                                        <option {{ ($edit->requester_district == $list)?'selected' :''}}  value="{{$list}}">{{$list}}</option>
+                                        <option {{ ($edit->zone_district == $list)?'selected' :''}}  value="{{$list}}">{{$list}}</option>
                                     @endforeach
                                     @endif
 
@@ -94,10 +94,21 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
-                                <strong>Zone Details</strong>
+                                <strong>Zip Code</strong>
+                                <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-4">
-                                <textarea name="zone_details" class="form-control" cols="10" rows="7">{{isset($edit)? $edit->zone_details :''}}</textarea>
+                                <input type="number" class="form-control" name="zone_zip_code" value="{{isset($edit)? $edit->zone_zip_code :''}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                <strong>Zone Address Details</strong>
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="zone_address_details" class="form-control" cols="10" rows="7">{{isset($edit)? $edit->zone_address_details :''}}</textarea>
                             </div>
                         </div>
 

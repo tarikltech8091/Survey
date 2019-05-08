@@ -47,7 +47,7 @@
                 <div class="panel-body">
                     <form method="get"  action="{{url('/earn/payment/list')}}">
                     
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group has-feedback ">
                                 <label for="search_from">
                                     <strong>Search by status : </strong>
@@ -58,6 +58,19 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group has-feedback ">
+                                <label for="search_from">
+                                    <strong>Search by user type : </strong>
+                                </label>
+                                <select class="form-control search-select" name="earn_paid_user_type">
+                                    <option {{(isset($_GET['earn_paid_user_type']) && ($_GET['earn_paid_user_type']=='surveyer')) ? 'selected' : ''}} value="surveyer">surveyer</option>
+                                    <option {{(isset($_GET['earn_paid_user_type']) && ($_GET['earn_paid_user_type']=='participate')) ? 'selected' : ''}} value="participate">participate</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-1" style="margin-top:22px;">
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary btn-squared" value="Search">

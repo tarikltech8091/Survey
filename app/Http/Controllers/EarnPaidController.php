@@ -34,14 +34,21 @@ class EarnPaidController extends Controller
                         $q->where('earn_paid_status', $_GET['earn_paid_status']);
                     });
                 }
+
+                if(isset($_GET['earn_paid_user_type'])){
+                    $query->where(function ($q){
+                        $q->where('earn_paid_user_type', $_GET['earn_paid_user_type']);
+                    });
+                }
             })
                 ->orderBy('id','DESC')
                 ->paginate(20);
 
             $earn_paid_status = isset($_GET['earn_paid_status'])? $_GET['earn_paid_status']:0;
+            $earn_paid_user_type = isset($_GET['earn_paid_user_type'])? $_GET['earn_paid_user_type']:0;
 
             $all_content->setPath(url('/campaign/payment/list'));
-            $pagination = $all_content->appends(['earn_paid_status' => $earn_paid_status])->render();
+            $pagination = $all_content->appends(['earn_paid_status' => $earn_paid_status, 'earn_paid_user_type' => $earn_paid_user_type ])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;

@@ -82,7 +82,7 @@
             </li>
 
 
-            <!-- <li class="{{(isset($page_title) && (strpos($page_title,'Zone')!== false )) ? 'active' : ''}}">
+            <li class="{{(isset($page_title) && (strpos($page_title,'Zone')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                     <span class="title"> Zone </span><i class="icon-arrow"></i>
@@ -104,7 +104,7 @@
                         </a>
                     </li>
                 </ul>
-            </li> -->
+            </li>
 
 
             <li class="{{(isset($page_title) && (strpos($page_title,'Surveyer')!== false )) ? 'active' : ''}}">
@@ -189,6 +189,7 @@
                             <span class="selected"></span>
                         </a>
                     </li>
+                    
                     <li class="{{isset($page_title) && ($page_title=='Campaign List') ? 'active' : ''}}">
                         <a href="{{url('/campaign/list')}}">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
@@ -197,6 +198,13 @@
                         </a>
                     </li>
 
+                    <li class="{{isset($page_title) && ($page_title=='Active Campaign List') ? 'active' : ''}}">
+                        <a href="{{url('/participate/campaign/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Active Campaign List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
 
                     <li class="{{isset($page_title) && ($page_title=='Campaign Payment') ? 'active' : ''}}">
                         <a href="{{url('/campaign/payment')}}">
@@ -238,6 +246,13 @@
                         <a href="{{url('/question/list')}}">
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span class="title">Question List</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="{{isset($page_title) && ($page_title=='Question Answer List') ? 'active' : ''}}">
+                        <a href="{{url('/question/answer/list')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Question Answer List</span>
                             <span class="selected"></span>
                         </a>
                     </li>

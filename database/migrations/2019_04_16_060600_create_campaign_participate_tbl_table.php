@@ -29,6 +29,8 @@ class CreateCampaignParticipateTblTable extends Migration
             $table->string('campaign_participate_district')->nullable();
             $table->string('campaign_participate_post_code')->nullable();
             $table->string('campaign_participate_zone')->nullable();
+            $table->foreign('campaign_participate_zone')->references('zone_name')
+                ->on('zone_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('campaign_participate_address')->nullable();
             $table->string('campaign_participate_status')->default(0);
             $table->string('campaign_participate_created_by')->nullable();

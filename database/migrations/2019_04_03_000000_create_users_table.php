@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name_slug');
             $table->string('user_type');
             $table->string('user_role');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->string('user_mobile');
             $table->string('nid')->nullable();
@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->string('user_profile_image')->nullable();
             $table->integer('surveyer_id')->nullable();
             $table->integer('requester_id')->nullable();
+            $table->string('user_app_key')->nullable();
+            $table->string('user_imei_info')->nullable();
             $table->timestamp('last_login');
             $table->string('login_status');
             $table->string('status');

@@ -151,12 +151,24 @@
                                                 </div>
                                             </div>
 
+
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Zone</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" name="surveyer_zone">
+                                                    <select id="form-field-select-3" class="form-control search-select"
+                                                            name="surveyer_zone">
+                                                        <option value="">&nbsp;Please Select a Type</option>
+
+                                                        @if(!empty($all_zone))
+                                                        @foreach($all_zone as $key =>$list)
+                                                            <option value="{{$list->zone_name}}">{{$list->zone_name}}</option>
+                                                        @endforeach
+                                                        @endif
+
+                                                    </select>
                                                 </div>
                                             </div>
 

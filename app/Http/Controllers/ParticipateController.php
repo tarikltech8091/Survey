@@ -27,7 +27,7 @@ class ParticipateController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['participate_status'])){
-            $all_content =  \DB::table('participate_tbl')->where(function($query){
+            $all_content = \App\Participate::where(function($query){
                 if(isset($_GET['participate_status'])){
                     $query->where(function ($q){
                         $q->where('participate_status', $_GET['participate_status']);
@@ -46,7 +46,7 @@ class ParticipateController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('participate_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content= \App\Participate::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/participate/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -55,7 +55,7 @@ class ParticipateController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('participate_tbl')->orderby('id','desc')->get();
+        $data['all_data'] =  \App\Participate::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.participate.index',$data);
@@ -167,7 +167,7 @@ class ParticipateController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this participate has any content published or not
-        $content_exists =\DB::table('participate_tbl')->where('id',$id)->first();
+        $content_exists = \App\Participate::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -176,7 +176,7 @@ class ParticipateController extends Controller
             } else{
                 $data['participate_status']=0;
             }
-            $update=\DB::table('participate_tbl')->where('id',$id)->update($data);
+            $update= \App\Participate::where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';
@@ -198,7 +198,7 @@ class ParticipateController extends Controller
     public function Edit($id)
     {
         $data['all_district']=\App\Common::AllDistrict();
-        $data['edit'] = \DB::table('participate_tbl')->where('id', $id)->first();
+        $data['edit'] =  \App\Participate::where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.participate.edit',$data);
@@ -232,7 +232,7 @@ class ParticipateController extends Controller
             try
             {
 
-                $current_data= \DB::table('participate_tbl')->where('id', $id)->first();
+                $current_data=  \App\Participate::where('id', $id)->first();
 
                 if(!empty($current_data)){
 
@@ -273,7 +273,7 @@ class ParticipateController extends Controller
                     $data['participate_updated_by']=\Auth::user()->id;
 
 
-                    $update=\DB::table('participate_tbl')->where('id', $id)->update($data);
+                    $update= \App\Participate::where('id', $id)->update($data);
 
                     // \App\System::EventLogWrite('update,participate_tbl',json_encode($data));
 
@@ -295,9 +295,7 @@ class ParticipateController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('participate_tbl')
-            ->where('id',$id)
-            ->delete();
+        $delete =  \App\Participate::where('id',$id)->delete();
         if($delete) {
             // \App\System::EventLogWrite('delete,participate_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';

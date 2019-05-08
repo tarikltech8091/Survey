@@ -132,7 +132,12 @@
                                                                         </a>
                                                                     @endif
                                                                 </li>
-                                                                
+
+                                                                <li>
+                                                                    <a href="{{url('/question/answer/1/'.$list->id.'/1')}}">
+                                                                        <i class="fa fa-pencil"></i> Play
+                                                                    </a>
+                                                                </li>
                                                                 <!-- <li>
                                                                     <a class="campaign-delete" data-campaign-id="{{$list->id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete

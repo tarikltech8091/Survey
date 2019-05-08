@@ -24,7 +24,9 @@
 body {
     font-family: 'SolaimanLipi', sans-serif !important;
     font-size: 18px;
-    background-color: #002860;
+
+    background-color: #ffffff;
+    /*background-color: #ffbfa0;*/
     -webkit-overflow-scrolling: touch;
 }
 .fap-main > .fap-toggle {
@@ -39,10 +41,10 @@ body p {
     font-size: 18px ;
 }
 body p {
-    color: #fff;
+    color: #000000;
 }
 body a {
-    color: #fff;
+    color: #000000;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -52,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .materialize-green {
-    background-color: #142a39 !important;    
+    background-color: #1d2129 !important;    
 }
 
 .materialize-orange {
@@ -90,7 +92,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .custom-audio .active a{
-    color:#fff;
+    color:#000000;
     text-decoration:none;
     font-weight: bold;
 }
@@ -101,7 +103,7 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
 }
 .custom-audio li a{
-    color:#fff;
+    color:#000000;
     display:block;
 }
 .custom-audio li a:hover{
@@ -143,11 +145,11 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
 }
 .border {
-    border: 1px solid #189b9a;
-    /*border: 1px solid #000;*/
+    /*border: 1px solid #ffdb35;*/
+    border: 1px solid #ffbfa0;
 }
 .border-top {
-    /*border-top: 1px solid #189b9a;*/
+    /*border-top: 1px solid #ffdb35;*/
     border-bottom: 1px solid #000;
     margin-left : 10px;
     margin-right : 10px;
@@ -158,10 +160,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-right : 10px;
 }
 .border-right {
-    border-right: 1px solid #189b9a;
+    /*border-right: 1px solid #ffdb35;*/
+    border-right: 1px solid #ffbfa0;
 }
 .border-bottom {
-    /*border-bottom: 1px solid #189b9a;*/
+    /*border-bottom: 1px solid #ffdb35;*/
     border-bottom: 1px solid #000;
     margin-left : 10px;
     margin-right : 10px;
@@ -172,10 +175,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-right : 10px;
 }
 .border-bottom3 {
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid #000000;
 }
 .border-left {
-    border-left: 1px solid #189b9a;
+    /*border-left: 1px solid #ffdb35;*/
+    border-left: 1px solid #ffbfa0;
 }
 .container .row{
     margin-left: -0.9rem;
@@ -239,14 +243,15 @@ nav ul li {
     background: none !important;
 }
 .side-nav li > a {
-    color: #fff !important;
+    color: #000000 !important;
     font-size: 20px;
     height: 35px;
     line-height: 35px;
 }
 
 .btn, .btn-large {
-    background-color: #189b9a;
+    /*background-color: #ffdb35;*/
+    background-color: #ffbfa0;
     font-size: 16px;
     font-weight: bold;
 }
@@ -255,11 +260,10 @@ nav ul li {
     /*font-family: 'Oswald', sans-serif !important;*/
     font-family: 'SolaimanLipi', sans-serif !important;
 }
-
 .common_btn{
-
+    background-color: #5b2b50 !important;
+    border: none !important;
 }
-
 .tabs .tab {
     padding: 0 5px;
 }
@@ -275,18 +279,19 @@ nav ul li {
     width: 100%;
 }
 .collection {
-    border: 1px solid #189b9a;
+    /*border: 1px solid #ffdb35;*/
+    border: 1px solid #ffbfa0;
     border-radius: 2px;
     overflow: hidden;
     position: relative;
 }
 .collection .collection-item {
-    /*border-bottom: 1px solid #189b9a;*/
+    /*border-bottom: 1px solid #ffdb35;*/
     border-bottom: 1px solid #000;
     padding: 1px 5px
 }
 .collection .collection-item:last-child {
-    /*border-bottom: 1px solid #189b9a;*/
+    /*border-bottom: 1px solid #ffdb35;*/
     border-bottom: 1px solid #000;
 }
 
@@ -303,11 +308,18 @@ nav ul li {
 }
 
 .footer_background{
-    background: #142a39;
+    background: #1d2129;
+    /*background: #5b2b50;*/
+}
+
+.other_header_background{
+    background: #1d2129;
+    /*background: #5b2b50;*/
 }
 
 .other_footer_background{
-    background: #d65035;
+    /*background: #ff9310;*/
+    background: #5b2b50;
 }
 
 .page-footer{
@@ -345,15 +357,16 @@ nav ul li {
 }
 .bangla-artho{
     /*color: #ff1a15;*/
-    color: #fff;
+    color: #000;
     font-weight: bold;
 }
 .common_background {
-    background: url('../../img/islamic/Background.png');
+    /*background: url('../../img/islamic/Nazat-Banglalink-Background.png');*/
+    background: url('../../img/islamic/Nazat-Background.png');
     background-size: 100% 100%;
     position: fixed;
     overflow: auto;
-    color: #fff;
+    color: #000000;
     font-size: 20px;
     height: 100%;
     width: 100%;
@@ -370,6 +383,7 @@ nav ul li {
 .footer_menu{
     margin-top: -20px; 
     font-size: 13px;
+    /*color: #000000;*/
     color: #ffffff;
 }
 
@@ -392,10 +406,12 @@ nav ul li {
 }
 
 .operator_base_background{
-    background: #189b9a;
+    /*background: #ffdb35;*/
+    background: #ffbfa0;
 }
 .new-common{
-    background-color: #189b9a;
+    background-color: #ffbfa0;
+    /*background-color: #ffdb35;*/
     margin-top: 60px;
     margin-bottom: 0px;
     font-size: 16px;
@@ -414,7 +430,7 @@ nav ul li {
 }
 
 .menu-text-color{
-    color: #ffffff;
+    color: #000000;
 }
 
 .home-slider{
@@ -491,14 +507,15 @@ nav ul li {
     padding-bottom: 0px;
 }
 .details_common_background {
-    background: url('../../img/islamic/Rounder-Background.png');
+    /*background: url('../../img/islamic/Banglalink_Rounder-Background.png');*/
+    background: url('../../img/islamic/Nazat-Blank-Background.png');
     background-size: 100% 100%;
     position: fixed;
     overflow: auto;
     font-size: 18px;
     height: 95%;
     width: 95%;
-    color: #ffffff;
+    color: #000000;
     /*border-radius: 25px;*/
     margin-top: 60px;
 }
@@ -520,15 +537,15 @@ nav ul li {
 }
 
 .details_common_background2 {
-    background-color: rgba(0, 0, 0, 0.3);
-    /*background: url('../../img/islamic/Rounder-Background.png');*/
+    background-color: #cccccc;
+    /*background-color: #ffd9c6;*/
     background-size: 100% 100%;
     /*position: fixed;*/
     overflow: auto;
     font-size: 18px;
     height: auto;
     width: 100%;
-    color: #ffffff;
+    color: #000000;
     border-radius: 20px;
     margin-top: 60px;
     margin-bottom: 10px;
@@ -551,36 +568,12 @@ nav ul li {
     text-align: justify;
 }
 .extra_mt{
-    
-}
-.main_namaj_time{
-    background: #ffffff; 
-    border-radius: 10px; 
-    color: #000; 
-    background-size: 100% 100%;  
-    overflow: auto; 
-    font-size: 20px;
+	margin-top: 130px;
 }
 
-.main_namaj_time a{
-    background: #ffffff; 
-    color: #000;
-}
-
-.main_namaj_time .card{
-    background: none; 
-    box-shadow: none; 
-    -webkit-box-shadow: none;
-}
-
-.main_namaj_time .card .card-content{
-    padding: 8px 5px 0px 10px; 
-    font-weight: 200; 
-    text-align: justify;
-}
 
 .white_common_background {
-    background: #ffffff;
+    background: #000000;
     background-size: 100% 100%;
     position: fixed;
     overflow: auto;
@@ -610,7 +603,7 @@ nav ul li {
     border-bottom: 1px solid #ccccb3;
 }
 .white_common_background a {
-    background: #ffffff;
+    background: #000000;
     color: #000;
 }
 .white_common_background a div {
@@ -630,7 +623,6 @@ nav ul li {
 .common_color {
     color: #ffffff;
 }
-
 .new_common_background {
     background: #000;
     color: #ffff;
@@ -645,67 +637,6 @@ nav ul li {
     background-attachment: fixed;
 }
 
-
-/* hadith */
-.hadith {
-    margin-top: 60px;
-    margin-bottom: 55px;
-}
-.hadith .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.hadith .card .card-title {
-    padding-left: 20px;
-}
-.hadith .card .card-content {
-    padding: 2px 5px 0 20px;
-}
-.hadith ul  a{
-    color:#fff;
-    font-size: 20px;
-}
-.hadith ul li a{
-    color:#fff;
-    padding-left:5%;
-    font-size: 20px;
-}
-.hadith ul li i{
-    padding-left:2%;
-    color: white;
-}
-.hadith .collection {
-    padding: 0px;
-    margin: 0px;
-    border:0px;
-}
-.hadith .collection .collection-item{
-    padding: 3%;
-    margin: 0px;
-    border-bottom: 1px solid #189b9a;
-    background:none;
-}
-/** islamic occasion*/
-.upolokko{
-    margin-top: 10px;
-    margin-bottom: 55px;
-}
-.upolokko .title {
-    padding: 10px 0 10px 0;
-    font-size: 20px;
-}
-.upolokko ul li {
-    padding: 5%;
-    margin: 5%;
-}
-.upolokko ul a{
-    color:#fff;
-    font-size: 20px;
-}
-.upolokko ul li a{
-    color:#fff;
-}
 /** jakat */
 .jakat {
     margin-top: 55px;
@@ -719,11 +650,11 @@ nav ul li {
     margin: 5%;
 }
 .jakat ul a{
-    color:#fff;
+    color:#000000;
     font-size: 18px;
 }
 .jakat ul li a{
-    color:#fff;
+    color:#000000;
     font-size: 18px;
 }
 .jakat .collection {
@@ -734,7 +665,8 @@ nav ul li {
 .jakat .collection .collection-item{
     padding: 3%;
     margin: 2%;
-    border: 1px solid #189b9a;
+    /*border: 1px solid #ffdb35;*/
+    border: 1px solid #ffbfa0;
     background: none !important;
 }
 
@@ -757,99 +689,7 @@ nav ul li {
     color: #000;
 }
 
-/** islamic jobin */
-.islamic_jibon{
-    margin-top: 60px;
-    margin-bottom: 55px;
-}
-.islamic_jibon .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.islamic_jibon .card .card-title {
-    padding-left: 20px;
-}
-.islamic_jibon .card .card-content {
-    padding: 0;
-}
-.islamic_jibon ul a{
-    color:#fff;
-    font-size: 18px;
-}
-.islamic_jibon ul li a{
-    color:#fff;
-    padding-left:5%;
-    font-size: 20px;
-}
-.islamic_jibon ul li i{
-    padding-left:2%;
-    color: white;
-}
-.islamic_jibon .collection {
-    padding: 0px;
-    margin: 0px;
-    border:0px;
-}
-.islamic_jibon .collection .collection-item{
-    padding: 3%;
-    margin: 0px;
-    border-bottom: 1px solid #189b9a;
-    background:none;
-}
-.islamic_jibon p{
-    font-size: 20px;
-    color: #fff;
-    line-height: 30px;
-    padding: 0px 20px 10px 20px;
-}
 
-/** Ayat dua */
-.ayat-dua{
-    margin-top: 60px;
-    margin-bottom: 55px;
-}
-.ayat-dua .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.ayat-dua .card .card-title {
-    padding-left: 20px;
-}
-.ayat-dua .card .card-content {
-    padding: 2px 5px 0 20px;
-}
-.ayat-dua ul a{
-    color:#fff;
-    font-size: 18px;
-}
-.ayat-dua ul li a{
-    color:#fff;
-    padding-left:5%;
-    font-size: 20px;
-}
-.ayat-dua ul li i{
-    padding-left:2%;
-    color: white;
-}
-.ayat-dua .collection {
-    padding: 0px;
-    margin: 0px;
-    border:0px;
-}
-.ayat-dua .collection .collection-item{
-    padding: 3%;
-    margin: 0px;
-    border-bottom: 1px solid #189b9a;
-    background:none;
-}
-.ayat-dua p{
-    font-size: 20px;
-    color: #fff;
-    line-height: 30px;
-    padding: 0px 20px 10px 20px;
-}
 
 /** common-page */
 .common-page{
@@ -869,10 +709,10 @@ nav ul li {
     margin: 5%;
 }
 .common-page ul a{
-    color:#fff;
+    color:#000000;
 }
 .common-page ul li a{
-    color:#fff;
+    color:#000000;
 }
 .common-page p{
     color: #000;
@@ -887,7 +727,8 @@ nav ul li {
 .common-page .collection .collection-item{
     padding: 3%;
     margin: 2%;
-    border: 1px solid #189b9a;
+    /*border: 1px solid #ffdb35;*/
+    border: 1px solid #ffbfa0;
     background: none !important;
 }
 .common-page-title-bar{
@@ -963,131 +804,6 @@ nav ul li {
 }
 
 
-/**namaj-time*/
-.namaj-time {
-    background: url('../../img/islamic/Background.png');
-    background-size: 100% 100%;
-    position: fixed;
-    overflow: auto;
-    color: #fff;
-    font-size: 18px;
-    height: 95%;
-}
-.namaj-time::-webkit-scrollbar {
-    width: 1px;
-}
-.namaj-time-watch{
-/*    display: inline; 
-    background:  url('/portal/img/islamic/Time.png'); 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    background-size: cover; 
-    padding: 18px;*/
-    height: 150px;
-}
-
-.circle_padding{
-
-}
-
-.sunset_sunrise{
-    height: 50px; 
-    width: 50px; 
-    margin-left: 30%;
-}
-#clock-container {
-    display: inline-block;
-    position: relative;
-    /*width: 20%;*/
-    /*padding-bottom: 100%;*/
-    vertical-align: middle;
-    overflow: hidden;
-    /*background: midnightblue;*/
-}
-.face { stroke-width: 2px; stroke: #fff; }
-.hour, .min, .sec {
-    stroke-width: 1px;
-    fill: #fff;
-    stroke: #fff;
-}
-.sec { stroke: #f55; }
-.namaj-time .suchi {
-    /* margin-top: 2%;*/
-}
-.namaj-time .suchi .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.namaj-time .suchi .card .card-image .card-title {
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 35px;
-    padding: 0;
-    position: absolute;
-    left: 24%;
-    top: 24%;
-    color: #189b9a;
-}
-.namaj-time .namaj-time-f {
-    margin-top: -20px;
-}
-.namaj-time .namaj-time-f .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.namaj-time .namaj-time-f .card .card-image .card-title {
-    font-size: 28px;
-    line-height: 24px;
-    padding: 0;
-    position: absolute;
-    left: 32%;
-    top: 24%;
-}
-.namaj-time .namaj-time-f .card .card-image .time {
-    font-size: 14px;
-}
-.namaj-time .namaj-time-s {
-    margin-top: -20px
-}
-.namaj-time .namaj-time-s .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.namaj-time .namaj-time-s .card .card-image .card-title {
-    font-size: 18px;
-    line-height: 24px;
-    padding: 0;
-    position: absolute;
-    left: 30%;
-    top: 14%;
-}
-.namaj-time .namaj-time-s .card .card-image .time {
-    font-size: 14px;
-}
-
-.namaj-time .namaj-time-sun {
-    margin-top: -20px
-}
-.namaj-time .namaj-time-sun .card {
-    background: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-}
-.namaj-time .namaj-time-sun .card .card-image .card-title {
-    font-size: 18px;
-    line-height: 24px;
-    padding: 0;
-    position: absolute;
-    left: 30%;
-    top: 25%;
-}
-.namaj-time .namaj-time-sun .card .card-image .time {
-    font-size: 14px;
-}
-
 .mp-0{
     margin: 0;
     padding: 0;
@@ -1101,103 +817,7 @@ nav ul li {
     margin-left: 10px;
 }
 
-/** islamic jobin */
-.islamic_jibon{
-    margin-top: 0px;
-    margin-bottom: 55px;
-}
-.islamic_jibon .title {
-    font-size: 20px;
-    padding: 10px 0 10px 0;
-}
-.islamic_jibon .icon-details{
-    float: left;
-    padding: 10px 0 10px 0;
-    font-size: 30px;
-}
 
-/** namaj shikkha */
-.calendar{
-    margin-top: 65px;
-    margin-bottom: 60px;
-    font-size: 16px;
-}
-.fc-toolbar {
-    margin-bottom: 5px;
-
-}
-.fc-unthemed .fc-today {
-    background: #002860;
-}
-
-
-.calendar .title {
-    font-size: 20px;
-    padding: 10px 0 10px 5px;
-}
-.calendar .icon-details{
-    float: left;
-    padding: 10px 0 10px 0;
-    font-size: 30px;
-}
-.calendar h2{
-    font-size: 20px;
-}
-
-/** namaj shikkha */
-.namaj-shikkha{
-    margin-bottom: 50px;
-    font-size: 16px;
-}
-
-.namaj-shikkha .title {
-    font-size: 20px;
-    padding: 10px 0 10px 0;
-}
-.namaj-shikkha .icon-details{
-    float: left;
-    padding: 10px 0 10px 0;
-    font-size: 30px;
-}
-/** hadith **/
-.hadith{
-    margin-top: 0px;
-    margin-bottom: 50px;
-    font-size: 14px;
-}
-.hadith .title {
-    font-size: 20px;
-    padding: 10px 0 10px 0;
-}
-.hadith .icon-details{
-    float: left;
-    padding: 10px 0 10px 0;
-    font-size: 30px;
-}
-/** ayat-dua **/
-.ayat-dua{
-    margin-top: 0px;
-    margin-bottom: 50px;
-    font-size: 16px;
-}
-.ayat-dua .title {
-    font-size: 20px;
-    padding: 10px 0 10px 0;
-}
-.ayat-dua .icon-details{
-    float: left;
-    padding: 10px 0 10px 0;
-    font-size: 30px;
-}
-/** islamic occasion*/
-.upolokko{
-    margin-top: 0px;
-    margin-bottom: 20px;
-}
-.upolokko .title {
-    padding: 10px 0 10px 0;
-    font-size: 20px;
-}
 
 /** jakat */
 .jakat {
@@ -1215,11 +835,11 @@ nav ul li {
     margin: 5%;
 }
 .jakat ul a{
-    color:#fff;
+    color:#000000;
     font-size: 18px;
 }
 .jakat ul li a{
-    color:#fff;
+    color:#000000;
     font-size: 20px;
 }
 .jakat .collection {
@@ -1230,7 +850,8 @@ nav ul li {
 .jakat .collection .collection-item{
     padding: 3%;
     margin: 2%;
-    border: 1px solid #189b9a;
+    border: 1px solid #ffbfa0;
+    /*border: 1px solid #ffdb35;*/
     background: none !important;
 }
 
@@ -1244,144 +865,6 @@ nav ul li {
     background: none !important;
 }
 
-/** hamd naat */
-.hamd-naat::-webkit-scrollbar {
-    width: 1px;
-}
-.hamd-naat {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.hamd-naat .title {
-    font-size: 20px;
-    padding: 5px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.hamd-naat .duration {
-    font-size: 18px;
-    padding: 5px 17px;
-    background-color: #002860;
-    opacity: 1;
-    border-radius: 25px;
-    margin: 5px;
-}
-.hamd-naat .icon-middle {
-    padding-top:20%;
-    padding-left: 20%;
-}
-
-/** waz */
-.waz::-webkit-scrollbar {
-    width: 1px;
-}
-.waz {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.waz .title {
-    font-size: 20px;
-    padding: 5px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.waz .duration {
-    font-size: 18px;
-    padding: 5px 17px;
-    background-color: #002860;
-    opacity: 1;
-    border-radius: 25px;
-    margin: 5px;
-}
-.waz .icon-middle {
-    padding-top:20%;
-    padding-left: 20%;
-}
-
-/** video & live streaming **/
-.video {
-    margin-top: 56px;
-    margin-bottom: 10px;
-}
-.video .video-list .collection .collection-item {
-    background: none;
-}
-.video .video-list .card .card-image img {
-    width: 100%;
-    height: 200px;
-}
-.video .video-list h2{
-    font-size: 20px;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: clip;
-    padding-left: 10px;
-    margin: 0px;
-    padding-top: 10px;
-}
-
-/** video details */
-.video-details {
-    margin-top: 56px;
-    margin-bottom: 10px;
-}
-.video-details .thumb_img {
-    position: absolute;
-    max-width: 100px!important;
-    max-height: 75px!important;
-    width: 100%!important;
-    height: auto!important;
-    overflow: hidden;
-    left: 10px;
-    display: inline-block;
-    vertical-align: middle;
-    top: 10px;
-    z-index: -1;
-}
-.video-details .play-button {
-    padding-top: 20px;
-    color: #f0f0f0;
-}
-.collection .collection-item.avatar .secondary-content {
-    right: 0;
-}
-
-.video-details .collection .collection-item.avatar .title {
-    padding-left: 50px;
-    padding-top: 6px;
-    font-size: 13px;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: clip;
-}
-.video-details .collection .collection-item {
-    background: none;
-}
-
-/** allah 99 name **/
-.allah-99-name::-webkit-scrollbar {
-    width: 1px;
-}
-.allah-99-name {
-    margin-top: 56px;
-    margin-bottom: 45px;
-}
-.allah-99-name .title {
-    font-size: 18px;
-    padding: 5px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.allah-99-name .serial {
-    font-size: 18px;
-    padding: 35px 2px 5px 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
 
 
 /* Change the color of various "bars". */
@@ -1422,7 +905,8 @@ nav ul li {
 .jakat-fund .btn, .btn-teal{
     background: none;
     color:white;
-    border:  1px solid #189b9a;
+    border:  1px solid #ffbfa0;
+    /*border:  1px solid #ffdb35;*/
 }
 
 .jakat-fund .btn{
@@ -1471,7 +955,9 @@ nav ul li {
 .doante .btn, .btn-teal{
     background: none;
     color:white;
-    border:  1px solid #189b9a;
+    /*border:  1px solid #ffdb35;*/
+    border:  1px solid #ffbfa0;
+
 }
 .doante .btn{
     width: 100%;
@@ -1489,20 +975,17 @@ nav ul li {
     left: 0;
 }
 
-.tanbin-heading{
-    margin-bottom: 0px;
-    margin-left: 10px;
-}
+
 .box-shadow {
-    -moz-box-shadow:     0 0 10px #000000;
-    -webkit-box-shadow:  0 0 10px #000000;
-    box-shadow:          0 0 10px #000000;
+    -moz-box-shadow:     0 0 10px #000;
+    -webkit-box-shadow:  0 0 10px #000;
+    box-shadow:          0 0 10px #000;
 }
 
 .box-shadow2 {
-    -moz-box-shadow:    inset 0 0 10px #000000;
-    -webkit-box-shadow: inset 0 0 10px #000000;
-    box-shadow:         inset 0 0 10px #000000;
+    -moz-box-shadow:    inset 0 0 10px #000;
+    -webkit-box-shadow: inset 0 0 10px #000;
+    box-shadow:         inset 0 0 10px #000;
 }
 
 .box-shadow3 {background-color: #e7e7e7; color: black;}
@@ -1511,75 +994,68 @@ nav ul li {
     font-size: 20px;
 }
 
-.learn_quran_background{
-    /*background: url('../../img/harof/Background.png');*/
-    /*-webkit-background-size: cover;*/
-    /*-moz-background-size: cover;*/
-    /*-o-background-size: cover;*/
-    /*background-size: cover;*/
-    /*height: 100%;*/
-    /*width: 100%;*/
-    /*position: fixed;*/
-    /*overflow: auto;*/
-    /*margin-left: 10px;*/
-    /*margin-right: 10px;*/
-    /*!*margin-top: 60px;*!*/
-    /*margin-bottom: 30px;*/
-    /*border-radius: 25px;*/
-    /*margin-top: 70px;*/
-}
 
-.harof .row{
-    margin-top: 20px;
-    margin-bottom: 60px;
-}
-.harof::-webkit-scrollbar {
-    width: 1px;
-}
-
-
-.harof .input-field.col label{
-    left: 0;
-}
-
-
-
-/*subscription*/
-.subscription .card {
-    margin: 8px 6px 8px 6px;
-    box-shadow: none;
-    border-radius: 0px;
-}
-.subscription .card .card-title {
-    font-size: 18px;
-    font-weight: bolder;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: clip;
-    margin-bottom: 7px;
-    line-height: 1.2;
-}
-.subscription .card .card-content {
-    padding: 0 0 20px 0;
-}
-.subscription .unsubscribed .btn, .btn-large {
-    /*background-color: #1f3f0d ;*/
-    background-color: #002860 ;
-    z-index: 0;
-}
-.subscription .subscribed .btn, .btn-large {
-    background-color: #ef473a ;
-    z-index: 0;
-}
 
 .select_color a { color: white; }
-.select_color a .active { background-color: #189b9a; }
-.select_color a .hover { color: lightgreen; }
+/*.select_color a .active { background-color: #ffdb35; }*/
+.select_color a .active { background-color: #ffbfa0; }
+/*.select_color a .hover { color: lightgreen; }*/
+.select_color a .hover { color: #000; }
 
 
 .tabs .indicator {
     background:none;
 }
+
+/*### carousel slider css start ###*/
+    .home-list-area .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -moz-font-feature-settings: 'liga';
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .home-list-area .middle-indicator{
+       position:absolute;
+       top:40%;
+    }
+    .home-list-area .middle-indicator-text{
+       font-size: 4.2rem;
+    }
+    a.middle-indicator-text{
+        color:#8c8c8c !important;
+        /*color:#5b2b50 !important;*/
+    }
+    .home-list-area .content-indicator{
+        width: 64px;
+        height: 64px;
+        background: none;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px; 
+    }
+    .home-list-area .indicators{
+        visibility: hidden;
+    }
+    .home-list-area .carousel{
+        height: 250px !important;
+        font-size: 11px !important;
+    }
+    .home-list-area .carousel.carousel-slider .carousel-fixed-item{
+        bottom: 156px;
+    }
+
+/*### carousel slider css end ###*/
+
 
 
 input:not([type]):focus:not([readonly]),
@@ -1635,8 +1111,8 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
     cursor: text;
 }
 .btn:hover, .btn-large:hover {
-    /*background-color: #358a41;*/
-    background-color: #189b9a;
+    /*background-color: #ffdb35;*/
+    background-color: #ffbfa0;
 }
 /* Style Placeholders */
 ::-webkit-input-placeholder {
@@ -1657,9 +1133,7 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
         font-size: 15px;
         line-height: 1.7em;
     }
-    .namaj-time .suchi span{
-        margin-left: -50px;
-    }
+
     .home-mp{
         margin-left: 0px;
         padding: 0;
@@ -1667,12 +1141,9 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
     .home-ml{
         margin-left: 10px;
     }
-    .namaj-time-watch{
-        height: 135px;
-    }
 
     .white_common_background {
-        background: #ffffff;
+        background: #000000;
         background-size: 100% 100%;
         position: fixed;
         overflow: auto;
@@ -1682,6 +1153,10 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
         color: #000;
         border-radius: 10px;
     }
+    .home-list-area .carousel{
+        height: 250px !important;
+        font-size: 12px !important;
+    }
 }
 
 @media only screen and (min-width: 360px){
@@ -1689,9 +1164,7 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
         font-size: 16px;
         line-height: 1.7em;
     }
-    .namaj-time .suchi span{
-        margin-left: -35px;
-    }
+
     .home-mp{
         margin-left: -15px;
         padding: 0;
@@ -1700,12 +1173,8 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
         margin-left: 10px;
     }
 
-    .namaj-time-watch{
-        height: 150px;
-    }
-
     .white_common_background {
-        background: #ffffff;
+        background: #000000;
         background-size: 100% 100%;
         position: fixed;
         overflow: auto;
@@ -1715,17 +1184,17 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
         color: #000;
         border-radius: 10px;
     }
+    .home-list-area .carousel{
+        height: 255px !important;
+        font-size: 12px !important;
+    }
 }
 @media only screen and (min-width: 380px){
-    .namaj-time-watch{
-        height: 165px;
-    }
+
+
 }
 
 @media only screen and (min-width: 450px){
-    .namaj-time .suchi span {
-        margin-left: -15px;
-    }
     .home-mp{
         margin-left: -30px;
         padding: 0;
@@ -1733,12 +1202,13 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
     .home-ml{
         margin-left: 15px;
     }
-    .namaj-time-watch{
-        height: 250px;
-    }
 
     .circle_padding{
         padding: 50px;
+    }
+    .home-list-area .carousel{
+        height: 260px !important;
+        font-size: 14px !important;
     }
 
 }
@@ -1758,9 +1228,6 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
 
     .home-all-bottom{
         height: 400px;
-    }
-    .namaj-time-watch{
-        height: 315px;
     }
 
     .circle_padding{
@@ -1783,10 +1250,6 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
 
     .home-all-bottom{
         height: 520px;
-    }
-
-    .namaj-time-watch{
-        height: 315px;
     }
 
     .circle_padding{
@@ -1836,9 +1299,6 @@ and (-webkit-min-device-pixel-ratio: 2)
     .jakat ul li a{
         font-size: 20px;
     }
-    .video .video-list h2{
-        font-size: 18px;
-    }
 }
 @media screen and (max-device-width: 320px) {
     /* some CSS here */
@@ -1877,20 +1337,6 @@ and (-webkit-min-device-pixel-ratio: 2)
         font-size: 30px;
     }
 
-    .hamd-naat .duration {
-        padding: 5px 75px;
-    }
-    .hamd-naat .icon-middle {
-        padding-top:13%;
-        padding-left: 20%;
-    }
-    .waz .duration {
-        padding: 5px 75px;
-    }
-    .waz .icon-middle {
-        padding-top:13%;
-        padding-left: 20%;
-    }
 }
 /* ----------- iPad Pro ----------- */
 /* Portrait and Landscape */
@@ -1904,34 +1350,6 @@ and (-webkit-min-device-pixel-ratio: 1.5) {
     }
     .tabs .tab a {
         font-size: 35px;
-    }
-    /*header font size*/
-
-    .hamd-naat .duration {
-        padding: 5px 100px;
-    }
-    .hamd-naat .icon-middle {
-        padding-top:13%;
-        padding-left: 20%;
-    }
-    .waz {
-        margin-top: 71px;
-        margin-bottom: 10px;
-    }
-    .waz .duration {
-        padding: 5px 100px;
-    }
-    .waz .icon-middle {
-        padding-top:13%;
-        padding-left: 20%;
-    }
-    .video {
-        margin-top: 105px;
-        margin-bottom: 10px;
-    }
-    .allah-99-name {
-        margin-top: 105px;
-        margin-bottom: 10px;
     }
 }
 

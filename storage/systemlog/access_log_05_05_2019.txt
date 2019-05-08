@@ -1,0 +1,1 @@
+05-05-2019 12:23:11 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||

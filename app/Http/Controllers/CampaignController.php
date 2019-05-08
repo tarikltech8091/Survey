@@ -190,7 +190,7 @@ class CampaignController extends Controller
             } else{
                 $data['campaign_status']=0;
             }
-            $update=\DB::table('campaign_tbl')->where('id',$id)->update($data);
+            $update=\App\Campaign::where('id',$id)->update($data);
 
             if($update) {
                 echo 'Status updated successfully.';

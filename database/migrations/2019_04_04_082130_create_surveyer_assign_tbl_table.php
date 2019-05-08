@@ -31,12 +31,15 @@ class CreateSurveyerAssignTblTable extends Migration
             $table->foreign('assign_campaign_name')->references('campaign_name')
                 ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->string('assign_zone');
+            $table->foreign('assign_zone')->references('zone_name')
+                ->on('zone_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('assign_target')->default(0);
             $table->integer('complete_target')->default(0);
             $table->float('surveyer_prize_amount')->default(0);
             $table->string('validate_refference')->nullable();
             $table->string('assign_campaign_complain')->nullable();
             $table->string('assign_campaign_description')->nullable();
+            $table->string('success_status')->nullable()->default(0);
             $table->string('assign_status')->default(0);
             $table->string('assign_created_by')->nullable();
             $table->string('assign_updated_by')->nullable();

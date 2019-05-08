@@ -1,0 +1,5 @@
+06-05-2019 04:41:45 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36|Android|||
+06-05-2019 04:41:51 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+06-05-2019 04:42:20 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+06-05-2019 04:42:21 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||
+06-05-2019 04:42:43 - access_log --> 127.0.0.1|user|NO_MSISDN|LogIn|http://localhost:41/login|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36|linux|||

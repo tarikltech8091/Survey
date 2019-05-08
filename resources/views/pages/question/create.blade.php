@@ -94,8 +94,9 @@
                                                 <div class="col-sm-6">
                                                     <select id="form-field-select-3" class="form-control search-select" name="question_type">
                                                         <option value="">&nbsp;Please Select a Type</option>
-                                                        <option value="easy">Easy</option>
-                                                        <option value="hard">Hard</option>
+                                                        <option value="single">Single</option>
+                                                        <option value="multi">Multi</option>
+                                                        <option value="text">Text</option>
                                                     </select>
                                                 </div>
                                             </div>

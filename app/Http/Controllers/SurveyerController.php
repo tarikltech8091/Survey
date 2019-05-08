@@ -35,7 +35,7 @@ class SurveyerController extends Controller
                         $q->where('surveyer_status', $_GET['surveyer_status']);
                     });
                 }
-                if(isset($_GET['surveyer_mobile'])){
+                if(isset($_GET['surveyer_mobile']) && ($_GET['surveyer_mobile'] != 0)){
                     $query->where(function ($q){
                         $q->where('surveyer_mobile', $_GET['surveyer_mobile']);
                     });  
@@ -75,8 +75,10 @@ class SurveyerController extends Controller
     public function Create()
     {
         $data['all_district']=\App\Common::AllDistrict();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
+        // var_dump($data['all_zone']);
         return view('pages.surveyer.create',$data);
     }
 
@@ -198,6 +200,7 @@ class SurveyerController extends Controller
     public function Edit($id)
     {
         $data['all_district']=\App\Common::AllDistrict();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
         $data['edit'] = \App\Surveyer::where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;

@@ -27,7 +27,7 @@ class CategoryController extends Controller
     public function getAllContent()
     {
         if(isset($_GET['category_status'])){
-            $all_content =  \DB::table('category_tbl')->where(function($query){
+            $all_content =  \App\Category::where(function($query){
                 if(isset($_GET['category_status'])){
                     $query->where(function ($q){
                         $q->where('category_status', $_GET['category_status']);
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('category_tbl')->orderBy('id','DESC')->paginate(20);
+            $all_content= \App\Category::orderBy('id','DESC')->paginate(20);
             $all_content->setPath(url('/category/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
@@ -55,7 +55,7 @@ class CategoryController extends Controller
 
         }
 
-        $data['all_data'] = \DB::table('category_tbl')->orderby('id','desc')->get();
+        $data['all_data'] = \App\Category::orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.category.index',$data);
@@ -131,7 +131,7 @@ class CategoryController extends Controller
     public function ChangePublishStatus($id, $status)
     {
         //check if this category has any content published or not
-        $content_exists =\DB::table('category_tbl')->where('id',$id)->first();
+        $content_exists =\App\Category::where('id',$id)->first();
         if($content_exists)
         {
             $now = date('Y-m-d H:i:s');
@@ -161,7 +161,7 @@ class CategoryController extends Controller
      *********************************************/
     public function Edit($id)
     {
-        $data['edit'] = \DB::table('category_tbl')->where('id', $id)->first();
+        $data['edit'] = \App\Category::where('id', $id)->first();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.category.edit',$data);
@@ -181,7 +181,7 @@ class CategoryController extends Controller
             try
             {
 
-                $current_data= \DB::table('category_tbl')->where('id', $id)->first();
+                $current_data= \App\Category::where('id', $id)->first();
 
                 if(!empty($current_data)){
 
@@ -195,7 +195,7 @@ class CategoryController extends Controller
 	                $data['category_updated_by']=\Auth::user()->id;
 
 
-	                $update=\DB::table('category_tbl')->where('id', $id)->update($data);
+	                $update=\App\Category::where('id', $id)->update($data);
 
 	                // \App\System::EventLogWrite('update,category_tbl',json_encode($data));
 
@@ -217,9 +217,7 @@ class CategoryController extends Controller
      *********************************************/
     public function Delete($id)
     {
-        $delete = \DB::table('category_tbl')
-            ->where('id',$id)
-            ->delete();
+        $delete = \App\Category::where('id',$id)->delete();
         if($delete) {
             // \App\System::EventLogWrite('delete,category_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';

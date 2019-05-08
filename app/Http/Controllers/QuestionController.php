@@ -28,9 +28,16 @@ class QuestionController extends Controller
     {
         if(isset($_GET['question_status'])){
             $all_content =  \DB::table('question_tbl')->where(function($query){
+                
                 if(isset($_GET['question_status'])){
                     $query->where(function ($q){
                         $q->where('question_status', $_GET['question_status']);
+                    });
+                }
+
+                if(isset($_GET['question_campaign_id']) && ($_GET['question_campaign_id'] != 0)){
+                    $query->where(function ($q){
+                        $q->where('question_campaign_id', $_GET['question_campaign_id']);
                     });
                 }
             })
@@ -39,9 +46,10 @@ class QuestionController extends Controller
 
             $question_status = isset($_GET['question_status'])? $_GET['question_status']:0;
             $question_name = isset($_GET['question_name'])? $_GET['question_name']:'';
+            $question_campaign_id = isset($_GET['question_campaign_id'])? $_GET['question_campaign_id']:'';
 
             $all_content->setPath(url('/questions/list'));
-            $pagination = $all_content->appends(['question_status' => $question_status])->render();
+            $pagination = $all_content->appends(['question_status' => $question_status, 'question_campaign_id' => $question_campaign_id ])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -56,6 +64,7 @@ class QuestionController extends Controller
 
         }
 
+        $data['all_campaign'] =  \App\Campaign::orderby('id','desc')->get();
         $data['all_data'] = \DB::table('question_tbl')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;

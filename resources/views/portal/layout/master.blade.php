@@ -9,19 +9,19 @@
     <meta property="og:url" content="{{url('/')}}" />
      
     <!-- Open Graph title property -->
-    <meta property="og:title" content="Najat" />
+    <meta property="og:title" content="Survey" />
      
     <!-- Open Graph description property -->
     <meta property="og:description" content="DESCRIPTION" /> 
 
     <!-- Open Graph image property -->
-    <meta property="og:image" content="{{asset('portal/img/Nazat-Banglalink-Icon.png')}}" />
+    <!-- <meta property="og:image" content="{{asset('portal/img/Icon.png')}}" /> -->
      
     <!-- Open Graph type property -->
     <meta property="og:type" content="website" />
      
     <!-- Open Graph site_name property -->
-    <meta property="og:site_name" content="Najat" />
+    <meta property="og:site_name" content="Survey" />
 
     <title>{{isset($page_title) ? $page_title : ''}} | Survey</title>
     <!-- CSS  -->
@@ -38,38 +38,16 @@
     <link rel="stylesheet" href="{{ asset('portal/owlcarousel/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('portal/owlcarousel/owl.theme.default.min.css') }}">
 
-    <link rel="icon" href="{{url('/portal/img/nazat-favicon.png')}}">
-    <link href="{{ asset('portal/materialize/css/banglalink_style_v20.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!-- <link rel="icon" href="{{url('/portal/img/favicon.png')}}"> -->
+    <link href="{{ asset('portal/materialize/css/style_v1.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 
-    @if(isset($page_title) && ($page_title =='On Demand Consent'))
-
-        <?php
-            $body_background_color = '#fff';
-        ?>
-
-    @else
-        @if(isset($operator) && ($operator == 'blink'))
-
-            <?php
-                $body_background_color = '#ffbfa0';
-            ?>
-
-        @else
-
-            <?php
-                $body_background_color = '#002860';
-            ?>
-
-        @endif
-    @endif
     <style>
         #map {
             height: 100%;
         }
         body {
             -webkit-overflow-scrolling: touch;
-            background-color: {{$body_background_color}} !important;
         }
     </style>
     <script src="{{ asset('portal/materialize/js/jquery-3.2.1.min.js')}}"></script>
@@ -135,19 +113,6 @@
 <script type="text/javascript" src="{{ asset('portal/plugins/fullcalendar/lib/moment.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('portal/plugins/fullcalendar/js/fullcalendar.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('portal/plugins/fullcalendar/fullcalendar-script.js')  }}"></script>
-
-<!-- ##### Add Google Analytics 18-02-1018 ### -->
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133321740-3"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-
-gtag('config', 'UA-133321740-3');
-</script>
-<!-- ##### End Google Analytics ### -->
-
 
 
 @yield('JScript')
