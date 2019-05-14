@@ -83,6 +83,7 @@ class SystemAuthController extends Controller
             'password'=>$request->input('password'),
             'status'=> "active"
         ];
+
         if (\Auth::attempt($credentials)) {
             \Session::put('email', \Auth::user()->email);
             \Session::put('last_login', Auth::user()->last_login);
@@ -91,6 +92,12 @@ class SystemAuthController extends Controller
                 \Session::forget('pre_login_url');
                 return redirect($url);
             } else if(\Auth::user()->user_type=="admin") {
+                \App\User::LogInStatusUpdate("login");
+                return redirect('/dashboard');
+            } else if(\Auth::user()->user_type=="surveyer") {
+                \App\User::LogInStatusUpdate("login");
+                return redirect('/dashboard');
+            } else if(\Auth::user()->user_type=="requester") {
                 \App\User::LogInStatusUpdate("login");
                 return redirect('/dashboard');
             } else {

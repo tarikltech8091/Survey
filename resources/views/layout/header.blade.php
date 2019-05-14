@@ -27,6 +27,16 @@
                                 @endif
                                 <span class="username">{{isset(\Auth::user()->name) ? \Auth::user()->name : ''}}</span>
                                 <i class="clip-chevron-down"></i>
+                            @elseif((\Auth::user()->user_type == "requester") || (\Auth::user()->user_type == "surveyer") )
+
+                                @if((\Auth::user()->user_profile_image != ''))
+                                    <img width="30px" height="30px;" src="{{asset(\Auth::user()->user_profile_image)}}" class="circle-img" >
+                                @else
+                                    <img width="30px" height="30px;" src="{{asset('images/default.jpg')}}" class="circle-img" >
+                                @endif
+                                <span class="username">{{isset(\Auth::user()->name) ? \Auth::user()->name : ''}}</span>
+                                <i class="clip-chevron-down"></i>
+
                             @endif
                         @endif
                     </a>
@@ -53,6 +63,16 @@
                         </li>
                         <li>
                             @if(\Auth::check() && \Auth::user()->user_type == "admin")
+                                <a href="{{url('auth/admin/logout',isset(\Auth::user()->email) ? \Auth::user()->email : '')}}">
+                                    <i class="clip-exit"></i>
+                                    &nbsp;Log Out
+                                </a>
+                            @elseif(\Auth::check() && \Auth::user()->user_type == "requester")
+                                <a href="{{url('auth/admin/logout',isset(\Auth::user()->email) ? \Auth::user()->email : '')}}">
+                                    <i class="clip-exit"></i>
+                                    &nbsp;Log Out
+                                </a>
+                            @elseif(\Auth::check() && \Auth::user()->user_type == "surveyer")
                                 <a href="{{url('auth/admin/logout',isset(\Auth::user()->email) ? \Auth::user()->email : '')}}">
                                     <i class="clip-exit"></i>
                                     &nbsp;Log Out

@@ -93,8 +93,9 @@
                                                 <select class="form-control search-select" name="user_type">
                                                     <option value="" selected="selected"> Please select user type</option>
                                                     <option value="admin"> Administrator </option>
-                                                    <option value="official_user"> Official User </option>
-                                                    <option value="normal_user"> Normal User </option>
+                                                    <option value="requester"> Requester </option>
+                                                    <option value="surveyer"> Surveyer </option>
+                                                    <option value="participate"> Participate </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -105,8 +106,9 @@
                                                 <select class="form-control search-select" name="user_role" >
                                                     <option value="" selected="selected">Please select user role</option>
                                                     <option value="admin"> Admin </option>
-                                                    <option value="official_user"> Official </option>
-                                                    <option value="normal_user"> Normal </option>
+                                                    <option value="requester"> Requester </option>
+                                                    <option value="surveyer"> Surveyer </option>
+                                                    <option value="participate"> Participate </option>
                                                 </select>
                                             </div>
                                         </div>

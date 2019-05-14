@@ -49,9 +49,35 @@
 
 
 
-      #getAllCampaign
-      Route::get('/home',array('as'=>'Home' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getAllCampaign'));
-      Route::get('/campaign/details',array('as'=>'Campaign Details' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getCampaignDetails'));
+      #PortalCampaign
+      Route::get('/participate/registration',array('as'=>'Participate Registration' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateRegistration'));
+
+      Route::post('/participate/registration/save',array('as'=>'Registration Confirm' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@RegistrationConfirm'));
+
+      Route::get('/participate/login',array('as'=>'Participate Login' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateLogin'));
+
+      Route::post('/participate/login',array('as'=>'Participate Login' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipatePostLogin'));
+
+      Route::get('/participate/earn',array('as'=>'Participate Earn' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateEarn'));
+
+      Route::get('/participate/home',array('as'=>'Home' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getAllCampaign'));
+
+      Route::get('/portal/participate/list',array('as'=>'Participate List' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getParticipateCampaignList'));
+
+      Route::get('/portal/participate/campaign/details/{campaign_id}',array('as'=>'Participate Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getParticipateCampaigndetails'));
+
+      // Route::get('/campaign/details',array('as'=>'Campaign Details' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@getCampaignDetails'));
+
+      #Create
+      Route::get('/campaign/question/answer/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@FirstQuestionAnswer'));
+
+      Route::get('/campaign/all/question/answer/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@QuestionAnswer'));
+      
+      #Store
+      Route::post('/campaign/question/answer/save/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'PortalController@Store'));
+
+      Route::post('/campaign/question/answer/save/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'PortalController@QuestionAnswerStore'));
+
 
 /*
 #####################
@@ -63,6 +89,7 @@ Route::group(['middleware' => ['admin_auth']], function () {
 
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
+      Route::post('/admin/user/create',array('as'=>'Admin User create' , 'uses' =>'AdminController@CreateUser'));
 
 
       /*################
@@ -350,6 +377,115 @@ Route::group(['middleware' => ['admin_auth']], function () {
 
 
 });
+
+
+
+/*
+#####################
+## Requester Module
+######################
+*/
+Route::group(['middleware' => ['requester_auth']], function () {
+
+      Route::get('/requester/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
+
+
+      /*################
+      ## Campaign Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/campaign/list',array('as'=>'Get All Campaign Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllContent'));
+      #Create
+      Route::get('/campaign/create',array('as'=>'Campaign Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Create'));
+      #Store
+      Route::post('/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Store'));
+      #Campaign Participate Countdown
+      Route::get('/campaign/participate/countdown',array('as'=>'Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@getAllContentCountdown'));
+
+      #Campaign Answer Question
+      Route::get('/campaign/participate/question-{question_id}',array('as'=>'Campaign Participate Question' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@getAllSingleQuestionAnswer'));
+
+      #ChangeStatus
+      Route::get('/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangePublishStatus'));
+      #Edit
+      Route::get('/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Edit'));
+      #Update
+      Route::post('/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Update'));
+      #Delete
+      Route::get('/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Delete'));
+
+
+
+      /*################
+      ## Question Settings
+      #################*/
+
+      #getAllContent
+      Route::get('/question/list',array('as'=>'Get All Question Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllQuestion'));
+      #Create
+      Route::get('/question/create',array('as'=>'Question Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionCreate'));
+      #Store
+      Route::post('/question/save',array('as'=>'Question Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionStore'));
+      #ChangeStatus
+      Route::get('/question/change/status/{id}/{status}',array('as'=>'Question Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangeQuestionPublishStatus'));
+      #Edit
+      Route::get('/question/edit/id-{id}',array('as'=>'Question Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionEdit'));
+      #Update
+      Route::post('/question/update/id-{id}',array('as'=>'Question Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionUpdate'));
+      #Delete
+      Route::get('/question/delete/id-{id}',array('as'=>'Question Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionDelete'));
+
+
+});
+ 
+
+/*
+#####################
+## Requester Module
+######################
+*/
+Route::group(['middleware' => ['surveyer_auth']], function () {
+
+
+      Route::get('/surveyer/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
+
+
+      /*#######################
+      ## Question Answer Settings
+      #########################*/
+
+      #getAllCampaign
+      Route::get('/participate/campaign/list',array('as'=>'Active Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllCampaign'));
+
+      #getAllContent
+      Route::get('/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllContent'));
+
+      #Create
+      Route::get('/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@FirstQuestionAnswer'));
+
+      Route::get('/all/question/answer/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@QuestionAnswer'));
+      
+      #Store
+      Route::post('/question/answer/save/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Store'));
+
+      Route::post('/question/answer/save/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@QuestionAnswerStore'));
+
+      #ChangeStatus
+      Route::get('/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangePublishStatus'));
+      #Edit
+      Route::get('/question/answer/edit/id-{id}',array('as'=>'Question Answer Edit' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Edit'));
+      #Update
+      Route::post('/question/answer/update/id-{id}',array('as'=>'Question Answer Update' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Update'));
+      #Delete
+      Route::get('/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Delete'));
+
+
+ 
+
+
+});
+
 
 ##################### END OF Common Auth #######################################
 

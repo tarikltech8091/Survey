@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Exception;
 use Db;
-
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 class PortalController extends Controller
 {
 
@@ -23,6 +25,233 @@ class PortalController extends Controller
         // \App\System::AccessLogWrite();
     }
 
+    /********************************************
+    ## Participate Registration 
+    *********************************************/
+    public function ParticipateRegistration()
+    {
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
+        $data['all_district']=\App\Common::AllDistrict();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.registration',$data);
+    }
+
+    /********************************************
+    ## Participate Registration 
+     *********************************************/
+    public function RegistrationConfirm(Request $request)
+    {
+        $now = date('Y-m-d H:i:s');
+        $v = \Validator::make($request->all(), [
+            'participate_name' => 'required',
+            'participate_email' => 'required',
+            'participate_mobile' => 'required',
+            'participate_age' => 'required',
+            'participate_join_date' => 'required',
+            'participate_district' => 'required',
+            'participate_post_code' => 'required',
+            'participate_address' => 'required',
+            'participate_nid' => 'required',
+            'participate_gender' => 'required',
+            'participate_religion' => 'required',
+            'participate_occupation' => 'required',
+            // 'password' => 'required',
+            // 'repeat_password' => 'required|in_array:password',
+        ]);
+
+
+        if($v->passes()){
+
+
+            try{
+
+                $success = \DB::transaction(function () use($request) {
+
+                    $now = date('Y-m-d H:i:s');
+                    $participate_profile_image='';
+                    $image_type='participate';
+
+                    $participate_name=$request->input('participate_name');
+                    $participate_mobile=$request->input('participate_mobile');
+                    $participate_email=$request->input('participate_email');
+                    $slug=explode(' ', strtolower($request->input('participate_name')));
+                    $participate_name_slug=implode('-', $slug);
+                    $data['participate_name_slug']=$participate_name_slug;
+
+                    if($request->file('participate_profile_image')!=null){
+                        #ImageUpload
+                        $image_wide = $request->file('participate_profile_image');
+                        $img_location_wide=$image_wide->getRealPath();
+                        $img_ext_wide=$image_wide->getClientOriginalExtension();
+                        $participate_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$participate_name);
+                    }else{
+                        $participate_profile_image="";
+                    }
+
+                    $data['participate_name']=$request->input('participate_name');
+                    $data['participate_name_slug']=$participate_name_slug;
+                    $data['participate_email']=$request->input('participate_email');
+                    $data['participate_mobile']=$request->input('participate_mobile');
+                    $data['participate_age']=$request->input('participate_age');
+                    $data['participate_join_date']=$request->input('participate_join_date');
+                    $data['participate_district']=$request->input('participate_district');
+                    $data['participate_post_code']=$request->input('participate_post_code');
+                    $data['participate_address']=$request->input('participate_address');
+                    $data['participate_nid']=$request->input('participate_nid');
+                    $data['participate_gender']=$request->input('participate_gender');
+                    $data['participate_religion']=$request->input('participate_religion');
+                    $data['participate_occupation']=$request->input('participate_occupation');
+                    $data['participate_zone']=$request->input('participate_zone');
+                    $data['agreed_user']=0;
+                    $data['participate_profile_image']=$participate_profile_image;
+                    // $data['participate_created_by'] = \Auth::user()->id;
+                    // $data['participate_updated_by'] = \Auth::user()->id;
+
+                    $participate_insertOrUpdate = \App\Participate::updateOrCreate(
+                        [
+                            'participate_mobile' => $data['participate_mobile'],
+                        ],
+                        $data
+                    );
+
+
+                    $registration_data=array(
+                        'name' => ucwords($participate_name),
+                        'name_slug' => $participate_name_slug,
+                        'user_type' => 'participate',
+                        'user_role' => 'participate',
+                        'user_profile_image' => '',
+                        'login_status' => 0,
+                        'status' => 'active',
+                        'email' => $participate_email,
+                        'user_mobile' => $participate_mobile,
+                        'password' => bcrypt($request->input('password')),
+                        'created_by' => 1,
+                        'updated_by' => 1,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    );
+
+                    $user_insertOrUpdate = \DB::table('users')->insert($registration_data);
+
+                    // $user_insertOrUpdate = \App\User::updateOrCreate(
+                    //     [
+                    //         'user_mobile' => $data['participate_mobile'],
+                    //     ],
+                    //     $registration_data
+                    // );
+
+                    if(!$participate_insertOrUpdate || !$user_insertOrUpdate){
+                        $error=1;
+                    }
+
+                    if(!isset($error)){
+                        // \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
+                        // \App\System::EventLogWrite('insert,users',json_encode($registration_data));
+                        \DB::commit();
+                        
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+
+
+                });
+
+                    return redirect()->to('/participate/registration')->with('message','Participate added successfully.');
+
+
+            }catch (\Exception $e){
+                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+                \App\System::ErrorLogWrite($message);
+                return redirect()->back()->with('errormessage','Something wrong happend in questions Upload');
+            }
+
+        } else{
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+
+    }
+
+    
+
+    /********************************************
+    ## Participate Login 
+     *********************************************/
+    public function ParticipateLogin()
+    {
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.login',$data);
+    }
+
+	/**
+	 * checked validation, if failed redirect with error message
+	 * checked auth $credentials, if failed redirect with error message
+	 * checked user type, if "admin" change login status.
+	 *
+	 * @param  Request $request
+	 * @return Response.
+	*/
+    public function ParticipatePostLogin(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $credentials = [
+            'email' => $request->input('email'),
+            'password'=>$request->input('password'),
+            'status'=> "active"
+        ];
+        if (\Auth::attempt($credentials)) {
+            \Session::put('email', \Auth::user()->email);
+            \Session::put('last_login', Auth::user()->last_login);
+            if (\Session::has('pre_login_url') ) {
+                $url = \Session::get('pre_login_url');
+                \Session::forget('pre_login_url');
+                return redirect($url);
+            } else if(\Auth::user()->user_type=="surveyer") {
+                \App\User::LogInStatusUpdate("login");
+                return redirect('/participate/home');
+            } else if(\Auth::user()->user_type=="participate") {
+                \App\User::LogInStatusUpdate("login");
+                return redirect('/participate/home');
+            } else {
+                \App\User::LogInStatusUpdate("logout");
+                \Auth::logout();
+                return redirect('/participate/login')
+                    ->with('errormessage',"Sorry, You don't have permission to access this page.");
+            }
+        } else {
+            return redirect('/participate/login')
+                ->with('errormessage',"Incorrect combinations.Please try again.");
+        }
+    }
+
+
+    /********************************************
+    ## Participate Earn 
+     *********************************************/
+    public function ParticipateEarn()
+    {
+
+        if(\Auth::user()->surveyer_id){
+            $participate_info=\DB::table('participate_tbl')->where('id', \Auth::user()->surveyer_id)->first();
+            $data['participate_info'] = $participate_info;
+        }
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.earn',$data);
+    }
+
 
 
     /********************************************
@@ -38,6 +267,39 @@ class PortalController extends Controller
         $data['page_desc'] = $this->page_desc;
         return view('portal.campaign.index',$data);
     }
+
+
+    /********************************************
+    ## Show the list of participate Campaign List
+     *********************************************/
+    public function getParticipateCampaignList()
+    {
+
+        $all_content= \App\CampaignParticipate::where('campaign_participate_mobile', '01912582254')->orderBy('id','DESC')->get();
+
+        $data['all_content'] = $all_content;
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.participate',$data);
+    }
+
+
+    /********************************************
+    ## Show the list of participate Campaign List
+     *********************************************/
+    public function getParticipateCampaigndetails($campaign_id)
+    {
+
+        $campaign_info= \App\Campaign::where('id', $campaign_id)->first();
+        $all_content= \App\QuestionAnswer::where('answer_campaign_id', $campaign_id)->orderBy('id','ASC')->get();
+
+        $data['campaign_info'] = $campaign_info;
+        $data['all_content'] = $all_content;
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.participate-details',$data);
+    }
+
 
 
     /********************************************
@@ -135,29 +397,37 @@ class PortalController extends Controller
     /********************************************
     ##  FirstQuestionAnswer View
      *********************************************/
-    public function FirstQuestionAnswer($surveyer_id, $campaign_id, $question_position)
+    public function FirstQuestionAnswer($campaign_id, $question_position)
     {
-        $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+    	if(!empty(\Auth::user()->surveyer_id)){
+	        $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',\Auth::user()->surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+        	$data['surveyer_id'] = \Auth::user()->surveyer_id;
+	    }
+
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
         $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
         $data['all_district']=\App\Common::AllDistrict();
         $data['all_zone']=\App\Zone::where('zone_status',1)->get();
-        $data['surveyer_id'] = $surveyer_id;
         $data['campaign_id'] = $campaign_id;
         $data['question_position'] = $question_position;
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
-        return view('pages.question-answer.create',$data);
+        return view('portal.campaign.details',$data);
     }
 
 
     /********************************************
     ##  QuestionAnswer View
      *********************************************/
-    public function QuestionAnswer($campaign_participate_mobile, $surveyer_id, $campaign_id, $question_position)
+    public function QuestionAnswer($campaign_participate_mobile, $campaign_id, $question_position)
     {
-        $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+    	if(!empty(\Auth::user()->surveyer_id)){
+
+	        $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+	        $data['surveyer_id'] = $surveyer_id;
+	    }
+
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
         $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
@@ -166,18 +436,17 @@ class PortalController extends Controller
         $data['all_district']=\App\Common::AllDistrict();
         $data['all_zone']=\App\Zone::where('zone_status',1)->get();
         $data['campaign_participate_mobile'] = $campaign_participate_mobile;
-        $data['surveyer_id'] = $surveyer_id;
         $data['campaign_id'] = $campaign_id;
         $data['question_position'] = $question_position;
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
-        return view('pages.question-answer.create',$data);
+        return view('portal.campaign.details',$data);
     }
 
     /********************************************
     ##  Store
      *********************************************/
-    public function Store(Request $request, $surveyer_id, $campaign_id, $question_position)
+    public function Store(Request $request, $campaign_id, $question_position)
     {
 
         $v = \Validator::make($request->all(), [
@@ -207,14 +476,20 @@ class PortalController extends Controller
 
                 $success = \DB::transaction(function () use($request) {
 
-                    $surveyer_id = $request->input('answer_surveyer_id');
+                    // $surveyer_id = $request->input('answer_surveyer_id');
+                    if(!empty(\Auth::user()->surveyer_id)){
+	                    $surveyer_id = \Auth::user()->surveyer_id;
+	                }else{
+	                	$surveyer_id ='';
+	                }
+
                     $campaign_id = $request->input('answer_campaign_id');
                     $question_position = $request->input('answer_question_position');
                     $question_next_position = $question_position + 1;
                     $participate_mobile=$request->input('participate_mobile');
 
 
-                    $select_surveyer = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+                    // $select_surveyer = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
                     $select_campaign = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
                     $select_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
                     $all_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
@@ -256,8 +531,8 @@ class PortalController extends Controller
                         $data['participate_zone']=$request->input('participate_zone');
                         $data['agreed_user']=0;
                         $data['participate_profile_image']=$participate_profile_image;
-                        $data['participate_created_by'] = \Auth::user()->id;
-                        $data['participate_updated_by'] = \Auth::user()->id;
+                        // $data['participate_created_by'] = \Auth::user()->id;
+                        // $data['participate_updated_by'] = \Auth::user()->id;
 
 
 
@@ -271,8 +546,8 @@ class PortalController extends Controller
                         $campaign_participate_data['campaign_participate_zone']=$request->input('participate_zone');
                         $campaign_participate_data['campaign_participate_address']=$request->input('participate_address');
                         $campaign_participate_data['campaign_participate_status']=1;
-                        $campaign_participate_data['campaign_participate_created_by'] = \Auth::user()->id;
-                        $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;
+                        // $campaign_participate_data['campaign_participate_created_by'] = \Auth::user()->id;
+                        // $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;
 
 
                         $participate_insertOrUpdate = \App\Participate::updateOrCreate(
@@ -307,7 +582,10 @@ class PortalController extends Controller
 
                     }
 
-                    $question_answer_data['answer_surveyer_id']=$surveyer_id;
+                    if(!empty(\Auth::user()->surveyer_id)){
+                    	$question_answer_data['answer_surveyer_id']=\Auth::user()->surveyer_id;
+					}
+                    // $question_answer_data['answer_surveyer_id']=$surveyer_id;
                     $question_answer_data['answer_campaign_id']=$campaign_id;
                     $question_answer_data['answer_question_id']=$question_id;
                     $question_answer_data['answer_participate_mobile']=$request->input('participate_mobile');
@@ -320,8 +598,8 @@ class PortalController extends Controller
                     $question_answer_data['question_answer_option_4']=$request->input('question_option_4');
                     $question_answer_data['question_answer_text_value']=$request->input('question_option_new');
                     $question_answer_data['question_answer_status']=0;
-                    $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
-                    $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
+                    // $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
+                    // $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
 
                     $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$request->input('participate_mobile'))->first();
 
@@ -367,7 +645,7 @@ class PortalController extends Controller
 
                 });
 
-                return redirect()->to('/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
+                return redirect()->to('/campaign/all/question/answer/'.$participate_mobile.'/'.$campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
 
 
 
@@ -389,7 +667,7 @@ class PortalController extends Controller
     /********************************************
     ##  QuestionAnswerStore
      *********************************************/
-    public function QuestionAnswerStore(Request $request, $surveyer_id, $campaign_id, $question_position)
+    public function QuestionAnswerStore(Request $request, $campaign_id, $question_position)
     {
 
         $v = \Validator::make($request->all(), [
@@ -411,7 +689,13 @@ class PortalController extends Controller
 
             try{
             
-                $surveyer_id = $request->input('answer_surveyer_id');
+                // $surveyer_id = $request->input('answer_surveyer_id');
+                if(!empty(\Auth::user()->surveyer_id)){
+                    $surveyer_id = \Auth::user()->surveyer_id;
+                }else{
+                	$surveyer_id ='';
+                }
+
                 $campaign_id = $request->input('answer_campaign_id');
                 $question_position = $request->input('answer_question_position');
                 $question_next_position = $question_position + 1;
@@ -422,12 +706,12 @@ class PortalController extends Controller
 
                 $success = \DB::transaction(function () use($request) {
 
-                    $surveyer_id = $request->input('answer_surveyer_id');
+                    // $surveyer_id = $request->input('answer_surveyer_id');
                     $campaign_id = $request->input('answer_campaign_id');
                     $question_position = $request->input('answer_question_position');
                     $participate_mobile = $request->input('campaign_participate_mobile');
 
-                    $select_surveyer = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
+                    // $select_surveyer = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
                     $select_campaign = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
                     $select_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
                     $all_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
@@ -439,7 +723,10 @@ class PortalController extends Controller
 
 
                         $question_answer_data['answer_campaign_id']=$campaign_id;
-                        $question_answer_data['answer_surveyer_id']=$surveyer_id;
+	                    if(!empty(\Auth::user()->surveyer_id)){
+	                        $question_answer_data['answer_surveyer_id']=\Auth::user()->surveyer_id;
+	                    }
+                        // $question_answer_data['answer_surveyer_id']=$surveyer_id;
                         $question_answer_data['answer_question_id']=$question_id;
                         $question_answer_data['answer_participate_mobile']=$request->input('campaign_participate_mobile');
                         // $question_answer_data['question_answer_type']=$request->input('question_answer_type');
@@ -451,8 +738,8 @@ class PortalController extends Controller
                         $question_answer_data['question_answer_option_4']=$request->input('question_option_4');
                         $question_answer_data['question_answer_text_value']=$request->input('question_option_new');
                         $question_answer_data['question_answer_status']=0;
-                        $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
-                        $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
+                        // $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
+                        // $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
 
                         $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$participate_mobile)->first();
                         
@@ -466,15 +753,7 @@ class PortalController extends Controller
 
                         }
 
-                       
-                        // $question_answer_insert = \App\QuestionAnswer::updateOrCreate(
-                        //     [
-                        //         'answer_participate_mobile' => $question_answer_data['answer_participate_mobile'],
-                        //         'answer_question_id' => $question_id,
-                        //     ],
-                        //     $question_answer_data
-                        // );
-
+                      
 
                         if(!$question_answer_insertOrUpdate){
                             $error=1;
@@ -489,18 +768,18 @@ class PortalController extends Controller
                             throw new Exception("Error Processing Request", 1);
                         }
 
-                        // return redirect()->back()->with('message','Question Created Successfully');
+                        return redirect()->back()->with('message','Question Created Successfully');
 
                     }else{
-                        return redirect()->to('/question/answer/'.$surveyer_id.'/'.$campaign_id.'/1')->with('message','First Question Answer');
+                        return redirect()->to('/campaign/question/answer/'.$campaign_id.'/1')->with('message','First Question Answer');
                      }
 
                 });
 
                 if(!empty($next_question) && $total_question >= $question_next_position){
-                    return redirect()->to('/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'. $question_next_position)->with('message','Question Answer Successfully');
+                    return redirect()->to('/campaign/all/question/answer/'.$participate_mobile.'/'.$campaign_id.'/'. $question_next_position)->with('message','Question Answer Successfully');
                 }else{
-                    return redirect()->to('/participate/campaign/list/')->with('message','Camapaign Participate Successfully');
+                    return redirect()->to('/participate/home')->with('message','Camapaign Participate Successfully');
                 }
 
 
@@ -615,20 +894,5 @@ class PortalController extends Controller
         }else return redirect()->back()->withErrors($v)->withInput();
     }
 
-    /********************************************
-    ## Delete
-     *********************************************/
-    public function Delete($id)
-    {
-        $delete = \DB::table('question_tbl')
-            ->where('id',$id)
-            ->delete();
-        if($delete) {
-            // \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
-            echo 'Content deleted successfully.';
-        } else {
-            // \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
-            echo 'Content did not delete successfully.';
-        }
-    }
+
 }

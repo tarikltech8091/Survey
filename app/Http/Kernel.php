@@ -62,8 +62,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'admin_auth'=> \App\Http\Middleware\AdminAuth::class,
-        'account_auth'=> \App\Http\Middleware\AccountsAuth::class,
-        'inventory_auth'=> \App\Http\Middleware\InventoryAuth::class,
+        'participate_auth'=> \App\Http\Middleware\ParticipateAuth::class,
+        'requester_auth'=> \App\Http\Middleware\RequesterAuth::class,
+        'surveyer_auth'=> \App\Http\Middleware\SurveyerAuth::class,
         // 'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt-auth' => \App\Http\Middleware\authJWT::class,
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,

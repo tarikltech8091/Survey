@@ -249,6 +249,8 @@ class AdminController extends Controller
                     'user_profile_image' => $user_profile_image,
                     'login_status' => 0,
                     'status' => "deactivate",
+                    'created_by' => 1,
+                    'updated_by' => 1,
                     'created_at' => $now,
                     'updated_at' => $now,
                 );

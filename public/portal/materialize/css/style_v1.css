@@ -251,7 +251,7 @@ nav ul li {
 
 .btn, .btn-large {
     /*background-color: #ffdb35;*/
-    background-color: #ffbfa0;
+    background-color: #1d2129;
     font-size: 16px;
     font-weight: bold;
 }
@@ -261,7 +261,7 @@ nav ul li {
     font-family: 'SolaimanLipi', sans-serif !important;
 }
 .common_btn{
-    background-color: #5b2b50 !important;
+    background-color: #1d2129 !important;
     border: none !important;
 }
 .tabs .tab {
@@ -361,7 +361,6 @@ nav ul li {
     font-weight: bold;
 }
 .common_background {
-    /*background: url('../../img/islamic/Nazat-Banglalink-Background.png');*/
     background: url('../../img/islamic/Nazat-Background.png');
     background-size: 100% 100%;
     position: fixed;
@@ -373,7 +372,8 @@ nav ul li {
 }
 
 .abc {
-    background: url('../../img/islamic/Top-Image.jpg');
+    /*background: url('../../img/islamic/Top-Image.jpg');*/
+    background: #ffffff;
     height: 100%; 
     background-position: center;
     background-repeat: no-repeat;
@@ -507,8 +507,8 @@ nav ul li {
     padding-bottom: 0px;
 }
 .details_common_background {
-    /*background: url('../../img/islamic/Banglalink_Rounder-Background.png');*/
-    background: url('../../img/islamic/Nazat-Blank-Background.png');
+    /*background: url('../../img/islamic/Nazat-Blank-Background.png');*/
+    background: #cccccc;
     background-size: 100% 100%;
     position: fixed;
     overflow: auto;
@@ -632,7 +632,8 @@ nav ul li {
 }
 
 .sidebar_background {
-    background: url('../../img/islamic/Background.png');
+    /*background: url('../../img/islamic/Background.png');*/
+    background: #cccccc;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -905,7 +906,7 @@ nav ul li {
 .jakat-fund .btn, .btn-teal{
     background: none;
     color:white;
-    border:  1px solid #ffbfa0;
+    border:  1px solid #1d2129;
     /*border:  1px solid #ffdb35;*/
 }
 
@@ -956,7 +957,7 @@ nav ul li {
     background: none;
     color:white;
     /*border:  1px solid #ffdb35;*/
-    border:  1px solid #ffbfa0;
+    border:  1px solid #1d2129;
 
 }
 .doante .btn{
@@ -1112,7 +1113,7 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
 }
 .btn:hover, .btn-large:hover {
     /*background-color: #ffdb35;*/
-    background-color: #ffbfa0;
+    background-color: #1d2129;
 }
 /* Style Placeholders */
 ::-webkit-input-placeholder {

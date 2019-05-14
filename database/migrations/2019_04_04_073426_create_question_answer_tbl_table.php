@@ -18,7 +18,7 @@ class CreateQuestionAnswerTblTable extends Migration
             $table->bigInteger('answer_campaign_id')->unsigned();
             $table->foreign('answer_campaign_id')->references('id')
                 ->on('campaign_tbl')->onDelete('cascade')->onUpdate('cascade');
-            $table->bigInteger('answer_surveyer_id')->unsigned();
+            $table->bigInteger('answer_surveyer_id')->nullable()->unsigned();
             $table->foreign('answer_surveyer_id')->references('id')
                 ->on('surveyer_tbl')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('answer_question_id')->unsigned();
