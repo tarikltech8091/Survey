@@ -25,6 +25,132 @@ class QuestionAnswerController extends Controller
     }
 
 
+    /********************************************
+    ## Show the list of all Content
+     *********************************************/
+    public function getAllContentCountdown()
+    {
+        if(isset($_GET['search_campaign_id'])){
+
+            $total_participate =  \App\CampaignParticipate::where(function($query){
+                if(isset($_GET['search_campaign_id'])){
+                    $query->where(function ($q){
+                        $q->where('participate_campaign_id', $_GET['search_campaign_id']);
+                    });
+                }
+            })
+                ->orderBy('id','DESC')
+                ->count();
+
+            $data['total_participate'] = $total_participate;
+
+
+            $numberOfQuestions = \DB::table('question_answer_tbl')->where('answer_campaign_id', $_GET['search_campaign_id'])->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
+            $data['numberOfQuestions'] = $numberOfQuestions;
+
+
+            $all_content =  \App\QuestionAnswer::where(function($query){
+                if(isset($_GET['search_campaign_id'])){
+                    $query->where(function ($q){
+                        $q->where('answer_campaign_id', $_GET['search_campaign_id']);
+                    });
+                }
+            })
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                ->orderBy('question_answer_tbl.id','DESC')
+                ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                ->paginate(20);
+
+            $search_campaign_id = isset($_GET['search_campaign_id'])? $_GET['search_campaign_id']:0;
+
+            $all_content->setPath(url('/admin/campaign/participate/countdown'));
+            $pagination = $all_content->appends(['answer_campaign_id' => $search_campaign_id])->render();
+            $data['pagination'] = $pagination;
+            $data['perPage'] = $all_content->perPage();
+            $data['all_content'] = $all_content;
+
+        } else{
+
+            /*$total_participate =  \App\CampaignParticipate::orderBy('id','DESC')->count();
+            $data['total_participate'] = $total_participate;
+
+            $numberOfQuestions = \DB::table('question_answer_tbl')->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
+            $data['numberOfQuestions'] = $numberOfQuestions;
+
+
+            $all_content= \DB::table('question_answer_tbl')
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                ->orderBy('question_answer_tbl.id','DESC')
+                ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                ->paginate(20);
+            $all_content->setPath(url('/campaign/participate/countdown'));
+            $pagination = $all_content->render();
+            $data['perPage'] = $all_content->perPage();
+            $data['pagination'] = $pagination;
+            $data['all_content'] = $all_content;*/
+
+        }
+
+        $data['all_campaign'] =  \App\Campaign::orderby('id','desc')->get();
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.question-answer.countdown',$data);
+    }
+
+
+    /********************************************
+    ## Show the list of all single question Answer
+     *********************************************/
+    public function getAllSingleQuestionAnswer($answer_question_id)
+    {
+
+        $total_content= \DB::table('question_answer_tbl')
+            ->where('answer_question_id',$answer_question_id)->count();
+        $data['total_content'] = $total_content;
+
+        $question_answer_option_1 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_1','!=', '')->count();
+        $data['question_answer_option_1'] = $question_answer_option_1;
+
+        $question_answer_option_2 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_2','!=', '')->count();
+        $data['question_answer_option_2'] = $question_answer_option_2;
+
+
+        $question_answer_option_3 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_3','!=', '')->count();
+        $data['question_answer_option_3'] = $question_answer_option_3;
+
+
+        $question_answer_option_4 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_4','!=', '')->count();
+        $data['question_answer_option_4'] = $question_answer_option_4;
+
+
+        $question_answer_text_value = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_text_value','!=', '')->count();
+        $data['question_answer_text_value'] = $question_answer_text_value;
+
+        $all_content= \DB::table('question_answer_tbl')
+            ->where('answer_question_id',$answer_question_id)
+            ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+            ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+            ->orderBy('question_answer_tbl.id','DESC')
+            ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+            ->paginate(20);
+        $all_content->setPath(url('/admin/campaign/participate/countdown'));
+        $pagination = $all_content->render();
+        $data['perPage'] = $all_content->perPage();
+        $data['pagination'] = $pagination;
+        $data['all_content'] = $all_content;
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.question-answer.question-details',$data);
+    }
+
+
+
+
+
 
     /********************************************
     ## Show the list of all Campaign
@@ -167,8 +293,8 @@ class QuestionAnswerController extends Controller
 
         $v = \Validator::make($request->all(), [
             'participate_name' => 'required',
-            'participate_email' => 'required',
-            'participate_mobile' => 'required',
+            'participate_email' => 'required|email',
+            'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'participate_age' => 'required',
             'participate_join_date' => 'required',
             'participate_district' => 'required',
@@ -533,6 +659,37 @@ class QuestionAnswerController extends Controller
 
 
     /********************************************
+    ## Change validate status for individual.
+     *********************************************/
+    public function ChangeValidateStatus($id, $status)
+    {
+        //check if this questions has any content Validate or not
+        $content_exists =\DB::table('question_answer_tbl')->where('id',$id)->first();
+        if(!empty($content_exists))
+        {
+            $now = date('Y-m-d H:i:s');
+            if($status=='yes'){
+                $data['question_answer_validate']='yes';
+            } else{
+                $data['question_answer_validate']='no';
+            }
+            $update=\DB::table('question_answer_tbl')->where('id',$id)->update($data);
+
+            if($update) {
+                echo 'Validate updated successfully.';
+                // \App\System::EventLogWrite('update,question_answer_validate|Validate updated successfully.',$id);
+            } else {
+                echo 'Validate did not update.';
+                // \App\System::EventLogWrite('update,question_answer_validate|Validate did not updated.',$id);
+            }
+        } else{
+            echo 'There is no validate content for this questions. Please upload and validate any content to validate this content.';
+        }
+
+    }
+
+
+    /********************************************
     ##  Edit View
      *********************************************/
     public function Edit($id)
@@ -616,6 +773,221 @@ class QuestionAnswerController extends Controller
             echo 'Content did not delete successfully.';
         }
     }
+
+
+
+
+
+    /********************************************
+    ##  ParticipateQuestionAnswer View
+     *********************************************/
+    public function ParticipateQuestionAnswer($campaign_participate_mobile, $campaign_id, $question_position)
+    {
+
+        $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
+        $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+        $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
+        $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
+
+        $data['all_district']=\App\Common::AllDistrict();
+        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
+        $data['campaign_participate_mobile'] = $campaign_participate_mobile;
+        $data['campaign_id'] = $campaign_id;
+        $data['question_position'] = $question_position;
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.question-answer.participate-question-answer',$data);
+    }
+
+    /********************************************
+    ##  ParticipateQuestionAnswerStore
+     *********************************************/
+    public function ParticipateQuestionAnswerStore(Request $request, $campaign_id, $question_position)
+    {
+
+        $v = \Validator::make($request->all(), [
+            /*'participate_name' => 'required',
+            'participate_email' => 'required|email',
+            'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
+            'participate_age' => 'required',
+            'participate_join_date' => 'required',
+            'participate_district' => 'required',
+            'participate_post_code' => 'required',
+            'participate_address' => 'required',
+            'participate_nid' => 'required',
+            'participate_gender' => 'required',
+            'participate_religion' => 'required',
+            'participate_occupation' => 'required',*/
+        ]);
+
+
+        if($v->passes()){
+
+
+            try{
+
+                $answer_campaign_id=$request->input('answer_campaign_id');
+                $campaign_participate_mobile=$request->input('campaign_participate_mobile');
+                $answer_question_position = $request->input('answer_question_position');
+                $question_next_position = $answer_question_position + 1;
+
+
+                $next_question = \DB::table('question_tbl')->where('question_campaign_id',$answer_campaign_id)->where('question_position',$question_next_position)->where('question_status','1')->orderby('id','desc')->first();
+
+                $total_question = \DB::table('question_tbl')->where('question_campaign_id',$answer_campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
+
+
+
+                $success = \DB::transaction(function () use($request, $campaign_participate_mobile, $answer_question_position, $question_next_position, $next_question, $total_question) {
+
+                    if(!empty(\Auth::user()->surveyer_id)){
+                        $surveyer_id = \Auth::user()->surveyer_id;
+                    }else{
+                        $surveyer_id ='';
+                    }
+
+                    $campaign_id = $request->input('answer_campaign_id');
+                    $question_position = $request->input('answer_question_position');
+                    $question_next_position = $question_position + 1;
+                    $participate_mobile=$request->input('campaign_participate_mobile');
+
+
+                    $select_participate = \DB::table('participate_tbl')->where('participate_mobile',$campaign_participate_mobile)->first();
+
+                    $select_campaign = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
+                    $select_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+                    $question_id = $select_question->id;
+
+                    $all_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
+
+
+                    if(isset($select_question) && (($select_question->question_position) == 1)){
+
+                        $question_id = $select_question->id;
+
+
+                        $campaign_participate_data['participate_campaign_id']=$campaign_id;
+                        $campaign_participate_data['participate_campaign_name']=$select_campaign->campaign_name;
+                        $campaign_participate_data['campaign_participate_mobile']=$campaign_participate_mobile;
+                        $campaign_participate_data['campaign_participate_occupation']=$select_participate->participate_occupation;
+                        $campaign_participate_data['campaign_participate_age']=$select_participate->participate_age;
+                        $campaign_participate_data['campaign_participate_district']=$select_participate->participate_district;
+                        $campaign_participate_data['campaign_participate_post_code']=$select_participate->participate_post_code;
+                        $campaign_participate_data['campaign_participate_zone']=$select_participate->participate_zone;
+                        $campaign_participate_data['campaign_participate_address']=$select_participate->participate_address;
+                        $campaign_participate_data['campaign_participate_status']=1;
+                        // $campaign_participate_data['campaign_participate_created_by'] = \Auth::user()->id;
+                        // $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;
+
+
+
+
+                        $campaign_participate_info = \DB::table('campaign_participate_tbl')->where('participate_campaign_id',$campaign_id)->where('campaign_participate_mobile',$campaign_participate_mobile)->first();
+
+                        if(!empty($campaign_participate_info)){
+
+                            $campaign_participate_insertOrUpdate=\DB::table('campaign_participate_tbl')->where('id',$campaign_participate_info->id)->update($campaign_participate_data);
+
+                        }else{
+
+                            $campaign_participate_insertOrUpdate=\DB::table('campaign_participate_tbl')->insert($campaign_participate_data);
+
+                        }
+
+                        if(!$campaign_participate_insertOrUpdate){
+                            $error=1;
+                        }
+
+                        if(!isset($error)){
+                            \App\System::EventLogWrite('insert,campaign_participate_tbl',json_encode($campaign_participate_data));
+                        }
+
+
+                    }
+
+                    if(!empty(\Auth::user()->surveyer_id)){
+                        $question_answer_data['answer_surveyer_id']=\Auth::user()->surveyer_id;
+                    }
+
+                    $question_answer_data['answer_campaign_id']=$campaign_id;
+                    $question_answer_data['answer_question_id']=$question_id;
+                    $question_answer_data['answer_participate_mobile']=$campaign_participate_mobile;
+                    $question_answer_data['question_answer_type']=$select_question->question_type;
+                    $question_answer_data['question_answer_title']=$request->input('question_answer_title');
+                    $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
+                    $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
+                    $question_answer_data['question_answer_option_3']=$request->input('question_option_3');
+                    $question_answer_data['question_answer_option_4']=$request->input('question_option_4');
+                    $question_answer_data['question_answer_text_value']=$request->input('question_option_new');
+                    $question_answer_data['question_answer_status']=0;
+                    // $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
+                    // $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
+
+                    $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$campaign_participate_mobile)->first();
+
+                    if(!empty($question_answer_info)){
+
+                        $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->where('id',$question_answer_info->id)->update($question_answer_data);
+
+                    }else{
+
+                        $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->insert($question_answer_data);
+
+                    }
+
+
+
+                    if(!$question_answer_insertOrUpdate){
+                        $error=1;
+                    }
+
+
+                    if(!isset($error)){
+
+                        // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                        \DB::commit();
+
+                        
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+
+
+
+                });
+
+
+
+                if(!empty($next_question)){
+
+                    return redirect()->to('/participate/question/answer/'.$campaign_participate_mobile.'/'.$answer_campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
+
+                }else{
+                    return redirect()->to('/participate/campaign/list/')->with('message','Camapaign Participate Successfully');
+                }
+
+                
+
+            }catch (\Exception $e){
+                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+                \App\System::ErrorLogWrite($message);
+                return redirect()->back()->with('errormessage','Something wrong happend in questions Upload');
+            }
+
+        } else{
+            return redirect()->back()->withErrors($v)->withInput();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

@@ -59,7 +59,7 @@
                                     <div class="center">
                                         <h4>{{isset($user_info->name) ? $user_info->name : ''}}</h4>
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <form action="{{url('admin/profile/image/update')}}" method="post" enctype="multipart/form-data">
+                                            <form action="{{url('requester/profile/image/update')}}" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}" >
                                                 <div class="user-image">
                                                     <div class="fileupload-new thumbnail profile_img_size">
@@ -149,7 +149,7 @@
                     <!--END PANEL FOR OVERVIEW -->
                     <!-- PANEL FOR EDIT ACCOUNT -->
                     <div id="panel_edit_account" class="tab-pane in {{isset($tab) && ($tab=='panel_edit_account') ? 'active' : ''}}">
-                        <form action="{{url('admin/profile/update')}}" method="post" enctype="multipart/form-data" role="form" id="form">
+                        <form action="{{url('requester/profile/update')}}" method="post" enctype="multipart/form-data" role="form" id="form">
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3>Account Info</h3>
@@ -234,7 +234,7 @@
                                     @endif
                                 </div>
                                 <div class="col-md-8 info"><h1><i class="fa fa-lock"></i> {{isset($user_info->name) ? $user_info->name : ''}}</h1>
-                                    <form action="{{url('admin/change/password')}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{url('requester/change/password')}}" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}" >
                                         <div class="row">
                                             <div class="col-md-6" style="padding-right:0">

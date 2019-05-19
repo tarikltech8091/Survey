@@ -18,12 +18,12 @@
                 <div class="panel-body">
                     <ul class="nav nav-tabs tab-bricky">
                         <li>
-                            <a href="{{url('/question/create')}}">
+                            <a href="{{url('/requester/question/create')}}">
                                 <i class="green fa fa-bell"></i> Add Question
                             </a>
                         </li>
                         <li>
-                            <a href="{{url('/question/list')}}">
+                            <a href="{{url('/requester/question/list')}}">
                                 <i class="green clip-feed"></i> Question List
                             </a>
                         </li>
@@ -53,7 +53,7 @@
                             {{ Session::get('errormessage') }}
                         </div>
                     @endif
-                    <form role="form" class="form-horizontal" action="{{ url('/question/update/id-'.$edit->id) }}"
+                    <form role="form" class="form-horizontal" action="{{ url('/requester/question/update/id-'.$edit->id) }}"
                           id="question" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         
@@ -86,8 +86,9 @@
                             <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select" name="question_type">
                                     <option value="">&nbsp;Please Select a Type</option>
-                                    <option {{($edit->question_type == 'easy') ? "selected" :''}} value="easy">Easy</option>
-                                    <option {{($edit->question_type == 'hard') ? "selected" :''}}  value="hard">Hard</option>
+                                    <option {{($edit->question_type == 'multi') ? "selected" :''}} value="multi">Multi</option>
+                                    <option {{($edit->question_type == 'single') ? "selected" :''}} value="single">Single</option>
+                                    <option {{($edit->question_type == 'text') ? "selected" :''}}  value="text">Text</option>
                                 </select>
                             </div>
                         </div>

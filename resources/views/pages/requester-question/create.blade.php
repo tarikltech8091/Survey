@@ -45,12 +45,12 @@
 
                         <ul id="myTab" class="nav nav-tabs tab-bricky">
                             <li class="active">
-                                <a href="{{url('/question/create')}}">
+                                <a href="{{url('/requester/question/create')}}">
                                     <i class="green fa fa-bell"></i> Add Question
                                 </a>
                             </li>
                             <li class="">
-                                <a href="{{url('/question/list')}}">
+                                <a href="{{url('/requester/question/list')}}">
                                     <i class="green clip-feed"></i> Question List
                                 </a>
                             </li>
@@ -63,7 +63,7 @@
                                     <div class="col-md-12">
 
 
-                                        <form role="form" class="form-horizontal" action="{{ url('/question/save') }}"
+                                        <form role="form" class="form-horizontal" action="{{ url('/requester/question/save') }}"
                                               id="question" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="form-group">

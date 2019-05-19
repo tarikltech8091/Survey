@@ -49,10 +49,10 @@
                                     <div class="col-md-12">
 
                                         @if($question_position == 1)
-                                        <form role="form" class="form-horizontal" action="{{ url('/question/answer/save/'.$surveyer_id.'/'.$campaign_id.'/'.$question_position) }}" id="question_answer" method="post" role="form" enctype="multipart/form-data">
+                                        <form role="form" class="form-horizontal" action="{{ url('/surveyer/question/answer/save/'.$surveyer_id.'/'.$campaign_id.'/'.$question_position) }}" id="question_answer" method="post" role="form" enctype="multipart/form-data">
                                         @else
 
-                                        <form role="form" class="form-horizontal" action="{{ url('/question/answer/save/'.$campaign_participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_position) }}" id="question_answer" method="post" role="form" enctype="multipart/form-data">
+                                        <form role="form" class="form-horizontal" action="{{ url('/surveyer/question/answer/save/'.$campaign_participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_position) }}" id="question_answer" method="post" role="form" enctype="multipart/form-data">
                                         @endif
 
 

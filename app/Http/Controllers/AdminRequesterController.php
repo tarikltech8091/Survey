@@ -73,10 +73,10 @@ class AdminRequesterController extends Controller
         $v = \Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
-            'user_mobile' => 'required',
+            'user_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
         ]);
         if ($v->fails()) {
-            return redirect('admin/profile')->withErrors($v)->withInput();
+            return redirect('requester/profile')->withErrors($v)->withInput();
         }
         $now = date('Y-m-d H:i:s');
         if (!empty($request->file('image_url'))) {
@@ -97,10 +97,10 @@ class AdminRequesterController extends Controller
         );
         try {
             \DB::table('users')->where('id', $user_id)->update($user_info_update_data);
-            return redirect('admin/profile')->with('message',"Profile updated successfully");
+            return redirect('requester/profile')->with('message',"Profile updated successfully");
         } catch (\Exception $e) {
             $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-            return redirect('admin/profile')->with('errormessage',"Something is wrong!");
+            return redirect('requester/profile')->with('errormessage',"Something is wrong!");
         }
     }
 
@@ -124,10 +124,10 @@ class AdminRequesterController extends Controller
                 \DB::table('users')
                     ->where('id', \Auth::user()->id)
                     ->update($user_new_img);
-                return redirect('admin/profile')->with('message',"Profile updated successfully");
+                return redirect('requester/profile')->with('message',"Profile updated successfully");
             } catch (\Exception $e) {
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                return redirect('admin/profile')->with('errormessage',$message);
+                return redirect('requester/profile')->with('errormessage',$message);
 
             }
         }
@@ -154,7 +154,7 @@ class AdminRequesterController extends Controller
         $v = \Validator::make(\Request::all(), $rules);
 
         if ($v->fails()) {
-            return redirect('admin//profile?tab=change_password')
+            return redirect('requester//profile?tab=change_password')
                 ->withErrors($v)
                 ->withInput();
         }
@@ -173,16 +173,16 @@ class AdminRequesterController extends Controller
                     \DB::table('users')
                         ->where('id', \Auth::user()->id)
                         ->update($update_password);
-                    return redirect('admin/profile')->with('message',"Password updated successfully !");
+                    return redirect('requester/profile')->with('message',"Password updated successfully !");
                 } catch(\Exception $e) {
                     $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                    return redirect('admin/profile')->with('errormessage',"Password update failed !");
+                    return redirect('requester/profile')->with('errormessage',"Password update failed !");
                 }
             } else {
-                return redirect('admin/profile?tab=change_password')->with('errormessage',"Current Password Doesn't Match !");
+                return redirect('requester/profile?tab=change_password')->with('errormessage',"Current Password Doesn't Match !");
             }
         } else {
-            return redirect('admin/profile?tab=change_password')->with('errormessage',"Password Combination Doesn't Match !");
+            return redirect('requester/profile?tab=change_password')->with('errormessage',"Password Combination Doesn't Match !");
         }
     }
 
@@ -235,12 +235,11 @@ class AdminRequesterController extends Controller
 
         } else{
 
-        	$total_participate =  \App\CampaignParticipate::orderBy('id','DESC')->count();
+        	/*$total_participate =  \App\CampaignParticipate::orderBy('id','DESC')->count();
             $data['total_participate'] = $total_participate;
 
             $numberOfQuestions = \DB::table('question_answer_tbl')->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
             $data['numberOfQuestions'] = $numberOfQuestions;
-            var_dump($numberOfQuestions);
 
 
             $all_content= \DB::table('question_answer_tbl')
@@ -253,7 +252,7 @@ class AdminRequesterController extends Controller
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
             $data['pagination'] = $pagination;
-            $data['all_content'] = $all_content;
+            $data['all_content'] = $all_content;*/
 
         }
 
@@ -276,6 +275,24 @@ class AdminRequesterController extends Controller
         	->where('answer_question_id',$answer_question_id)->count();
         $data['total_content'] = $total_content;
 
+        $question_answer_option_1 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_1','!=', '')->count();
+        $data['question_answer_option_1'] = $question_answer_option_1;
+
+        $question_answer_option_2 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_2','!=', '')->count();
+        $data['question_answer_option_2'] = $question_answer_option_2;
+
+
+        $question_answer_option_3 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_3','!=', '')->count();
+        $data['question_answer_option_3'] = $question_answer_option_3;
+
+
+        $question_answer_option_4 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_4','!=', '')->count();
+        $data['question_answer_option_4'] = $question_answer_option_4;
+
+
+        $question_answer_text_value = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_text_value','!=', '')->count();
+        $data['question_answer_text_value'] = $question_answer_text_value;
+
         $all_content= \DB::table('question_answer_tbl')
         	->where('answer_question_id',$answer_question_id)
             ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
@@ -292,6 +309,49 @@ class AdminRequesterController extends Controller
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.requester-campaign.question-details',$data);
+    }
+
+
+
+    /********************************************
+    ## Show the list of all payment
+     *********************************************/
+    public function RequesterPaymentList()
+    {
+        if(isset($_GET['payment_status'])){
+            $all_content =  \App\CampaignPayment::where(function($query){
+                if(isset($_GET['payment_status'])){
+                    $query->where(function ($q){
+                        $q->where('payment_status', $_GET['payment_status']);
+                    });
+                }
+            })
+                ->orderBy('id','DESC')
+                ->paginate(20);
+
+            $payment_status = isset($_GET['payment_status'])? $_GET['payment_status']:0;
+
+            $all_content->setPath(url('/campaign/payment/list'));
+            $pagination = $all_content->appends(['payment_status' => $payment_status])->render();
+            $data['pagination'] = $pagination;
+            $data['perPage'] = $all_content->perPage();
+            $data['all_content'] = $all_content;
+
+        } else{
+            $all_content= \App\CampaignPayment::orderBy('id','DESC')->paginate(20);
+            $all_content->setPath(url('/campaign/payment/list'));
+            $pagination = $all_content->render();
+            $data['perPage'] = $all_content->perPage();
+            $data['pagination'] = $pagination;
+            $data['all_content'] = $all_content;
+
+        }
+
+        $data['all_data'] =  \App\CampaignPayment::orderby('id','desc')->get();
+        $data['requester_info'] =  \App\Requester::where('id', \Auth::user()->requester_id)->orderby('id','desc')->first();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.admin-requester.payment-history',$data);
     }
 
 
@@ -320,7 +380,7 @@ class AdminRequesterController extends Controller
             $campaign_status = isset($_GET['campaign_status'])? $_GET['campaign_status']:0;
             $blog_type = isset($_GET['blog_type'])? $_GET['blog_type']:'all';
 
-            $all_content->setPath(url('/campaign/list'));
+            $all_content->setPath(url('/requester/campaign/list'));
             $pagination = $all_content->appends(['campaign_status' => $campaign_status, 'BLOG_TYPE'=> $blog_type])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
@@ -329,7 +389,7 @@ class AdminRequesterController extends Controller
         } else{
 
             $all_content= \App\Campaign::orderBy('id','DESC')->where('campaign_requester_id',\Auth::user()->requester_id)->paginate(20);
-            $all_content->setPath(url('/campaign/list'));
+            $all_content->setPath(url('/requester/campaign/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
             $data['pagination'] = $pagination;
@@ -366,7 +426,7 @@ class AdminRequesterController extends Controller
             'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'required',
+            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_create_date' => 'required',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
@@ -508,7 +568,7 @@ class AdminRequesterController extends Controller
             'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'required',
+            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
             'campaign_num_of_days' => 'required',
@@ -619,7 +679,9 @@ class AdminRequesterController extends Controller
                 }
             })
             	->where('question_created_by',\Auth::user()->id)
-                ->orderBy('id','DESC')
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_tbl.question_campaign_id')
+                ->select('campaign_tbl.id AS campaign_id', 'campaign_tbl.*', 'question_tbl.*')
+                ->orderBy('question_tbl.id','DESC')
                 ->paginate(20);
 
             $question_status = isset($_GET['question_status'])? $_GET['question_status']:0;
@@ -633,8 +695,10 @@ class AdminRequesterController extends Controller
             $data['all_content'] = $all_content;
 
         } else{
-            $all_content=\DB::table('question_tbl')->orderBy('id','DESC')
+            $all_content=\DB::table('question_tbl')->orderBy('question_tbl.id','DESC')
             ->where('question_created_by',\Auth::user()->id)
+            ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_tbl.question_campaign_id')
+            ->select('campaign_tbl.id AS campaign_id', 'campaign_tbl.*', 'question_tbl.*')
             ->paginate(20);
             $all_content->setPath(url('/questions/list'));
             $pagination = $all_content->render();

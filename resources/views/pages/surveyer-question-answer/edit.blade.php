@@ -18,12 +18,12 @@
                 <div class="panel-body">
                     <ul class="nav nav-tabs tab-bricky">
                         <li>
-                            <a href="{{url('/question/create')}}">
+                            <a href="{{url('/surveyer/question/create')}}">
                                 <i class="green fa fa-bell"></i> Add Question
                             </a>
                         </li>
                         <li>
-                            <a href="{{url('/question/list')}}">
+                            <a href="{{url('/surveyer/question/list')}}">
                                 <i class="green clip-feed"></i> Question List
                             </a>
                         </li>
@@ -53,7 +53,7 @@
                             {{ Session::get('errormessage') }}
                         </div>
                     @endif
-                    <form role="form" class="form-horizontal" action="{{ url('/question/update/id-'.$edit->id) }}"
+                    <form role="form" class="form-horizontal" action="{{ url('/surveyer/question/update/id-'.$edit->id) }}"
                           id="question" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         

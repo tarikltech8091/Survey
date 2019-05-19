@@ -184,12 +184,13 @@ class SurveyerAssignController extends Controller
                 $success = \DB::transaction(function () use($id, $status, $current_data){
 
                     $assign_surveyer_id=$current_data->assign_surveyer_id;
-                    $surveyer_privious_earn=$current_data->surveyer_prize_amount;
+                    $surveyer_preivious_earn=$current_data->surveyer_prize_amount;
                     $current_surveyer_data =\DB::table('surveyer_tbl')->where('id',$assign_surveyer_id)->first();
 
 
                     $data['success_status']=1;
-                    $surveyer_data['surveyer_total_earn']=$surveyer_privious_earn + $current_surveyer_data->surveyer_total_earn;
+                    $surveyer_data['surveyer_total_earn']=$surveyer_preivious_earn + $current_surveyer_data->surveyer_total_earn;
+                    $surveyer_data['surveyer_total_success_participate']=$current_surveyer_data->surveyer_total_success_participate + 1;
 
                     
                     $surveyer_assign_update=\DB::table('surveyer_assign_tbl')->where('id',$id)->update($data);

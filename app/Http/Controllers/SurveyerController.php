@@ -89,8 +89,8 @@ class SurveyerController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'surveyer_name' => 'required',
-            'surveyer_email' => 'required',
-            'surveyer_mobile' => 'required',
+            'surveyer_email' => 'required|email',
+            'surveyer_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'surveyer_join_date' => 'required',
             'surveyer_district' => 'required',
             'surveyer_post_code' => 'required',
@@ -104,54 +104,83 @@ class SurveyerController extends Controller
         if($v->passes()){
 
             try{
+                
+                $success = \DB::transaction(function () use($request) {
 
-        	    $surveyer_profile_image='';
-        	    $image_type='surveyer';
+            	    $surveyer_profile_image='';
+            	    $image_type='surveyer';
 
-                $surveyer_name=$request->input('surveyer_name');
-                $slug=explode(' ', strtolower($request->input('surveyer_name')));
-                $surveyer_name_slug=implode('-', $slug);
-                $data['surveyer_name_slug']=$surveyer_name_slug;
+                    $surveyer_name=$request->input('surveyer_name');
+                    $slug=explode(' ', strtolower($request->input('surveyer_name')));
+                    $surveyer_name_slug=implode('-', $slug);
+                    $data['surveyer_name_slug']=$surveyer_name_slug;
 
-                if($request->file('surveyer_profile_image')!=null){
-                    #Image
-                    $image = $request->file('surveyer_profile_image');
-                    $img_location=$image->getRealPath();
-                    $img_ext=$image->getClientOriginalExtension();
-                    $surveyer_profile_image=\App\Admin::CommonImageUpload($img_location,$img_ext,$image_type,$surveyer_name);
-                }
+                    if($request->file('surveyer_profile_image')!=null){
+                        #Image
+                        $image = $request->file('surveyer_profile_image');
+                        $img_location=$image->getRealPath();
+                        $img_ext=$image->getClientOriginalExtension();
+                        $surveyer_profile_image=\App\Admin::CommonImageUpload($img_location,$img_ext,$image_type,$surveyer_name);
+                    }
 
-                $data['surveyer_name']=$request->input('surveyer_name');
-                $data['surveyer_name_slug']=$surveyer_name_slug;
-                $data['surveyer_email']=$request->input('surveyer_email');
-                $data['surveyer_mobile']=$request->input('surveyer_mobile');
-                $data['surveyer_join_date']=$request->input('surveyer_join_date');
-                $data['surveyer_district']=$request->input('surveyer_district');
-                $data['surveyer_post_code']=$request->input('surveyer_post_code');
-                $data['surveyer_address']=$request->input('surveyer_address');
-                $data['surveyer_nid']=$request->input('surveyer_nid');
-                $data['surveyer_zone']=$request->input('surveyer_zone');
-                $data['surveyer_profile_image']=$surveyer_profile_image;
-                $data['surveyer_status']=0;
-                $data['surveyer_created_by']=\Auth::user()->id;
-                $data['surveyer_updated_by']=\Auth::user()->id;
-               
+                    $data['surveyer_name']=$request->input('surveyer_name');
+                    $data['surveyer_name_slug']=$surveyer_name_slug;
+                    $data['surveyer_email']=$request->input('surveyer_email');
+                    $data['surveyer_mobile']=$request->input('surveyer_mobile');
+                    $data['surveyer_join_date']=$request->input('surveyer_join_date');
+                    $data['surveyer_district']=$request->input('surveyer_district');
+                    $data['surveyer_post_code']=$request->input('surveyer_post_code');
+                    $data['surveyer_address']=$request->input('surveyer_address');
+                    $data['surveyer_nid']=$request->input('surveyer_nid');
+                    $data['surveyer_zone']=$request->input('surveyer_zone');
+                    $data['surveyer_profile_image']=$surveyer_profile_image;
+                    $data['surveyer_status']=0;
+                    $data['surveyer_created_by']=\Auth::user()->id;
+                    $data['surveyer_updated_by']=\Auth::user()->id;
+                   
 
-                // $insert=\App\Surveyer::insert($data);
+                    $surveyer_insert=\App\Surveyer::insertGetId($data);
 
-                $surveyer_insert = \App\Surveyer::firstOrCreate(
-                    [
-                        'surveyer_mobile' => $data['surveyer_mobile'],
-                    ],
-                    $data
-                );
 
-                if($surveyer_insert->wasRecentlyCreated){
+                    /*$surveyer_insert = \App\Surveyer::firstOrCreate(
+                        [
+                            'surveyer_mobile' => $data['surveyer_mobile'],
+                        ],
+                        $data
+                    );*/
 
-                    \App\System::EventLogWrite('insert,surveyer_tbl',json_encode($data));
-                    return redirect()->back()->with('message','Surveyer Created Successfully');
 
-                }else return redirect()->back()->with('errormessage','surveyer already created.');
+                    $login_data['name']=ucwords($request->input('surveyer_name'));
+                    $login_data['name_slug']=$surveyer_name_slug;
+                    $login_data['user_type']='surveyer';
+                    $login_data['user_role']='surveyer';
+                    $login_data['email']=$request->input('surveyer_email');
+                    $login_data['user_mobile']=$request->input('surveyer_mobile');
+                    $login_data['user_profile_image']=$surveyer_profile_image;
+                    $login_data['requester_id']=$surveyer_insert;
+                    $login_data['login_status']='0';
+                    $login_data['status']='active';
+                    $login_data['password']=bcrypt($request->input('password'));
+
+                    $login_data_insert=\App\User::insertGetId($login_data);
+
+
+                    if(!$surveyer_insert || !$login_data_insert ){
+                        $error=1;
+                    }
+
+                    if(!isset($error)){
+                        \App\System::EventLogWrite('insert,surveyer_tbl',json_encode($data));
+                        \App\System::EventLogWrite('insert,users',json_encode($login_data));
+                        \DB::commit();
+                    }else{
+                        \DB::rollback();
+                        throw new Exception("Error Processing Request", 1);
+                    }
+                    
+                });
+
+                return redirect()->back()->with('message','Surveyer Created Successfully');
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
@@ -214,8 +243,8 @@ class SurveyerController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'surveyer_name' => 'required',
-            'surveyer_email' => 'required',
-            'surveyer_mobile' => 'required',
+            'surveyer_email' => 'required|email',
+            'surveyer_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'surveyer_join_date' => 'required',
             'surveyer_district' => 'required',
             'surveyer_post_code' => 'required',

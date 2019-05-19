@@ -91,7 +91,7 @@ class PaymentController extends Controller
 
         if($v->passes()){
 
-            // try{
+            try{
 
                 $success = \DB::transaction(function () use($request) {
 
@@ -178,11 +178,11 @@ class PaymentController extends Controller
                 return redirect()->back()->with('message','Campaign Created Successfully');*/
 
 
-            /*}catch (\Exception $e){
+            }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
                 \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
-            }*/
+            }
 
         } else{
             return redirect()->back()->withErrors($v)->withInput();

@@ -18,6 +18,10 @@
 
 
       Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemAuthController@authLogin'));
+
+
+
+      Route::get('/hello/pdf',array('as'=>'PDF' , 'uses' =>'AdminController@TestPdf'));
 	// Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@LoginPage'));
 	Route::post('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@AuthenticationCheck'));
 
@@ -42,6 +46,9 @@
 	Route::post('auth/post/new/password/',array('as'=>'New Password Submit' , 'uses' =>'SystemAuthController@authSystemNewPasswordPost'));
       Route::get('auth/admin/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));
       Route::get('/logout',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));
+
+      #ChangeUserStatus
+      Route::get('admin/change/user/status/{user_id}/{status}',array('as'=>'Change User Status' , 'uses' =>'AdminController@ChangeUserStatus'));
 
 
       Route::get('/hello',array('as'=>'hello' , 'uses' =>'PortalQuestionController@getAllContent'));
@@ -90,6 +97,10 @@ Route::group(['middleware' => ['admin_auth']], function () {
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
       Route::post('/admin/user/create',array('as'=>'Admin User create' , 'uses' =>'AdminController@CreateUser'));
+
+      Route::post('admin/profile/update',array('as'=>'Profile Update' , 'uses' =>'AdminController@ProfileUpdate'));
+      Route::post('admin/profile/image/update',array('as'=>'Profile Image Update' , 'uses' =>'AdminController@ProfileImageUpdate'));
+      Route::post('admin/change/password',array('as'=>'User Change Password' , 'uses' =>'AdminController@UserChangePassword'));
 
 
       /*################
@@ -351,6 +362,10 @@ Route::group(['middleware' => ['admin_auth']], function () {
 
       #ChangeStatus
       Route::get('/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangePublishStatus'));
+
+      #ChangeValidateStatus
+      Route::get('/question/answer/validate/status/{id}/{status}',array('as'=>'Question Answer Validate Status' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangeValidateStatus'));
+
       #Edit
       Route::get('/question/answer/edit/id-{id}',array('as'=>'Question Answer Edit' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Edit'));
       #Update
@@ -358,8 +373,24 @@ Route::group(['middleware' => ['admin_auth']], function () {
       #Delete
       Route::get('/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Delete'));
 
+      #Campaign Participate Countdown
+      Route::get('/admin/campaign/participate/countdown',array('as'=>'Admin Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@getAllContentCountdown'));
 
- 
+      #Campaign Answer Question
+      Route::get('/admin/campaign/participate/question-{question_id}',array('as'=>'Admin Campaign Participate Question' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@getAllSingleQuestionAnswer'));
+
+
+
+
+
+
+      #ParticipateQuestionAnswer
+      Route::get('/participate/question/answer/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'Participate Question Answer' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@ParticipateQuestionAnswer'));
+      
+      #ParticipateQuestionAnswerStore
+      Route::post('/participate/question/answer/save/{participate_mobile}/{campaign_id}',array('as'=>'Participate Question Answer Store' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ParticipateQuestionAnswerStore'));
+
+
 
 
 
@@ -389,31 +420,41 @@ Route::group(['middleware' => ['requester_auth']], function () {
 
       Route::get('/requester/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
 
+      Route::post('requester/profile/update',array('as'=>'Profile Update' , 'uses' =>'AdminRequesterController@ProfileUpdate'));
+
+      Route::post('requester/profile/image/update',array('as'=>'Profile Image Update' , 'uses' =>'AdminRequesterController@ProfileImageUpdate'));
+
+      Route::post('requester/change/password',array('as'=>'User Change Password' , 'uses' =>'AdminRequesterController@UserChangePassword'));
+
 
       /*################
       ## Campaign Settings
       #################*/
 
       #getAllContent
-      Route::get('/campaign/list',array('as'=>'Get All Campaign Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllContent'));
+      Route::get('/requester/campaign/list',array('as'=>'Get All Campaign Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllContent'));
       #Create
-      Route::get('/campaign/create',array('as'=>'Campaign Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Create'));
+      Route::get('/requester/campaign/create',array('as'=>'Campaign Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Create'));
       #Store
-      Route::post('/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Store'));
+      Route::post('/requester/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Store'));
+
       #Campaign Participate Countdown
       Route::get('/campaign/participate/countdown',array('as'=>'Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@getAllContentCountdown'));
 
       #Campaign Answer Question
       Route::get('/campaign/participate/question-{question_id}',array('as'=>'Campaign Participate Question' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@getAllSingleQuestionAnswer'));
 
+      #Requester Payment List
+      Route::get('/requester/payment/list',array('as'=>'Requester Payment List' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@RequesterPaymentList'));
+
       #ChangeStatus
-      Route::get('/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangePublishStatus'));
+      Route::get('/requester/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangePublishStatus'));
       #Edit
-      Route::get('/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Edit'));
+      Route::get('/requester/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Edit'));
       #Update
-      Route::post('/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Update'));
+      Route::post('/requester/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Update'));
       #Delete
-      Route::get('/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Delete'));
+      Route::get('/requester/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Delete'));
 
 
 
@@ -422,19 +463,19 @@ Route::group(['middleware' => ['requester_auth']], function () {
       #################*/
 
       #getAllContent
-      Route::get('/question/list',array('as'=>'Get All Question Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllQuestion'));
+      Route::get('/requester/question/list',array('as'=>'Get All Question Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllQuestion'));
       #Create
-      Route::get('/question/create',array('as'=>'Question Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionCreate'));
+      Route::get('/requester/question/create',array('as'=>'Question Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionCreate'));
       #Store
-      Route::post('/question/save',array('as'=>'Question Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionStore'));
+      Route::post('/requester/question/save',array('as'=>'Question Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionStore'));
       #ChangeStatus
-      Route::get('/question/change/status/{id}/{status}',array('as'=>'Question Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangeQuestionPublishStatus'));
+      Route::get('/requester/question/change/status/{id}/{status}',array('as'=>'Question Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangeQuestionPublishStatus'));
       #Edit
-      Route::get('/question/edit/id-{id}',array('as'=>'Question Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionEdit'));
+      Route::get('/requester/question/edit/id-{id}',array('as'=>'Question Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionEdit'));
       #Update
-      Route::post('/question/update/id-{id}',array('as'=>'Question Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionUpdate'));
+      Route::post('/requester/question/update/id-{id}',array('as'=>'Question Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionUpdate'));
       #Delete
-      Route::get('/question/delete/id-{id}',array('as'=>'Question Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionDelete'));
+      Route::get('/requester/question/delete/id-{id}',array('as'=>'Question Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionDelete'));
 
 
 });
@@ -448,7 +489,13 @@ Route::group(['middleware' => ['requester_auth']], function () {
 Route::group(['middleware' => ['surveyer_auth']], function () {
 
 
-      Route::get('/surveyer/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
+      Route::get('/surveyer/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminSurveyerController@Profile'));
+
+      Route::post('surveyer/profile/update',array('as'=>'Profile Update' , 'uses' =>'AdminSurveyerController@ProfileUpdate'));
+
+      Route::post('surveyer/profile/image/update',array('as'=>'Profile Image Update' , 'uses' =>'AdminSurveyerController@ProfileImageUpdate'));
+
+      Route::post('surveyer/change/password',array('as'=>'User Change Password' , 'uses' =>'AdminSurveyerController@UserChangePassword'));
 
 
       /*#######################
@@ -456,29 +503,43 @@ Route::group(['middleware' => ['surveyer_auth']], function () {
       #########################*/
 
       #getAllCampaign
-      Route::get('/participate/campaign/list',array('as'=>'Active Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllCampaign'));
+      Route::get('/surveyer/participate/campaign/list',array('as'=>'Active Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@getAllCampaign'));
+
+      #Campaign Participate Countdown
+      Route::get('/surveyer/participate/countdown',array('as'=>'Surveyer Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@getAllContentCountdown'));
+
+      #Campaign Answer Question
+      Route::get('/surveyer/participate/question-{question_id}',array('as'=>'Surveyer Participate Question' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@getAllSingleQuestionAnswer'));
+
+      #Surveyer Payment List
+      Route::get('/surveyer/payment/list',array('as'=>'Surveyer Payment List' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@SurveyerPaymentList'));
+
+
+
+
+
 
       #getAllContent
-      Route::get('/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@getAllContent'));
+      Route::get('/surveyer/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@getAllContent'));
 
       #Create
-      Route::get('/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@FirstQuestionAnswer'));
+      Route::get('/surveyer/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@FirstQuestionAnswer'));
 
-      Route::get('/all/question/answer/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@QuestionAnswer'));
+      Route::get('/surveyer/all/question/answer/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@QuestionAnswer'));
       
       #Store
-      Route::post('/question/answer/save/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Store'));
+      Route::post('/surveyer/question/answer/save/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@Store'));
 
-      Route::post('/question/answer/save/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@QuestionAnswerStore'));
+      Route::post('/surveyer/question/answer/save/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@QuestionAnswerStore'));
 
       #ChangeStatus
-      Route::get('/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ChangePublishStatus'));
+      Route::get('/surveyer/question/answer/change/status/{id}/{status}',array('as'=>'Question Answer Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@ChangePublishStatus'));
       #Edit
-      Route::get('/question/answer/edit/id-{id}',array('as'=>'Question Answer Edit' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Edit'));
+      Route::get('/surveyer/question/answer/edit/id-{id}',array('as'=>'Question Answer Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@Edit'));
       #Update
-      Route::post('/question/answer/update/id-{id}',array('as'=>'Question Answer Update' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Update'));
+      Route::post('/surveyer/question/answer/update/id-{id}',array('as'=>'Question Answer Update' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@Update'));
       #Delete
-      Route::get('/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Delete'));
+      Route::get('/surveyer/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@Delete'));
 
 
  

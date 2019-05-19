@@ -35,7 +35,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-                                        <form method="get"  action="{{url('/question/answer/list')}}">
+                                        <form method="get"  action="{{url('/surveyer/question/answer/list')}}">
 
 
                                             <div class="col-md-3">
@@ -182,7 +182,7 @@
                                         <td style="width:14%" class="text-center">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
-                                                    <!-- <li><a href="{{url('/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Validate</a></li> -->
+                                                    <!-- <li><a href="{{url('/surveyer/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Validate</a></li> -->
                                                     <li>
                                                         @if($question->question_answer_status == 1)
                                                             <a class="status-change"
@@ -253,7 +253,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/answer/change/status/'+id+'/'+status
+                                        url: site_url+'/surveyer/question/answer/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -286,7 +286,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/answer/change/status/'+id+'/'+status
+                                        url: site_url+'/surveyer/question/answer/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){

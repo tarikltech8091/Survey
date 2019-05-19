@@ -34,18 +34,18 @@
             <div class="tabbable">
                 <ul id="myTab" class="nav nav-tabs tab-bricky">
                     <li class="">
-                        <a href="{{url('/campaign/create')}}">
+                        <a href="{{url('/requester/campaign/create')}}">
                             <i class="green fa fa-bell"></i> Add Campaign
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{{url('/campaign/list')}}">
+                        <a href="{{url('/requester/campaign/list')}}">
                             <i class="green clip-feed"></i> Campaign List
                         </a>
                     </li>
                 </ul>
                 <div class="panel-body">
-                    <form method="get"  action="{{url('/campaign/list')}}">
+                    <form method="get"  action="{{url('/requester/campaign/list')}}">
                     
                         <div class="col-md-2">
                             <div class="form-group has-feedback ">
@@ -118,7 +118,7 @@
                                                             @if($list->campaign_status == 2)
                                                                 <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                                     <li>
-                                                                        <a href="{{url('/campaign/edit/id-'.$list->id)}}">
+                                                                        <a href="{{url('/requester/campaign/edit/id-'.$list->id)}}">
                                                                             <i class="fa fa-pencil"></i> Edit
                                                                         </a>
                                                                     </li>
@@ -200,7 +200,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/campaign/change/status/'+id+'/'+campaign_publish_status
+                                        url: site_url+'/requester/campaign/change/status/'+id+'/'+campaign_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -233,7 +233,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/campaign/change/status/'+id+'/'+campaign_publish_status
+                                        url: site_url+'/requester/campaign/change/status/'+id+'/'+campaign_publish_status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -272,7 +272,7 @@
                             callback: function() {
                                 $.ajax({
                                     type: 'GET',
-                                    url: site_url+'/campaign/delete/id-'+id,
+                                    url: site_url+'/requester/campaign/delete/id-'+id,
                                 }).done(function(response){
                                     bootbox.alert(response,
                                         function(){

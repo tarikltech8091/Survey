@@ -51,6 +51,9 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/build/summernote.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.jgrowl.min.css') }}" />
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}" />
+
     <link rel="shortcut icon" href="favicon.ico" />
     <style type="text/css">
         .bootbox {

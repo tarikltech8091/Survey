@@ -32,86 +32,7 @@
 
 
     <style type="text/css">
-    	  .page_row_dash{
-			   margin: 15px 15px;
-			   padding: 5px;
-			 }
 
-
-			/*search width*/
-			.page_row .search_width{
-			  width: 70%;
-			}
-
-
-
-			.page_row{
-			  margin-left: 5px;
-			  margin-right: 5px;
-			  margin-top: 8px;
-			}
-
-			.page_row .panel .panel-heading {
-			  height: 30px;
-			  padding: 5px 15px;
-			}
-
-			.dash_pad_0{
-			  padding:0;
-			}
-
-
-			/*dashborad_menus*/
-			.dashborad_menus{
-			  height: 100px;
-			  padding-top: 8px;
-			}
-
-
-			/*cursor pointer*/
-			.cursor{
-			  cursor:pointer;
-			}
-
-
-			  .report_view {
-			    border-radius: 3px;
-			    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-			    text-align: center;
-			    width: 80%;
-			  }
-			  .report_view.reprt_color_1{
-			    background: #569099 none repeat scroll 0 0;
-			    border-color:  #569099;
-
-			  }
-
-			  .report_view.reprt_color_2{
-			    background: #1f6f43 none repeat scroll 0 0;
-			    border-color:  #1f6f43;
-
-			  }
-
-			  .report_view.reprt_color_3{
-			    background: #f4731d none repeat scroll 0 0;
-			    border-color:  #f4731d;
-
-			  }
-
-
-			  .report_view .report_name{
-			    color: white;
-			    margin-bottom: 0;
-			    padding-bottom: 6px;
-			    text-align: center;
-			  }
-
-			  .report_name a{
-
-			    color: #ffffff;
-			    text-decoration: none;
-			    text-transform: uppercase;
-			  }
     </style>
 
     <div class="row ">
@@ -127,7 +48,7 @@
                                     <strong>Search by Campaign : </strong>
                                 </label>
                                 <select class="form-control search-select" name="search_campaign_id">
-                                    <option {{(isset($_GET['search_campaign_id']) && ($_GET['search_campaign_id']==0)) ? 'selected' : ''}} value="0">All</option>
+                                    <option {{(isset($_GET['search_campaign_id']) && ($_GET['search_campaign_id']==0)) ? 'selected' : ''}} value="0">Select Campaign</option>
 
                                     @if(!empty($all_campaign) && count($all_campaign) > 0)
                                     @foreach($all_campaign as $key => $list)
@@ -204,45 +125,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-    <div class="row ">
-        <div class="col-sm-12">
-            <div class="tabbable">
-
-                <div class="panel-body">
-                    <form method="get"  action="{{url('/campaign/participate/countdown')}}">
-
-                        <div class="col-md-3">
-                            <div class="form-group has-feedback ">
-                                <label for="search_from">
-                                    <strong>Search by Campaign : </strong>
-                                </label>
-                                <select class="form-control search-select" name="search_campaign_id">
-                                    <option {{(isset($_GET['search_campaign_id']) && ($_GET['search_campaign_id']==0)) ? 'selected' : ''}} value="0">All</option>
-
-                                    @if(!empty($all_campaign) && count($all_campaign) > 0)
-                                    @foreach($all_campaign as $key => $list)
-                                        <option {{(isset($_GET['search_campaign_id']) && ($_GET['search_campaign_id'] == $list->id)) ? 'selected' : ''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-1" style="margin-top:25px;">
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary btn-squared" value="Search">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 
 

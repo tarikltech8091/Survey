@@ -79,8 +79,8 @@ class ParticipateController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'participate_name' => 'required',
-            'participate_email' => 'required',
-            'participate_mobile' => 'required',
+            'participate_email' => 'required|email',
+            'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'participate_age' => 'required',
             'participate_join_date' => 'required',
             'participate_district' => 'required',
@@ -211,8 +211,8 @@ class ParticipateController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'participate_name' => 'required',
-            'participate_email' => 'required',
-            'participate_mobile' => 'required',
+            'participate_email' => 'required|email',
+            'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'participate_age' => 'required',
             'participate_join_date' => 'required',
             'participate_district' => 'required',

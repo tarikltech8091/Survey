@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use Session;
+use PDF;
 
 class AdminController extends Controller
 {
@@ -25,6 +26,30 @@ class AdminController extends Controller
         $data['page_title'] = $this->page_title;
         return view('admin.index', $data);
     }
+
+
+    public function TestPdf()
+    {
+        $data['page_title'] = $this->page_title;
+
+        $pdf = \PDF::loadView('pages.pdf.hello', $data);
+        $pdfname = time().'_hello.pdf';
+        return $pdf->download($pdfname); 
+
+        /*$data = ['title' => 'Welcome to HDTuto.com'];
+        $pdf = PDF::loadView('myPDF', $data);
+  
+        return $pdf->download('itsolutionstuff.pdf');*/
+
+        // return $pdf->stream($pdfname); 
+        // return \View::make('dashboard.pages.pdf.coupon-transaction-pdf',$data);
+    }
+
+
+
+
+
+
     /**
      * Display profile information
      * pass page title
@@ -68,7 +93,7 @@ class AdminController extends Controller
         $v = \Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
-            'user_mobile' => 'required',
+            'user_mobile' =>'Required|regex:/^[^0-9]*(88)?0/|max:11',
         ]);
         if ($v->fails()) {
             return redirect('admin/profile')->withErrors($v)->withInput();
@@ -197,7 +222,9 @@ class AdminController extends Controller
             $data['tab'] = $tab;
             $data['user_info'] = \DB::table('users')->get();
             $data['block_users'] = \DB::table('users')->where('status','deactivate')->get();
-            $data['admins'] = \DB::table('users')->where('user_type','admin')->get();
+            $data['admins'] = \DB::table('users')
+                // ->where('user_type','admin')
+                ->get();
             return view('pages.admin.user-management',$data);
         } else {
             return redirect('admin/dashboard')->with('errormessage',"Request Wrong Url");
@@ -216,7 +243,7 @@ class AdminController extends Controller
             $v = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required|email|unique:users',
-                'user_mobile' => 'required',
+                'user_mobile' =>'Required|regex:/^[^0-9]*(88)?0/|max:11',
                 'user_type' => 'required',
                 'user_role' => 'required',
                 'password' => 'required',

@@ -88,7 +88,7 @@ class SystemController extends Controller
 
     public function AuthenticationCheck(){
          $rules = [
-                    'email' =>'required',
+                    'email' =>'required|email',
                     'password'=> 'required',
                 ];
 

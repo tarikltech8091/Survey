@@ -1,0 +1,2 @@
+19-05-2019 09:59:49 - error_log --> 127.0.0.1|1|http://localhost:41/participate/question/answer/save/01821166734/1|Message : Undefined variable: campaign_participate_mobile, File : /var/www/html/php72/Survey/app/Http/Controllers/QuestionAnswerController.php, Line : 848
+19-05-2019 10:30:44 - error_log --> 127.0.0.1|1|http://localhost:41/participate/question/answer/save/01821166734/1|Message : Error Processing Request, File : /var/www/html/php72/Survey/app/Http/Controllers/QuestionAnswerController.php, Line : 955

@@ -62,8 +62,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-                                        <form role="form" class="form-horizontal" action="{{ url('/requester/save') }}"
-                                              id="requester" method="post" role="form" enctype="multipart/form-data">
+                                        <form role="form" class="form-horizontal" action="{{ url('/requester/save') }}" id="requester" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                             <div class="form-group">
@@ -86,7 +85,26 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
-                                                    <strong>Surveyer Mobile</strong>
+                                                    <strong>Password</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-6">
+                                                    <input type="password" class="form-control" name="password">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Repeat Password</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-6">
+                                                    <input type="password" class="form-control" name="repeat_password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Requester Mobile</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-6">

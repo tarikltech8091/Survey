@@ -1,0 +1,4 @@
+16-05-2019 07:03:42 - event_log --> 127.0.0.1|1|http://localhost:41/campaign/change/status/1/1|update,campaign_tbl|{"campaign_status":1}
+16-05-2019 07:06:50 - event_log --> 127.0.0.1|1|http://localhost:41/campaign/change/status/1/1|update,campaign_tbl|{"campaign_status":1}
+16-05-2019 07:07:42 - event_log --> 127.0.0.1|1|http://localhost:41/campaign/change/status/1/0|update,campaign_tbl|{"campaign_status":0}
+16-05-2019 07:08:27 - event_log --> 127.0.0.1|1|http://localhost:41/campaign/change/status/1/1|update,campaign_tbl|{"campaign_status":1}

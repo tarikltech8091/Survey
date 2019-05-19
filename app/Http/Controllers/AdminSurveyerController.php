@@ -71,10 +71,10 @@ class AdminSurveyerController extends Controller
         $v = \Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
-            'user_mobile' => 'required',
+            'user_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
         ]);
         if ($v->fails()) {
-            return redirect('admin/profile')->withErrors($v)->withInput();
+            return redirect('surveyer/profile')->withErrors($v)->withInput();
         }
         $now = date('Y-m-d H:i:s');
         if (!empty($request->file('image_url'))) {
@@ -95,10 +95,10 @@ class AdminSurveyerController extends Controller
         );
         try {
             \DB::table('users')->where('id', $user_id)->update($user_info_update_data);
-            return redirect('admin/profile')->with('message',"Profile updated successfully");
+            return redirect('surveyer/profile')->with('message',"Profile updated successfully");
         } catch (\Exception $e) {
             $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-            return redirect('admin/profile')->with('errormessage',"Something is wrong!");
+            return redirect('surveyer/profile')->with('errormessage',"Something is wrong!");
         }
     }
 
@@ -122,10 +122,10 @@ class AdminSurveyerController extends Controller
                 \DB::table('users')
                     ->where('id', \Auth::user()->id)
                     ->update($user_new_img);
-                return redirect('admin/profile')->with('message',"Profile updated successfully");
+                return redirect('surveyer/profile')->with('message',"Profile updated successfully");
             } catch (\Exception $e) {
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                return redirect('admin/profile')->with('errormessage',$message);
+                return redirect('surveyer/profile')->with('errormessage',$message);
 
             }
         }
@@ -152,7 +152,7 @@ class AdminSurveyerController extends Controller
         $v = \Validator::make(\Request::all(), $rules);
 
         if ($v->fails()) {
-            return redirect('admin//profile?tab=change_password')
+            return redirect('surveyer//profile?tab=change_password')
                 ->withErrors($v)
                 ->withInput();
         }
@@ -171,16 +171,16 @@ class AdminSurveyerController extends Controller
                     \DB::table('users')
                         ->where('id', \Auth::user()->id)
                         ->update($update_password);
-                    return redirect('admin/profile')->with('message',"Password updated successfully !");
+                    return redirect('surveyer/profile')->with('message',"Password updated successfully !");
                 } catch(\Exception $e) {
                     $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                    return redirect('admin/profile')->with('errormessage',"Password update failed !");
+                    return redirect('surveyer/profile')->with('errormessage',"Password update failed !");
                 }
             } else {
-                return redirect('admin/profile?tab=change_password')->with('errormessage',"Current Password Doesn't Match !");
+                return redirect('surveyer/profile?tab=change_password')->with('errormessage',"Current Password Doesn't Match !");
             }
         } else {
-            return redirect('admin/profile?tab=change_password')->with('errormessage',"Password Combination Doesn't Match !");
+            return redirect('surveyer/profile?tab=change_password')->with('errormessage',"Password Combination Doesn't Match !");
         }
     }
 
@@ -199,6 +199,158 @@ class AdminSurveyerController extends Controller
         $data['page_desc'] = $this->page_desc;
         return view('pages.surveyer-question-answer.campaign-list',$data);
     }
+
+
+
+
+
+    /********************************************
+    ## Show the list of all Content
+     *********************************************/
+    public function getAllContentCountdown()
+    {
+        if(isset($_GET['search_campaign_id'])){
+
+            $total_participate =  \App\CampaignParticipate::where(function($query){
+                if(isset($_GET['search_campaign_id'])){
+                    $query->where(function ($q){
+                        $q->where('participate_campaign_id', $_GET['search_campaign_id']);
+                    });
+                }
+            })
+                ->orderBy('id','DESC')
+                ->count();
+
+            $data['total_participate'] = $total_participate;
+
+
+            $numberOfQuestions = \DB::table('question_answer_tbl')->where('answer_campaign_id', $_GET['search_campaign_id'])->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
+            $data['numberOfQuestions'] = $numberOfQuestions;
+
+
+            $all_content =  \App\QuestionAnswer::where(function($query){
+                if(isset($_GET['search_campaign_id'])){
+                    $query->where(function ($q){
+                        $q->where('answer_campaign_id', $_GET['search_campaign_id']);
+                    });
+                }
+            })
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                ->orderBy('question_answer_tbl.id','DESC')
+                ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                ->paginate(20);
+
+            $search_campaign_id = isset($_GET['search_campaign_id'])? $_GET['search_campaign_id']:0;
+
+            $all_content->setPath(url('/campaign/participate/countdown'));
+            $pagination = $all_content->appends(['answer_campaign_id' => $search_campaign_id])->render();
+            $data['pagination'] = $pagination;
+            $data['perPage'] = $all_content->perPage();
+            $data['all_content'] = $all_content;
+
+        } else{
+
+            /*$total_participate =  \App\CampaignParticipate::orderBy('id','DESC')->count();
+            $data['total_participate'] = $total_participate;
+
+            $numberOfQuestions = \DB::table('question_answer_tbl')->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
+            $data['numberOfQuestions'] = $numberOfQuestions;
+
+
+            $all_content= \DB::table('question_answer_tbl')
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                ->orderBy('question_answer_tbl.id','DESC')
+                ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                ->paginate(20);
+            $all_content->setPath(url('/campaign/participate/countdown'));
+            $pagination = $all_content->render();
+            $data['perPage'] = $all_content->perPage();
+            $data['pagination'] = $pagination;
+            $data['all_content'] = $all_content;*/
+
+        }
+
+        $data['all_campaign'] =  \App\Campaign::orderby('id','desc')
+        // ->where('campaign_requester_id',\Auth::user()->requester_id)
+        ->get();
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.surveyer-question-answer.countdown',$data);
+    }
+
+
+
+    /********************************************
+    ## Show the list of all single question Answer
+     *********************************************/
+    public function getAllSingleQuestionAnswer($answer_question_id)
+    {
+
+        $total_content= \DB::table('question_answer_tbl')
+            ->where('answer_question_id',$answer_question_id)->count();
+        $data['total_content'] = $total_content;
+
+        $question_answer_option_1 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_1','!=', '')->count();
+        $data['question_answer_option_1'] = $question_answer_option_1;
+
+        $question_answer_option_2 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_2','!=', '')->count();
+        $data['question_answer_option_2'] = $question_answer_option_2;
+
+
+        $question_answer_option_3 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_3','!=', '')->count();
+        $data['question_answer_option_3'] = $question_answer_option_3;
+
+
+        $question_answer_option_4 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_4','!=', '')->count();
+        $data['question_answer_option_4'] = $question_answer_option_4;
+
+
+        $question_answer_text_value = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_text_value','!=', '')->count();
+        $data['question_answer_text_value'] = $question_answer_text_value;
+
+        $all_content= \DB::table('question_answer_tbl')
+            ->where('answer_question_id',$answer_question_id)
+            ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+            ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+            ->orderBy('question_answer_tbl.id','DESC')
+            ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+            ->paginate(20);
+        $all_content->setPath(url('/campaign/participate/countdown'));
+        $pagination = $all_content->render();
+        $data['perPage'] = $all_content->perPage();
+        $data['pagination'] = $pagination;
+        $data['all_content'] = $all_content;
+
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.surveyer-question-answer.question-details',$data);
+    }
+
+
+
+    /********************************************
+    ## Show the list of all payment
+     *********************************************/
+    public function SurveyerPaymentList()
+    {
+
+        $all_content= \App\EarnPaid::where('earn_paid_surveyer_id', \Auth::user()->surveyer_id)->orderBy('id','DESC')->paginate(20);
+        $all_content->setPath(url('/campaign/payment/list'));
+        $pagination = $all_content->render();
+        $data['perPage'] = $all_content->perPage();
+        $data['pagination'] = $pagination;
+        $data['all_content'] = $all_content;
+
+        $data['surveyer_info'] =  \App\Surveyer::where('id', \Auth::user()->surveyer_id)->orderby('id','desc')->first();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.admin-surveyer.payment-history',$data);
+    }
+
+
 
     /********************************************
     ## Show the list of all Content
@@ -329,7 +481,7 @@ class AdminSurveyerController extends Controller
         $v = \Validator::make($request->all(), [
             'participate_name' => 'required',
             'participate_email' => 'required',
-            'participate_mobile' => 'required',
+            'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'participate_age' => 'required',
             'participate_join_date' => 'required',
             'participate_district' => 'required',
@@ -506,14 +658,16 @@ class AdminSurveyerController extends Controller
                         
                     }else{
                         \DB::rollback();
-                        throw new Exception("Error Processing Request", 1);
+                        // var_dump($campaign_participate_insertOrUpdate);
+                        // var_dump($error);
+                        // throw new Exception("Error Processing Request", 1);
                     }
 
 
 
                 });
 
-                return redirect()->to('/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
+                return redirect()->to('/surveyer/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
 
 
 
@@ -638,17 +792,17 @@ class AdminSurveyerController extends Controller
                         // return redirect()->back()->with('message','Question Created Successfully');
 
                     }else{
-                        return redirect()->to('/question/answer/'.$surveyer_id.'/'.$campaign_id.'/1')->with('message','First Question Answer');
+                        return redirect()->to('/surveyer/question/answer/'.$surveyer_id.'/'.$campaign_id.'/1')->with('message','First Question Answer');
                      }
 
                 });
 
-                if(!empty($next_question) && $total_question >= $question_next_position){
-                    return redirect()->to('/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'. $question_next_position)->with('message','Question Answer Successfully');
+                // if(!empty($next_question) && ($total_question >= $question_next_position)){
+                if(!empty($next_question)){
+                    return redirect()->to('/surveyer/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'. $question_next_position)->with('message','Question Answer Successfully');
                 }else{
-                    return redirect()->to('/participate/campaign/list/')->with('message','Camapaign Participate Successfully');
+                    return redirect()->to('/surveyer/participate/campaign/list/')->with('message','Camapaign Participate Successfully');
                 }
-
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();

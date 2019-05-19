@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Requester;
 use App\Campaign;
+use Exception;
+use Db;
 
 class CampaignController extends Controller
 {
@@ -87,7 +89,7 @@ class CampaignController extends Controller
             'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'required',
+            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_create_date' => 'required',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
@@ -180,28 +182,74 @@ class CampaignController extends Controller
      *********************************************/
     public function ChangePublishStatus($id, $status)
     {
-        //check if this campaign has any content published or not
-        $content_exists = \App\Campaign::where('id',$id)->first();
-        if($content_exists)
-        {
-            $now = date('Y-m-d H:i:s');
-            if($status=='1'){
-                $data['campaign_status']=1;
-            } else{
-                $data['campaign_status']=0;
-            }
-            $update=\App\Campaign::where('id',$id)->update($data);
 
-            if($update) {
+        try{
+
+            //check if this campaign has any content published or not
+            $content_exists = \App\Campaign::where('id',$id)->first();
+            if($content_exists)
+            {
+
+                $success = \DB::transaction(function () use($content_exists, $id, $status) {
+
+
+                    $requester_info = \App\Requester::where('id',$content_exists->campaign_requester_id)->first();
+
+                    if($content_exists->campaign_status == '2'){
+
+                        $update_data['requester_total_invest']=$requester_info->requester_info + $content_exists->campaign_total_cost;
+                        $update_data['requester_number_of_campaign']=$requester_info->requester_number_of_campaign + 1;
+                        $requester_update= \App\Requester::where('id', $requester_info->id)->update($update_data);
+
+                        if(!$requester_update){
+                            $error=1;
+                        }
+
+                    }
+
+                    $now = date('Y-m-d H:i:s');
+
+                    if($status=='1'){
+                        $data['campaign_status']=1;
+                    } else{
+                        $data['campaign_status']=0;
+                    }
+
+                    $update=\App\Campaign::where('id',$id)->update($data);
+
+                    if(!$update){
+                        $error=1;
+                    }
+
+                    if(!isset($error)){
+                        \App\System::EventLogWrite('update,campaign_tbl',json_encode($data));
+                        // \App\System::EventLogWrite('update,requester_tbl',json_encode($update_data));
+                        \DB::commit();
+
+                    }else{
+                        \DB::rollback();
+
+                        throw new Exception("Error Processing Request", 1);
+                    }
+
+
+
+                });
+
                 echo 'Status updated successfully.';
                 // \App\System::EventLogWrite('update,campaign_status|Status updated successfully.',$id);
-            } else {
-                echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,campaign_status|Status did not updated.',$id);
+
+            } else{
+                echo 'There is no published content for this campaign. Please upload and publish any content to publish this content.';
             }
-        } else{
-            echo 'There is no published content for this campaign. Please upload and publish any content to publish this content.';
+
+
+        }catch (\Exception $e){
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+            \App\System::ErrorLogWrite($message);
+            echo 'Something wrong happend in campaign Upload';
         }
+
 
     }
 
@@ -229,7 +277,7 @@ class CampaignController extends Controller
             'campaign_category' => 'required',
             'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'required',
+            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
             'campaign_num_of_days' => 'required',

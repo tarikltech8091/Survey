@@ -137,7 +137,7 @@ class SystemAuthController extends Controller
             if (!empty($user_info) && ($email==$user_info->email)) {
                 \App\User::LogInStatusUpdate("logout");
                 \Auth::logout();
-                //\Session::flush();
+                // \Session::flush();
                 return \Redirect::to('auth/login');
             } else {
                 return \Redirect::to('auth/login');
@@ -145,6 +145,22 @@ class SystemAuthController extends Controller
         } else {
             return \Redirect::to('auth/login')->with('errormessage',"Error logout");
         }
+    }
+
+
+    /**
+     *
+     * @param Request $request
+     * @return Response
+    */
+    public function ajaxUserType($type)
+    {
+
+        $data['requester_info'] =  \App\Requester::orderby('id','desc')->get();
+        $data['surveyer_info'] =  \App\Surveyer::orderby('id','desc')->get();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.admin.ajax-profile',$data);
     }
 
     /**

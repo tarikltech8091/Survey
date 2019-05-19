@@ -77,7 +77,7 @@
                         						@if(!empty($surveyer_id))
 	                                                <td class="text-center">
 	                                                    <span class="btn btn-danger btn-squared">
-	                                                    	<a href="{{url('/question/answer/1/'.$list->id.'/1')}}">
+	                                                    	<a href="{{url('/surveyer/question/answer/'.$surveyer_id.'/'.$list->id.'/1')}}">
 	                                                        	Play
 	                                                        </a>
 	                                                    </span>

@@ -139,7 +139,7 @@
                             <thead>
                             <tr>
                                 <th class="text-center">#</th>
-                                <th class="text-center">Campaign Name</th>
+                                <!-- <th class="text-center">Campaign Name</th> -->
                                 <th class="text-center">Surveyer Number</th>
                                 <th class="text-center">Participate Mobile</th>
                                 <th class="text-center">Question Title</th>
@@ -150,6 +150,7 @@
                                 <th class="text-center" class="text-center">Option 3</th>
                                 <th class="text-center" class="text-center">Option 4</th>
                                 <th class="text-center" class="text-center">New Option</th>
+                                <th class="text-center" class="text-center">Validate</th>
                                 <th class="text-center" class="text-center">Status</th>
                                 <th class="text-center" class="text-center">Action</th>
                             </tr>
@@ -160,7 +161,7 @@
                                 @foreach($all_content as $key => $question)
                                     <tr>
                                         <td class="text-center">{{($key+1+($perPage*$page))}}</td>
-                                        <td class="text-center">{{$question->campaign_name}}</td>
+                                        <!-- <td class="text-center">{{$question->campaign_name}}</td> -->
                                         <td class="text-center">{{$question->surveyer_mobile}}</td>
                                         <td class="text-center">{{$question->answer_participate_mobile}}</td>
                                         <td class="text-center">{{ str_limit($question->question_answer_title, 15)  }}</td>
@@ -171,6 +172,13 @@
                                         <td class="text-center">{{$question->question_answer_option_3}}</td>
                                         <td class="text-center">{{$question->question_answer_option_4}}</td>
                                         <td class="text-center">{{$question->question_answer_text_value}}</td>
+                                        <td class="text-center">
+                                            @if($question->question_answer_validate == 'yes')
+                                                <span class="label label-success btn-squared">Yes</span>
+                                            @else
+                                                <span class="label label-danger btn-squared">No</span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             @if($question->question_answer_status == 1)
                                                 <span class="label label-success btn-squared">Published</span>
@@ -193,6 +201,18 @@
                                                             <a class="status-change " title="Click for publish"
                                                                data-publish-status="1" data-question-answer-id="{{ $question->question_answer_id}}">
                                                                 <i class="fa fa-lock"></i> Publish
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                    <li>
+                                                        @if($question->question_answer_validate == 'yes')
+                                                            <a class="validate-status-change"
+                                                               data-validate-status="no" data-question-answer-id="{{ $question->question_answer_id}}" title="Click for unpublish">
+                                                                <i class="fa fa-unlock"></i> Validate
+                                                            </a>
+                                                        @else
+                                                            <a class="validate-status-change" data-question-answer-id="{{ $question->question_answer_id}}" title="Click for validate" data-validate-status="yes">
+                                                                <i class="fa fa-lock"></i> Validate
                                                             </a>
                                                         @endif
                                                     </li>
@@ -301,6 +321,47 @@
                         }
                     });
                 }
+            });
+
+            //validate
+            $('.validate-status-change').on('click', function (e) {
+                e.preventDefault();
+                var status = $(this).data('validate-status');
+                var id = $(this).data('question-answer-id');
+
+                bootbox.dialog({
+                    message: "Are you sure you want to validate this answer question ?",
+                    title: "<i class='glyphicon glyphicon-eye-close'></i> Validate !",
+                    buttons: {
+                        danger: {
+                            label: "No!",
+                            className: "btn-danger btn-squared",
+                            callback: function() {
+                                $('.bootbox').modal('hide');
+                            }
+                        },
+                        success: {
+                            label: "Yes!",
+                            className: "btn-success btn-squared",
+                            callback: function() {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: site_url+'/question/answer/validate/status/'+id+'/'+status
+                                }).done(function(response){
+                                    bootbox.alert(response,
+                                        function(){
+                                            location.reload(true);
+                                        }
+                                    );
+
+                                }).fail(function(response){
+                                    bootbox.alert(response);
+                                })
+                            }
+                        }
+                    }
+                });
+
             });
 
         });

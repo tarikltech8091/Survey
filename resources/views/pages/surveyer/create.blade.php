@@ -94,6 +94,25 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
+                                                    <strong>Password</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-6">
+                                                    <input type="password" class="form-control" name="password">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    <strong>Repeat Password</strong>
+                                                    <span class="symbol required" aria-required="true"></span>
+                                                </label>
+                                                <div class="col-sm-6">
+                                                    <input type="password" class="form-control" name="repeat_password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
                                                     <strong>Surveyer Mobile</strong>
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>

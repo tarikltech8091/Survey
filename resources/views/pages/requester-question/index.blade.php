@@ -34,12 +34,12 @@
 
                             <ul id="myTab" class="nav nav-tabs tab-bricky">
                                 <li>
-                                    <a href="{{url('/question/create')}}">
+                                    <a href="{{url('/requester/question/create')}}">
                                         <i class="green fa fa-bell"></i> Add Question
                                     </a>
                                 </li>
                                 <li class="active">
-                                    <a href="{{url('/question/list')}}">
+                                    <a href="{{url('/requester/question/list')}}">
                                         <i class="green clip-feed"></i> Question List
                                     </a>
                                 </li>
@@ -51,7 +51,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
 
-                                            <form method="get"  action="{{url('/question/list')}}">
+                                            <form method="get"  action="{{url('/requester/question/list')}}">
                                                 <div class="col-md-3">
                                                     <div class="form-group has-feedback ">
                                                         <label for="search_from">
@@ -146,12 +146,12 @@
                                         </td>
                                         <td style="width:14%">
                                             <div class="btn-group">
-                                                @if(!empty($current_campaign))
-                                                    @if($current_campaign->campaign_status == 2)
+                                                @if(!empty($question))
+                                                    @if($question->campaign_status == 2)
                                                         <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button>
                                                         <ul class="dropdown-menu" role="menu">
                                                             
-                                                            <li><a href="{{url('/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Edit</a></li>
+                                                            <li><a href="{{url('/requester/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Edit</a></li>
 
                                                             <!-- <li>
                                                                 @if($question->question_status == 1)
@@ -231,7 +231,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/change/status/'+id+'/'+status
+                                        url: site_url+'/requester/question/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -264,7 +264,7 @@
                                 callback: function() {
                                     $.ajax({
                                         type: 'GET',
-                                        url: site_url+'/question/change/status/'+id+'/'+status
+                                        url: site_url+'/requester/question/change/status/'+id+'/'+status
                                     }).done(function(response){
                                         bootbox.alert(response,
                                             function(){
@@ -301,7 +301,7 @@
                             callback: function() {
                                 $.ajax({
                                     type: 'GET',
-                                    url: site_url+'/question/delete/id-'+id,
+                                    url: site_url+'/requester/question/delete/id-'+id,
                                 }).done(function(response){
                                     bootbox.alert(response,
                                         function(){

@@ -45,7 +45,7 @@
                     </li>
                     <li class="{{$tab=='admins' ? 'active':''}}">
                         <a data-toggle="tab" href="#admins">
-                            Admins
+                            All Users
                         </a>
                     </li>
                 </ul>
@@ -93,9 +93,9 @@
                                                 <select class="form-control search-select" name="user_type">
                                                     <option value="" selected="selected"> Please select user type</option>
                                                     <option value="admin"> Administrator </option>
-                                                    <option value="requester"> Requester </option>
-                                                    <option value="surveyer"> Surveyer </option>
-                                                    <option value="participate"> Participate </option>
+                                                    <!-- <option value="requester"> Requester </option> -->
+                                                    <!-- <option value="surveyer"> Surveyer </option> -->
+                                                    <!-- <option value="participate"> Participate </option> -->
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -106,9 +106,9 @@
                                                 <select class="form-control search-select" name="user_role" >
                                                     <option value="" selected="selected">Please select user role</option>
                                                     <option value="admin"> Admin </option>
-                                                    <option value="requester"> Requester </option>
-                                                    <option value="surveyer"> Surveyer </option>
-                                                    <option value="participate"> Participate </option>
+                                                    <!-- <option value="requester"> Requester </option> -->
+                                                    <!-- <option value="surveyer"> Surveyer </option> -->
+                                                    <!-- <option value="participate"> Participate </option> -->
                                                 </select>
                                             </div>
                                         </div>

@@ -40,7 +40,7 @@
                         </div>
                     @endif
 
-                    <form role="form" class="form-horizontal" action="{{ url('/campaign/update/id-'.$edit->id) }}"
+                    <form role="form" class="form-horizontal" action="{{ url('/requester/campaign/update/id-'.$edit->id) }}"
                           id="campaign" method="post" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 

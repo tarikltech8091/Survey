@@ -86,8 +86,9 @@
                             <div class="col-sm-6">
                                 <select id="form-field-select-3" class="form-control search-select" name="question_type">
                                     <option value="">&nbsp;Please Select a Type</option>
-                                    <option {{($edit->question_type == 'easy') ? "selected" :''}} value="easy">Easy</option>
-                                    <option {{($edit->question_type == 'hard') ? "selected" :''}}  value="hard">Hard</option>
+                                    <option {{($edit->question_type == 'multi') ? "selected" :''}} value="multi">Multi</option>
+                                    <option {{($edit->question_type == 'single') ? "selected" :''}} value="single">Single</option>
+                                    <option {{($edit->question_type == 'text') ? "selected" :''}}  value="text">Text</option>
                                 </select>
                             </div>
                         </div>
