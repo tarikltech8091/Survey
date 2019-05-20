@@ -39,7 +39,7 @@
 
                 @if(!empty($question_answer_option_1))
 
-                    <div class="col-md-3" style="margin-top: 20px;">
+                    <div class="col-md-3">
                         <div class="report_view reprt_color_1 cursor dashborad_menus centered">
 
                             <p class="report_name"> 
@@ -57,7 +57,7 @@
 
                 @if(!empty($question_answer_option_2))
 
-                    <div class="col-md-3" style="margin-top: 20px;">
+                    <div class="col-md-3">
                         <div class="report_view reprt_color_1 cursor dashborad_menus centered">
 
                             <p class="report_name"> 
@@ -75,7 +75,7 @@
 
                 @if(!empty($question_answer_option_3))
 
-                    <div class="col-md-3" style="margin-top: 20px;">
+                    <div class="col-md-3">
                         <div class="report_view reprt_color_1 cursor dashborad_menus centered">
 
                             <p class="report_name"> 
@@ -93,7 +93,7 @@
 
                 @if(!empty($question_answer_option_4))
 
-                    <div class="col-md-3" style="margin-top: 20px;">
+                    <div class="col-md-3">
                         <div class="report_view reprt_color_1 cursor dashborad_menus centered">
 
                             <p class="report_name"> 

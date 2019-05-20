@@ -70,7 +70,7 @@
                                     @if(!empty($all_campaign))
                                     @foreach($all_campaign as $key =>$list)
                                         <option {{($edit->question_campaign_id == $list->id) ? "selected" :''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                        <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}">
+                                        <!-- <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}"> -->
                                     @endforeach
                                     @endif
 
@@ -155,14 +155,14 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 <strong>Option New</strong>
                             </label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="question_option_new"  value="{{(isset($edit->question_option_new) && !empty($edit->question_option_new))? $edit->question_option_new:''}}">
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <div class="form-group">

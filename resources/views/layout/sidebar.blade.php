@@ -222,6 +222,14 @@
                     </li>
 
 
+                    <li class="{{isset($page_title) && ($page_title=='Campaign Survey Countdown') ? 'active' : ''}}">
+                        <a href="{{url('/admin/campaign/participate/countdown')}}">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="title">Campaign Survey Countdown</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+
                 </ul>
             </li>
 
@@ -257,13 +265,6 @@
                         </a>
                     </li>
 
-                    <li class="{{isset($page_title) && ($page_title=='Admin Campaign Participate Countdown') ? 'active' : ''}}">
-                        <a href="{{url('/admin/campaign/participate/countdown')}}">
-                            <i class="fa fa-tasks" aria-hidden="true"></i>
-                            <span class="title">Admin Campaign Participate Countdown</span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
                 </ul>
             </li>
 

@@ -95,8 +95,8 @@
                                     @if(!empty($all_requester))
                                     @foreach($all_requester as $key =>$list)
                                         <option {{($edit->campaign_requester_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->requester_name}}</option>
-                                        <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
-                                        <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
+                                        <!-- <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
+                                        <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}"> -->
                                     @endforeach
                                     @endif
 

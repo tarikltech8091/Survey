@@ -78,7 +78,7 @@
                                                         @if(!empty($all_campaign))
                                                         @foreach($all_campaign as $key =>$list)
                                                             <option value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                                            <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}">
+                                                            <!-- <input type="hidden" class="form-control" name="question_campaign_name" value="{{$list->campaign_name}}"> -->
                                                         @endforeach
                                                         @endif
 
@@ -161,14 +161,14 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="col-sm-3 control-label">
                                                     <strong>Option New</strong>
                                                 </label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control" name="question_option_new">
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">
@@ -176,8 +176,8 @@
                                                     <span class="symbol required" aria-required="true"></span>
                                                 </label>
                                                 <div class="col-sm-6">
-                                                    <input type="radio" name="question_special" value="1"> Yes<br>
-                                                    <input type="radio" name="question_special" value="0" checked=""> No
+                                                    <input type="radio" name="question_special" value="1" checked=""> Yes<br>
+                                                    <input type="radio" name="question_special" value="0"> No
                                                 </div>
                                             </div>
 

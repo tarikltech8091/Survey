@@ -87,9 +87,9 @@ class CampaignController extends Controller
             'campaign_name' => 'required',
             'campaign_title' => 'required',
             'campaign_category' => 'required',
-            'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
+            // 'campaign_requester_name' => 'required',
+            // 'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_create_date' => 'required',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
@@ -119,6 +119,17 @@ class CampaignController extends Controller
 
                 }
 
+                $campaign_requester_id=$request->input('campaign_requester_id');
+
+                $requester_info = \App\Requester::where('id',$campaign_requester_id)->first();
+
+                if(!empty($requester_info)){
+                    $campaign_requester_name=$requester_info->requester_name;
+                    $campaign_requester_mobile=$requester_info->requester_mobile;
+                }else{
+                    return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
+                }
+
 
                 $data['campaign_name']=$request->input('campaign_name');
                 $slug=explode(' ', strtolower($request->input('campaign_name')));
@@ -126,9 +137,11 @@ class CampaignController extends Controller
                 $data['campaign_name_slug']=$campaign_name_slug;
                 $data['campaign_title']=$request->input('campaign_title');
                 $data['campaign_category']=$request->input('campaign_category');
-                $data['campaign_requester_name']=$request->input('campaign_requester_name');
                 $data['campaign_requester_id']=$request->input('campaign_requester_id');
-                $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
+                // $data['campaign_requester_name']=$request->input('campaign_requester_name');
+                // $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
+                $data['campaign_requester_name']=$campaign_requester_name;
+                $data['campaign_requester_mobile']=$campaign_requester_mobile;
                 $data['campaign_create_date']=$request->input('campaign_create_date');
                 $data['campaign_start_date']=$request->input('campaign_start_date');
                 $data['campaign_end_date']=$request->input('campaign_end_date');
@@ -275,9 +288,9 @@ class CampaignController extends Controller
             'campaign_name' => 'required',
             'campaign_title' => 'required',
             'campaign_category' => 'required',
-            'campaign_requester_name' => 'required',
             'campaign_requester_id' => 'required',
-            'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
+            // 'campaign_requester_name' => 'required',
+            // 'campaign_requester_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'campaign_start_date' => 'required',
             'campaign_end_date' => 'required',
             'campaign_num_of_days' => 'required',
@@ -308,15 +321,29 @@ class CampaignController extends Controller
                 }
 
 
+                $campaign_requester_id=$request->input('campaign_requester_id');
+
+                $requester_info = \App\Requester::where('id',$campaign_requester_id)->first();
+
+                if(!empty($requester_info)){
+                    $campaign_requester_name=$requester_info->requester_name;
+                    $campaign_requester_mobile=$requester_info->requester_mobile;
+                }else{
+                    return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
+                }
+
+
                 $data['campaign_name']=$request->input('campaign_name');
                 $slug=explode(' ', strtolower($request->input('campaign_name')));
                 $campaign_name_slug=implode('-', $slug);
                 $data['campaign_name_slug']=$campaign_name_slug;
                 $data['campaign_title']=$request->input('campaign_title');
                 $data['campaign_category']=$request->input('campaign_category');
-                $data['campaign_requester_name']=$request->input('campaign_requester_name');
                 $data['campaign_requester_id']=$request->input('campaign_requester_id');
-                $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
+                // $data['campaign_requester_name']=$request->input('campaign_requester_name');
+                // $data['campaign_requester_mobile']=$request->input('campaign_requester_mobile');
+                $data['campaign_requester_name']=$campaign_requester_name;
+                $data['campaign_requester_mobile']=$campaign_requester_mobile;
                 $data['campaign_start_date']=$request->input('campaign_start_date');
                 $data['campaign_end_date']=$request->input('campaign_end_date');
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');

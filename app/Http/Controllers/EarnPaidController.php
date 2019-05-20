@@ -120,68 +120,79 @@ class EarnPaidController extends Controller
 
             try{
 
-                $success = \DB::transaction(function () use($request){
+                $earn_paid_surveyer_id = $request->input('earn_paid_surveyer_id');
+                $earn_paid_participate_id = $request->input('earn_paid_participate_id');
 
-                    $earn_paid_surveyer_id = $request->input('earn_paid_surveyer_id');
-                    $earn_paid_participate_id = $request->input('earn_paid_participate_id');
-                    $earn_paid_user_type = $request->input('earn_paid_user_type');
-                    $data['earn_paid_user_type']=$request->input('earn_paid_user_type');
-                    $data['earn_paid_surveyer_id']=$request->input('earn_paid_surveyer_id');
-                    $data['earn_paid_surveyer_mobile']=$request->input('earn_paid_surveyer_mobile');
-                    $data['earn_paid_participate_id']=$request->input('earn_paid_participate_id');
-                    $data['earn_paid_participate_mobile']=$request->input('earn_paid_participate_mobile');
-                    $data['earn_paid_date']=$request->input('earn_paid_date');
-                    $data['earn_paid_payment_type']=$request->input('earn_paid_payment_type');
-                    $data['earn_paid_amount']=$request->input('earn_paid_amount');
-                    $data['payment_transaction_id']=$request->input('payment_transaction_id');
-                    $data['earn_paid_description']=$request->input('earn_paid_description');
-                    $data['earn_paid_status']= 0;
-                    $data['earn_paid_created_by'] = \Auth::user()->id;
-                    $data['earn_paid_updated_by'] = \Auth::user()->id;
+                if(!empty($earn_paid_surveyer_id) || !empty($earn_paid_participate_id)){
 
-                    $insert=\DB::table('earn_paid_tbl')->insert($data);
+                    $success = \DB::transaction(function () use($request){
 
-                    if($earn_paid_user_type == 'surveyer'){
+                        $earn_paid_surveyer_id = $request->input('earn_paid_surveyer_id');
+                        $earn_paid_participate_id = $request->input('earn_paid_participate_id');
 
-                        $surveyer_info=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->first();
-                        $surveyer_data['surveyer_total_paid']=($surveyer_info->surveyer_total_paid) + ($data['earn_paid_amount']);
-                        $surveyer_data['surveyer_updated_by'] = \Auth::user()->id;
+                        $earn_paid_user_type = $request->input('earn_paid_user_type');
+                        $data['earn_paid_user_type']=$request->input('earn_paid_user_type');
+                        $data['earn_paid_surveyer_id']=$request->input('earn_paid_surveyer_id');
+                        $data['earn_paid_surveyer_mobile']=$request->input('earn_paid_surveyer_mobile');
+                        $data['earn_paid_participate_id']=$request->input('earn_paid_participate_id');
+                        $data['earn_paid_participate_mobile']=$request->input('earn_paid_participate_mobile');
+                        $data['earn_paid_date']=$request->input('earn_paid_date');
+                        $data['earn_paid_payment_type']=$request->input('earn_paid_payment_type');
+                        $data['earn_paid_amount']=$request->input('earn_paid_amount');
+                        $data['payment_transaction_id']=$request->input('payment_transaction_id');
+                        $data['earn_paid_description']=$request->input('earn_paid_description');
+                        $data['earn_paid_status']= 0;
+                        $data['earn_paid_created_by'] = \Auth::user()->id;
+                        $data['earn_paid_updated_by'] = \Auth::user()->id;
 
-                        $surveyer_update=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->update($surveyer_data);
+                        $insert=\DB::table('earn_paid_tbl')->insert($data);
 
-                        if(!$surveyer_update || !$insert ){
-                            $error=1;
+                        if($earn_paid_user_type == 'surveyer'){
+
+                            $surveyer_info=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->first();
+                            $surveyer_data['surveyer_total_paid']=($surveyer_info->surveyer_total_paid) + ($data['earn_paid_amount']);
+                            $surveyer_data['surveyer_updated_by'] = \Auth::user()->id;
+
+                            $surveyer_update=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->update($surveyer_data);
+
+                            if(!$surveyer_update || !$insert ){
+                                $error=1;
+                            }
+
+                        }elseif($earn_paid_user_type == 'participate'){
+
+                            $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
+                            $participate_data['participate_total_paid_earn']=($participater_info->participate_total_paid_earn) + ($data['earn_paid_amount']) ;
+                            $participate_data['participate_updated_by'] = \Auth::user()->id;
+
+                            $participate_update=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->update($participate_data);
+
+                            if(!$participate_update || !$insert ){
+                                $error=1;
+                            }
+
                         }
 
-                    }elseif($earn_paid_user_type == 'participate'){
 
-                        $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
-                        $participate_data['participate_total_paid_earn']=($requester_info->participate_total_paid_earn) + ($data['earn_paid_amount']) ;
-                        $participate_data['participate_updated_by'] = \Auth::user()->id;
-
-                        $participate_update=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->update($participate_data);
-
-                        if(!$participate_update || !$insert ){
-                            $error=1;
+                        if(!isset($error)){
+                            /*\App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
+                            \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
+                            \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                            \DB::commit();
+                            
+                        }else{
+                            \DB::rollback();
+                            throw new Exception("Error Processing Request", 1);
                         }
 
-                    }
 
+                    });
 
-                    if(!isset($error)){
-                        /*\App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
-                        \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
-                        \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
-                        \DB::commit();
-                        
-                    }else{
-                        \DB::rollback();
-                        throw new Exception("Error Processing Request", 1);
-                    }
-                });
-
-                return redirect()->back()->with('message','Earn Paid Created Successfully');
-
+                    return redirect()->back()->with('message','Earn Paid Created Successfully');
+                    
+                }else{
+                    return redirect()->back()->with('errormessage','Participate or surveyer id required.');
+                }
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();

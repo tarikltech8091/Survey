@@ -57,7 +57,7 @@
                                             <input type="hidden" class="form-control" name="answer_question_id" value="{{isset($question_id)?$question_id:''}}">
                                             <input type="hidden" class="form-control" name="answer_question_position" value="{{isset($question_position)?$question_position:''}}">
                                             <input type="hidden" class="form-control" name="campaign_participate_mobile" value="{{isset($campaign_participate_mobile)?$campaign_participate_mobile:''}}">
-
+											<input type="hidden" class="form-control" name="participate_prize_amount" value="{{isset($select_campaign->participate_prize_amount)?$select_campaign->participate_prize_amount:''}}">
 
                                             <div class="col-md-12">
 
@@ -120,13 +120,12 @@
                                                 @endif
 
 
-												@if(isset($select_question) && ($select_question->question_type == 'text'))
-	                                                <div class="form-group">
-	                                                    <div class="col-sm-6">
-	                                                        <strong>Optional Answer: </strong>(If given option not applicable.) <input type="text" class="form-control" name="question_option_new">
-	                                                    </div>
-	                                                </div>
-                                                @endif
+											
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <strong>Optional Answer: </strong>(If given option not applicable.) <input type="text" class="form-control" name="question_option_new">
+                                                    </div>
+                                                </div>
 
 
 

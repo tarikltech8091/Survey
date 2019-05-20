@@ -79,15 +79,14 @@
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select"
-                                                    name="campaign_requester_id">
+                                            <select id="form-field-select-3" class="form-control search-select" name="campaign_requester_id">
                                                 <option value="">&nbsp;Please Select a Requster</option>
 
                                                 @if(!empty($all_requester))
                                                 @foreach($all_requester as $key =>$list)
                                                     <option value="{{$list->id}}">{{$list->requester_name}}  {{$list->requester_mobile}}</option>
-                                                    <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
-                                                    <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
+                                                    <!-- <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
+                                                    <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}"> -->
                                                 @endforeach
                                                 @endif
 

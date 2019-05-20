@@ -545,6 +545,7 @@ class PortalController extends Controller
                         $campaign_participate_data['campaign_participate_post_code']=$request->input('participate_post_code');
                         $campaign_participate_data['campaign_participate_zone']=$request->input('participate_zone');
                         $campaign_participate_data['campaign_participate_address']=$request->input('participate_address');
+                        $campaign_participate_data['participate_prize_amount']=$request->input('participate_prize_amount');
                         $campaign_participate_data['campaign_participate_status']=1;
                         // $campaign_participate_data['campaign_participate_created_by'] = \Auth::user()->id;
                         // $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;

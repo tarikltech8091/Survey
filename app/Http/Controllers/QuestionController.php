@@ -90,7 +90,7 @@ class QuestionController extends Controller
         $v = \Validator::make($request->all(), [
             'question_title' => 'required',
             'question_type' => 'required',
-            'question_campaign_name' => 'required',
+            // 'question_campaign_name' => 'required',
             'question_campaign_id' => 'required',
             'question_position' => 'required',
             'question_special' => 'required',
@@ -105,10 +105,20 @@ class QuestionController extends Controller
 
             try{
 
+                $question_campaign_id=$request->input('question_campaign_id');
+
+                $campaign_info = \DB::table('campaign_tbl')->where('id',$question_campaign_id)->first();
+                if(!empty($campaign_info)){
+                    $question_campaign_name=$campaign_info->campaign_name;
+                }else{
+                    return redirect()->back()->with('errormessage','Invalid Campaign');
+                }
+
 
                 $data['question_title']=$request->input('question_title');
                 $data['question_type']=$request->input('question_type');
-                $data['question_campaign_name']=$request->input('question_campaign_name');
+                // $data['question_campaign_name']=$request->input('question_campaign_name');
+                $data['question_campaign_name']=$question_campaign_name;
                 $data['question_campaign_id']=$request->input('question_campaign_id');
                 $data['question_position']=$request->input('question_position');
                 $data['question_special']=$request->input('question_special');
@@ -120,7 +130,7 @@ class QuestionController extends Controller
                 $data['question_points']=$request->input('question_points');
                 // $data['question_published_date']='';
                 $data['question_published_status']=0;
-                $data['question_status']=0;
+                $data['question_status']=1;
                 $data['question_created_by'] = \Auth::user()->id;
                 $data['question_updated_by'] = \Auth::user()->id;
                
@@ -202,7 +212,7 @@ class QuestionController extends Controller
         $v = \Validator::make($request->all(), [
             'question_title' => 'required',
             'question_type' => 'required',
-            'question_campaign_name' => 'required',
+            // 'question_campaign_name' => 'required',
             'question_campaign_id' => 'required',
             'question_position' => 'required',
             'question_special' => 'required',
@@ -217,11 +227,21 @@ class QuestionController extends Controller
             try
             {
 
+                $question_campaign_id=$request->input('question_campaign_id');
+
+                $campaign_info = \DB::table('campaign_tbl')->where('id',$question_campaign_id)->first();
+                if(!empty($campaign_info)){
+                    $question_campaign_name=$campaign_info->campaign_name;
+                }else{
+                    return redirect()->back()->with('errormessage','Invalid Campaign');
+                }
+
                 $question_data= \DB::table('question_tbl')->where('id', $id)->first();
 
                 $data['question_title']=$request->input('question_title');
                 $data['question_type']=$request->input('question_type');
-                $data['question_campaign_name']=$request->input('question_campaign_name');
+                // $data['question_campaign_name']=$request->input('question_campaign_name');
+                $data['question_campaign_name']=$question_campaign_name;
                 $data['question_campaign_id']=$request->input('question_campaign_id');
                 $data['question_position']=$request->input('question_position');
                 $data['question_special']=$request->input('question_special');

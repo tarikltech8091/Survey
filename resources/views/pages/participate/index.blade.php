@@ -92,10 +92,8 @@
                                 <th>Religion</th>
                                 <th>Gender</th>
                                 <th>Occupation</th>
-                                <th>Join date</th>
                                 <th>District</th>
                                 <th>Zone</th>
-                                <th>NID</th>
                                 <th>Status</th>
                                 <th>Every_Type_Action</th>
                             </tr>
@@ -113,10 +111,8 @@
                                         <td>{{$Participate->participate_religion}}</td>
                                         <td>{{$Participate->participate_gender}}</td>
                                         <td>{{$Participate->participate_occupation}}</td>
-                                        <td>{{$Participate->participate_join_date}}</td>
                                         <td>{{$Participate->participate_district}}</td>
                                         <td>{{$Participate->participate_zone}}</td>
-                                        <td>{{$Participate->participate_nid}}</td>
                                         <td>
                                             @if($Participate->participate_status == 1)
                                                 <span class="label label-success">
@@ -157,7 +153,7 @@
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="14">No Data available</td>
+                                    <td colspan="12">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>

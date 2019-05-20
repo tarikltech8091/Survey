@@ -374,7 +374,7 @@ Route::group(['middleware' => ['admin_auth']], function () {
       Route::get('/question/answer/delete/id-{id}',array('as'=>'Question Answer Delete' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@Delete'));
 
       #Campaign Participate Countdown
-      Route::get('/admin/campaign/participate/countdown',array('as'=>'Admin Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@getAllContentCountdown'));
+      Route::get('/admin/campaign/participate/countdown',array('as'=>'Campaign Survey Countdown' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@getAllContentCountdown'));
 
       #Campaign Answer Question
       Route::get('/admin/campaign/participate/question-{question_id}',array('as'=>'Admin Campaign Participate Question' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@getAllSingleQuestionAnswer'));
@@ -391,20 +391,6 @@ Route::group(['middleware' => ['admin_auth']], function () {
       Route::post('/participate/question/answer/save/{participate_mobile}/{campaign_id}',array('as'=>'Participate Question Answer Store' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ParticipateQuestionAnswerStore'));
 
 
-
-
-
-
- 
-      /*################
-      ## Reports
-      #################*/
-
-      /*#Report Cashflow
-      Route::get('/reports/cash-flow',array('as'=>'Reports of Cash Flow', 'desc'=>'view & detail', 'uses'=>'ReportController@ReportCahsFlowPage'));
-
-      #Report Cashflow 
-      Route::get('/reports/cash-flow/ledger',array('as'=>'Reports of Cash Flow', 'desc'=>'ledger & detail', 'uses'=>'ReportController@ReportCahsFlowLedgerPage'));*/
 
 
 });

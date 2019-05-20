@@ -55,8 +55,6 @@
                                         <form role="form" class="form-horizontal" action="{{ url('/surveyer/question/answer/save/'.$campaign_participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_position) }}" id="question_answer" method="post" role="form" enctype="multipart/form-data">
                                         @endif
 
-
-
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                             <input type="hidden" class="form-control" name="answer_surveyer_id" value="{{$surveyer_id}}">
@@ -64,6 +62,7 @@
                                             <input type="hidden" class="form-control" name="answer_question_id" value="{{isset($question_id)?$question_id:''}}">
                                             <input type="hidden" class="form-control" name="answer_question_position" value="{{isset($question_position)?$question_position:''}}">
                                             <input type="hidden" class="form-control" name="campaign_participate_mobile" value="{{isset($campaign_participate_mobile)?$campaign_participate_mobile:''}}">
+                                            <input type="hidden" class="form-control" name="participate_prize_amount" value="{{isset($select_campaign->participate_prize_amount)?$select_campaign->participate_prize_amount:''}}">
 
 
                                             @if(isset($select_question) && ($select_question->question_position) == 1)
