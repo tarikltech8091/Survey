@@ -1,3 +1,14 @@
+
+##############################
+# IDE PhpStorm
+#############################
+/.idea
+
+
+##############################
+# Laravel
+#############################
+
 /node_modules
 /public/hot
 /public/storage
@@ -9,3 +20,19 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+/public/images/
+/public/videos/
+/public/hls/
+/public/audio/
+/storage/xml_dumps/*
+/storage/errorlog
+/storage/listenerlog
+/storage/systemlog
+/storage/apilog
+/storage/eventlog
+/storage
+composer.lock
+npm-debug.log
+composer.phar
+*.log
