@@ -382,14 +382,11 @@ Route::group(['middleware' => ['admin_auth']], function () {
 
 
 
-
-
       #ParticipateQuestionAnswer
       Route::get('/participate/question/answer/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'Participate Question Answer' , 'desc'=>'entry & Edit', 'uses' =>'QuestionAnswerController@ParticipateQuestionAnswer'));
       
       #ParticipateQuestionAnswerStore
       Route::post('/participate/question/answer/save/{participate_mobile}/{campaign_id}',array('as'=>'Participate Question Answer Store' , 'desc'=>'entry & edit', 'uses' =>'QuestionAnswerController@ParticipateQuestionAnswerStore'));
-
 
 
 

@@ -34,6 +34,7 @@ class PortalController extends Controller
         $data['all_district']=\App\Common::AllDistrict();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
+
         return view('portal.campaign.registration',$data);
     }
 
@@ -116,7 +117,20 @@ class PortalController extends Controller
                     );
 
 
-                    $registration_data=array(
+                    $cookie_name = 'mobile';
+
+                    // \Cookie::queue(\Cookie::forget($cookie_name));
+                    // \Cookie::forget($cookie_name);
+
+                    if(\Cookie::has($cookie_name)){
+                        $cookie_value = \Cookie::get($cookie_name);
+                    }else{
+                        \Cookie::queue($cookie_name, $data['participate_mobile'], 144000); //24 hours
+                    }
+
+
+
+                    /*$registration_data=array(
                         'name' => ucwords($participate_name),
                         'name_slug' => $participate_name_slug,
                         'user_type' => 'participate',
@@ -133,7 +147,7 @@ class PortalController extends Controller
                         'updated_at' => $now,
                     );
 
-                    $user_insertOrUpdate = \DB::table('users')->insert($registration_data);
+                    $user_insertOrUpdate = \DB::table('users')->insert($registration_data);*/
 
                     // $user_insertOrUpdate = \App\User::updateOrCreate(
                     //     [
@@ -142,7 +156,8 @@ class PortalController extends Controller
                     //     $registration_data
                     // );
 
-                    if(!$participate_insertOrUpdate || !$user_insertOrUpdate){
+                    // if(!$participate_insertOrUpdate || !$user_insertOrUpdate){
+                    if(!$participate_insertOrUpdate){
                         $error=1;
                     }
 
@@ -590,8 +605,8 @@ class PortalController extends Controller
                     $question_answer_data['answer_campaign_id']=$campaign_id;
                     $question_answer_data['answer_question_id']=$question_id;
                     $question_answer_data['answer_participate_mobile']=$request->input('participate_mobile');
-                    // $question_answer_data['question_answer_type']=$request->input('question_answer_type');
-                    $question_answer_data['question_answer_type']='easy';
+                    $question_answer_data['question_answer_type']=$request->input('question_answer_type');
+                    // $question_answer_data['question_answer_type']='easy';
                     $question_answer_data['question_answer_title']=$request->input('question_answer_title');
                     $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
                     $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
@@ -609,6 +624,20 @@ class PortalController extends Controller
                         $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->where('id',$question_answer_info->id)->update($question_answer_data);
 
                     }else{
+
+
+                        $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->first();
+
+                        if(!empty($participate_info)){
+
+                            $participate_points=($participate_info->participate_total_earn_points)+($select_question->question_points);
+
+                            $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->update(array( 'participate_total_earn_points' => $participate_points));
+
+                            if(!$participate_point_update){
+                                $error=1;
+                            }
+                        }
 
                         $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->insert($question_answer_data);
 
@@ -750,6 +779,20 @@ class PortalController extends Controller
 
                         }else{
 
+                            $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$participate_mobile)->first();
+
+                            if(!empty($participate_info)){
+
+                                $participate_points=($participate_info->participate_total_earn_points)+($select_question->question_points);
+
+                                $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$participate_mobile)->update(array( 'participate_total_earn_points' => $participate_points));
+
+                                if(!$participate_point_update){
+                                    $error=1;
+                                }
+                            }
+
+
                             $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->insert($question_answer_data);
 
                         }
@@ -826,74 +869,6 @@ class PortalController extends Controller
 
     }
 
-
-    /********************************************
-    ##  Edit View
-     *********************************************/
-    public function Edit($id)
-    {
-        $data['edit'] = \DB::table('question_tbl')->where('id', $id)->first();
-        $data['all_zone']=\App\Zone::where('zone_status',1)->get();
-        $data['all_campaign'] = \DB::table('campaign_tbl')->where('campaign_status','1')->orderby('id','desc')->get();
-        $data['page_title'] = $this->page_title;
-        $data['page_desc'] = $this->page_desc;
-        return view('pages.question-answer.edit',$data);
-    }
-
-    /********************************************
-    ##  Update
-     *********************************************/
-    public function Update(Request $request, $id)
-    {
-        $v = \Validator::make($request->all(), [
-            'question_title' => 'required',
-            'question_type' => 'required',
-            'question_campaign_name' => 'required',
-            'question_campaign_id' => 'required',
-            'question_position' => 'required',
-            'question_special' => 'required',
-            'question_option_1' => 'required',
-            'question_option_2' => 'required',
-            'question_option_3' => 'required',
-            'question_points' => 'required',
-        ]);
-
-        if($v->passes()){
-
-            try
-            {
-
-                $question_data= \DB::table('question_tbl')->where('id', $id)->first();
-
-                $data['question_title']=$request->input('question_title');
-                $data['question_type']=$request->input('question_type');
-                $data['question_campaign_name']=$request->input('question_campaign_name');
-                $data['question_campaign_id']=$request->input('question_campaign_id');
-                $data['question_position']=$request->input('question_position');
-                $data['question_special']=$request->input('question_special');
-                $data['question_option_1']=$request->input('question_option_1');
-                $data['question_option_2']=$request->input('question_option_2');
-                $data['question_option_3']=$request->input('question_option_3');
-                $data['question_option_4']=$request->input('question_option_4');
-                $data['question_option_new']=$request->input('question_option_new');
-                $data['question_points']=$request->input('question_points');
-                // $data['question_published_date']='';
-                $data['question_updated_by'] = \Auth::user()->id;
-
-                $update=\DB::table('question_tbl')->where('id', $id)->update($data);
-
-                // \App\System::EventLogWrite('update,question_tbl',json_encode($data));
-
-                return redirect()->back()->with('message','Content Updated Successfully !!');
-
-            }catch (\Exception $e){
-
-                $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
-                return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
-            }
-        }else return redirect()->back()->withErrors($v)->withInput();
-    }
 
 
 }

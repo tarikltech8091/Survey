@@ -103,8 +103,7 @@
 
                                         @if(!empty($all_surveyer))
                                         @foreach($all_surveyer as $key =>$list)
-                                            <option {{($edit->earn_paid_surveyer_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->surveyer_name}}</option>
-                                            <input type="hidden" class="form-control" name="earn_paid_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                            <option {{($edit->earn_paid_surveyer_id == ($list->id)) ? 'selected' : ''}} value="{{$list->id}}">{{$list->surveyer_name}}</option>
                                         @endforeach
                                         @endif
 
@@ -124,14 +123,25 @@
 
                                         @if(!empty($all_participate))
                                         @foreach($all_participate as $key =>$value)
-                                            <option {{($edit->earn_paid_participate_id == $list->id) ? 'selected' : ''}} value="{{$value->id}}">{{$value->participate_name}}</option>
-                                            <input type="hidden" class="form-control" name="earn_paid_participate_mobile" value="{{$value->participate_mobile}}">
+                                            <option {{($edit->earn_paid_participate_id == $value->id) ? 'selected' : ''}} value="{{$value->id}}">{{$value->participate_name}}</option>
                                         @endforeach
                                         @endif
 
                                     </select>
                                 </div>
                             </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <strong> Participate Paid Points</strong>
+                                    <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" value="{{isset($edit->participate_paid_points)? $edit->participate_paid_points:''}}" name="participate_paid_points">
+                                </div>
+                            </div>
+
                         @endif
 
 

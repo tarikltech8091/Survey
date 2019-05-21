@@ -93,16 +93,6 @@ class EarnController extends Controller
             // try{
 
 
-                /*$data['earn_player_id']=$request->input('earn_player_id');
-                $data['earn_player_campaign_id']=$request->input('earn_player_campaign_id');
-                $data['earn_player_campaign_name']=$request->input('earn_player_campaign_name');
-                $data['earn_player_question_id']=$request->input('earn_player_question_id');
-                $data['earn_player_mobile_num']=$request->input('earn_player_mobile_num');
-                $data['earn_date']=$request->input('earn_date');
-                $data['earn_amount']=$request->input('earn_amount');
-                $data['use_life']=$request->input('use_life');
-                $data['earn_status']=0;*/
-
 
 
                 $data['earn_player_id']=1;

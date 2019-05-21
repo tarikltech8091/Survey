@@ -130,12 +130,30 @@ class EarnPaidController extends Controller
                         $earn_paid_surveyer_id = $request->input('earn_paid_surveyer_id');
                         $earn_paid_participate_id = $request->input('earn_paid_participate_id');
 
+                        $surveyer_info=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->first();
+
+                        if(!empty($surveyer_info)){
+                           $earn_paid_surveyer_mobile= $surveyer_info->surveyer_mobile;
+                        }else{
+                            $earn_paid_surveyer_mobile=NULL;
+                        }
+
+                        $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
+                        if(!empty($participater_info)){
+                           $earn_paid_participate_mobile= $participater_info->participate_mobile;
+                        }else{
+                            $earn_paid_participate_mobile=NULL;
+                        }
+
+
+
                         $earn_paid_user_type = $request->input('earn_paid_user_type');
                         $data['earn_paid_user_type']=$request->input('earn_paid_user_type');
                         $data['earn_paid_surveyer_id']=$request->input('earn_paid_surveyer_id');
-                        $data['earn_paid_surveyer_mobile']=$request->input('earn_paid_surveyer_mobile');
+                        $data['earn_paid_surveyer_mobile']=$earn_paid_surveyer_mobile;
                         $data['earn_paid_participate_id']=$request->input('earn_paid_participate_id');
-                        $data['earn_paid_participate_mobile']=$request->input('earn_paid_participate_mobile');
+                        $data['earn_paid_participate_mobile']=$earn_paid_participate_mobile;
+                        $data['participate_paid_points']=$request->input('participate_paid_points');
                         $data['earn_paid_date']=$request->input('earn_paid_date');
                         $data['earn_paid_payment_type']=$request->input('earn_paid_payment_type');
                         $data['earn_paid_amount']=$request->input('earn_paid_amount');
@@ -147,9 +165,9 @@ class EarnPaidController extends Controller
 
                         $insert=\DB::table('earn_paid_tbl')->insert($data);
 
+
                         if($earn_paid_user_type == 'surveyer'){
 
-                            $surveyer_info=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->first();
                             $surveyer_data['surveyer_total_paid']=($surveyer_info->surveyer_total_paid) + ($data['earn_paid_amount']);
                             $surveyer_data['surveyer_updated_by'] = \Auth::user()->id;
 
@@ -161,8 +179,10 @@ class EarnPaidController extends Controller
 
                         }elseif($earn_paid_user_type == 'participate'){
 
-                            $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
-                            $participate_data['participate_total_paid_earn']=($participater_info->participate_total_paid_earn) + ($data['earn_paid_amount']) ;
+                            $participate_data['participate_total_paid_earn']=($participater_info->participate_total_paid_earn) + ($data['earn_paid_amount']);
+
+                            $participate_data['participate_total_paid_points']=($participater_info->participate_total_paid_points) + ($data['participate_paid_points']);
+
                             $participate_data['participate_updated_by'] = \Auth::user()->id;
 
                             $participate_update=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->update($participate_data);
@@ -174,10 +194,15 @@ class EarnPaidController extends Controller
                         }
 
 
+
                         if(!isset($error)){
-                            /*\App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
-                            \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
-                            \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                               
+                            if($current_data->earn_paid_user_type == 'surveyer'){
+                                \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));
+                            }elseif($current_data->earn_paid_user_type == 'participate'){
+                                \App\System::EventLogWrite('update,participate_tbl',json_encode($participate_data));
+                            }
+                            \App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
                             \DB::commit();
                             
                         }else{
@@ -278,12 +303,28 @@ class EarnPaidController extends Controller
 
                     $earn_paid_surveyer_id = $request->input('earn_paid_surveyer_id');
                     $earn_paid_participate_id = $request->input('earn_paid_participate_id');
+
+                        $surveyer_info=\DB::table('surveyer_tbl')->where('id', $earn_paid_surveyer_id)->first();
+                        if(!empty($surveyer_info)){
+                           $earn_paid_surveyer_mobile= $surveyer_info->surveyer_mobile;
+                        }else{
+                            $earn_paid_surveyer_mobile=NULL;
+                        }
+
+                        $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
+                        if(!empty($participater_info)){
+                           $earn_paid_participate_mobile= $participater_info->participate_mobile;
+                        }else{
+                            $earn_paid_participate_mobile=NULL;
+                        }
+
                     $earn_paid_user_type = $request->input('earn_paid_user_type');
                     $data['earn_paid_user_type']=$request->input('earn_paid_user_type');
                     $data['earn_paid_surveyer_id']=$request->input('earn_paid_surveyer_id');
-                    $data['earn_paid_surveyer_mobile']=$request->input('earn_paid_surveyer_mobile');
+                    $data['earn_paid_surveyer_mobile']=$earn_paid_surveyer_mobile;
                     $data['earn_paid_participate_id']=$request->input('earn_paid_participate_id');
-                    $data['earn_paid_participate_mobile']=$request->input('earn_paid_participate_mobile');
+                    $data['earn_paid_participate_mobile']=$earn_paid_participate_mobile;
+                    $data['participate_paid_points']=$request->input('participate_paid_points');
                     $data['earn_paid_date']=$request->input('earn_paid_date');
                     $data['earn_paid_payment_type']=$request->input('earn_paid_payment_type');
                     $data['earn_paid_amount']=$request->input('earn_paid_amount');
@@ -309,7 +350,8 @@ class EarnPaidController extends Controller
                     }elseif($earn_paid_user_type == 'participate'){
 
                         $participater_info=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->first();
-                        $participate_data['participate_total_paid_earn']=($requester_info->participate_total_paid_earn) + ($data['earn_paid_amount']) - ($current_data->earn_paid_amount) ;
+                        $participate_data['participate_total_paid_earn']=($participater_info->participate_total_paid_earn) + ($data['earn_paid_amount']) - ($current_data->earn_paid_amount) ;
+                        $participate_data['participate_total_paid_points'] = ($participater_info->participate_total_paid_points) + ($data['participate_paid_points']) - ($current_data->participate_paid_points);
                         $participate_data['participate_updated_by'] = \Auth::user()->id;
 
                         $participate_update=\DB::table('participate_tbl')->where('id', $earn_paid_participate_id)->update($participate_data);
@@ -322,9 +364,13 @@ class EarnPaidController extends Controller
 
 
                     if(!isset($error)){
-                        /*\App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
-                        \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
-                        \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+                                            
+                        if($current_data->earn_paid_user_type == 'surveyer'){
+                            \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));
+                        }elseif($current_data->earn_paid_user_type == 'participate'){
+                            \App\System::EventLogWrite('update,participate_tbl',json_encode($participate_data));
+                        }
+                        \App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
                         \DB::commit();
                         
                     }else{
@@ -374,10 +420,11 @@ class EarnPaidController extends Controller
                         $error=1;
                     }
 
-                }elseif($earn_paid_user_type == 'participate'){
+                }elseif($current_data->earn_paid_user_type == 'participate'){
 
                     $participater_info=\DB::table('participate_tbl')->where('id', $current_data->earn_paid_participate_id)->first();
-                    $participate_data['participate_total_paid_earn']=($requester_info->participate_total_paid_earn) - ($current_data->earn_paid_amount) ;
+                    $participate_data['participate_total_paid_earn']=($participater_info->participate_total_paid_earn) - ($current_data->earn_paid_amount) ;
+                    $participate_data['participate_total_paid_points']=($participater_info->participate_total_paid_points) - ($current_data->participate_paid_points) ;
                     $participate_data['participate_updated_by'] = \Auth::user()->id;
 
                     $participate_update=\DB::table('participate_tbl')->where('id', $current_data->earn_paid_participate_id)->update($participate_data);
@@ -390,9 +437,14 @@ class EarnPaidController extends Controller
 
 
                 if(!isset($error)){
-                    /*\App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
-                    \App\System::EventLogWrite('update,requester_tbl',json_encode($requester_data));
-                    \App\System::EventLogWrite('delete,campaign_tbl',json_encode($campaign_data));*/
+
+                    if($current_data->earn_paid_user_type == 'surveyer'){
+                        \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));
+                    }elseif($current_data->earn_paid_user_type == 'participate'){
+                        \App\System::EventLogWrite('update,participate_tbl',json_encode($participate_data));
+                    }
+
+                    \App\System::EventLogWrite('delete,earn_paid_tbl',json_encode($delete));
                     \DB::commit();
                     
                 }else{
@@ -408,7 +460,7 @@ class EarnPaidController extends Controller
         }catch (\Exception $e){
 
             $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-            // \App\System::ErrorLogWrite($message);
+            \App\System::ErrorLogWrite($message);
             echo 'Content can not deleted successfully.';
         }
 

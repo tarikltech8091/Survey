@@ -93,6 +93,7 @@
                                             <th>Participate Mobile</th>
                                             <th>Paid Date</th>
                                             <th>Payment Type</th>
+                                            <th>Payment Points</th>
                                             <th>Payment Amount</th>
                                             <th>Transaction Id</th>
                                             <th>Description</th>
@@ -111,6 +112,7 @@
                                                     <td>{{ $list->earn_paid_participate_mobile }}</td>
                                                     <td>{{ $list->earn_paid_date }}</td>
                                                     <td>{{ $list->earn_paid_payment_type }}</td>
+                                                    <td>{{ $list->participate_paid_points }}</td>
                                                     <td>{{ $list->earn_paid_amount }}</td>
                                                     <td>{{ $list->payment_transaction_id }}</td>
                                                     <td>{{ str_limit($list->earn_paid_description, 15)  }}</td>
@@ -154,7 +156,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="11" class="text-center">
+                                                <td colspan="12" class="text-center">
                                                     <div class="alert alert-success" role="alert">
                                                         No Data Available !
                                                     </div>

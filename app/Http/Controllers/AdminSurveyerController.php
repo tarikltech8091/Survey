@@ -574,6 +574,7 @@ class AdminSurveyerController extends Controller
                         $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;
 
 
+
                         $participate_insertOrUpdate = \App\Participate::updateOrCreate(
                             [
                                 'participate_mobile' => $data['participate_mobile'],
@@ -595,14 +596,14 @@ class AdminSurveyerController extends Controller
                         }
 
 
-                        // $campaign_participate_insert = \App\CampaignParticipate::updateOrCreate (
-                        //     [
-                        //         'participate_campaign_id' => $campaign_id,
-                        //         'campaign_participate_mobile' => $data['participate_mobile'],
+                        /*$campaign_participate_insert = \App\CampaignParticipate::updateOrCreate (
+                            [
+                                'participate_campaign_id' => $campaign_id,
+                                'campaign_participate_mobile' => $data['participate_mobile'],
 
-                        //     ],
-                        //     $campaign_participate_data
-                        // );
+                            ],
+                            $campaign_participate_data
+                        );*/
 
                     }
 
@@ -629,6 +630,19 @@ class AdminSurveyerController extends Controller
                         $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->where('id',$question_answer_info->id)->update($question_answer_data);
 
                     }else{
+
+                        $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->first();
+
+                        if(!empty($participate_info)){
+
+                            $participate_points=($participate_info->participate_total_earn_points)+($select_question->question_points);
+
+                            $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->update(array( 'participate_total_earn_points' => $participate_points));
+
+                            if(!$participate_point_update){
+                                $error=1;
+                            }
+                        }
 
                         $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->insert($question_answer_data);
 
@@ -762,6 +776,20 @@ class AdminSurveyerController extends Controller
                             $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->where('id',$question_answer_info->id)->update($question_answer_data);
 
                         }else{
+
+
+                            $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$participate_mobile)->first();
+
+                            if(!empty($participate_info)){
+
+                                $participate_points=($participate_info->participate_total_earn_points)+($select_question->question_points);
+
+                                $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$participate_mobile)->update(array( 'participate_total_earn_points' => $participate_points));
+
+                                if(!$participate_point_update){
+                                    $error=1;
+                                }
+                            }
 
                             $question_answer_insertOrUpdate=\DB::table('question_answer_tbl')->insert($question_answer_data);
 

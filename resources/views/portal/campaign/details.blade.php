@@ -214,7 +214,7 @@
                                    
                                     <div class="row" style="margin: 0 3px">
                                         <div class="input-field col s12">
-                                            <strong>Question <span class="symbol required" aria-required="true"></span> : {{isset($select_question)? $select_question->question_title :''}} </strong>
+                                            <strong>Question {{isset($select_question)? $select_question->question_position :''}}<span class="symbol required" aria-required="true"></span> : {{isset($select_question)? $select_question->question_title :''}} </strong>
                                             <input type="hidden" name="question_answer_title" value="{{$select_question->question_title}}">
                                         </div>
                                     </div>
