@@ -129,7 +129,6 @@ class PortalController extends Controller
                     }
 
 
-
                     /*$registration_data=array(
                         'name' => ucwords($participate_name),
                         'name_slug' => $participate_name_slug,
