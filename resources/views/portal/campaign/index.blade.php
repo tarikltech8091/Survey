@@ -3,7 +3,7 @@
     <div class="common_background pd-10">
         <div class="details_common_background2" style="padding-bottom: 0px !important;">
 
-            <div class="col s12" style="color: red;">
+            <div class="col s12" style="color: green;">
 
                 @if($errors->count() > 0 )
                     <div class="alert alert-danger btn-squared">
@@ -37,7 +37,8 @@
 
                     <div style="border: 1px #cccccc solid; margin: 5px; border-radius: 10px; background-color:#ffffff; ">
                         <div class="row" style="margin-bottom: 0px;">
-                            <a href="{{url('/campaign/question/answer/'.$campaign->id.'/1')}}">
+                            <!-- <a href="{{url('/campaign/question/answer/'.$campaign->id.'/1')}}"> -->
+                            <a href="{{url('/participate/answer/'.$participate_mobile.'/'.$campaign->id.'/1')}}">
                                 <div class="col s1 m1 l1 xl1">
                                     &nbsp;
                                 </div>

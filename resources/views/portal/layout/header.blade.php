@@ -4,17 +4,7 @@
         <div class="nav-wrapper container center-align" style="width: 97%">
             <a id="logo-container" href="{{ url('/') }}" class="fsize center-align common_color">
                 @if(isset($page_title) && !empty($page_title))
-
-                    @if(($page_title == 'নাজাত'))
-                        <img src="{{ asset('portal/img/Nazat-Banglalink-Logo.png') }}" height="50px" width="100px" alt="Najat">
-                    @else
-                        {{$page_title}}
-                    @endif
-
-                @else
-
-                    নাজাত
-
+                    Survey
                 @endif
             </a>
 

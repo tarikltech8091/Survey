@@ -86,6 +86,25 @@
       Route::post('/campaign/question/answer/save/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'Question Answer Save' , 'desc'=>'entry & edit', 'uses' =>'PortalController@QuestionAnswerStore'));
 
 
+
+
+
+
+      #ParticipateQuestionAnswer
+      Route::get('/participate/answer/{participate_mobile}/{campaign_id}/{question_position}',array('as'=>'Participate Answer' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateQuestionAnswer'));
+      
+      #ParticipateQuestionAnswerStore
+      Route::post('/participate/answer/save/{participate_mobile}/{campaign_id}',array('as'=>'Participate Answer Store' , 'desc'=>'entry & edit', 'uses' =>'PortalController@ParticipateQuestionAnswerStore'));
+
+
+
+
+
+
+
+
+
+
 /*
 #####################
 ## Admins Module

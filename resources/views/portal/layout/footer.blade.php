@@ -41,7 +41,7 @@
             <li class="tab">
                 <a  class="{{(isset($page_title) && $page_title == 'login')? 'active' :'' }}" href="{{ url('/participate/login') }}" target="_self" >
                     <img src="{{ asset('portal/img/icon/settings.png') }}" style="margin-top: 3px" height="28px" width="28px">
-                    <p class="footer_menu">Login</p>
+                    <p class="footer_menu">Profile</p>
                 </a>
             </li>
 

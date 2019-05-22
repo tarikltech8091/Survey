@@ -85,8 +85,62 @@
 
                             @else
 
-                                <h5>Name   : {{isset(\Auth::user()->name)? \Auth::user()->name :'' }}</h5>
-                                <h5>Mobile : {{isset(\Auth::user()->user_mobile)? \Auth::user()->user_mobile :'' }}</h5>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>Name </th>
+                                            <td>{{isset($participate_info->participate_name)? $participate_info->participate_name :'' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Mobile </th>
+                                            <td>{{isset($participate_info->participate_mobile)? $participate_info->participate_mobile :'' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Email </th>
+                                            <td>{{isset($participate_info->participate_email)? $participate_info->participate_email :'' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Age </th>
+                                            <td>{{isset($participate_info->participate_age)? $participate_info->participate_age :'' }}</td>
+                                        </tr>    
+
+                                        <tr>
+                                            <th>District </th>
+                                            <td>{{isset($participate_info->participate_district)? $participate_info->participate_district :'' }}</td>
+                                        </tr>  
+
+
+                                        <tr>
+                                            <th>Post Code </th>
+                                            <td>{{isset($participate_info->participate_post_code)? $participate_info->participate_post_code :'' }}</td>
+                                        </tr> 
+
+
+                                        <tr>
+                                            <th>NID </th>
+                                            <td>{{isset($participate_info->participate_nid)? $participate_info->participate_nid :'' }}</td>
+                                        </tr>     
+
+                                        <tr>
+                                            <th>Gender </th>
+                                            <td>{{isset($participate_info->participate_gender)? $participate_info->participate_gender :'' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Religion </th>
+                                            <td>{{isset($participate_info->participate_religion)? $participate_info->participate_religion :'' }}</td>
+                                        </tr>    
+
+                                        <tr>
+                                            <th>Occupation </th>
+                                            <td>{{isset($participate_info->participate_occupation)? $participate_info->participate_occupation :'' }}</td>
+                                        </tr>                                
+
+
+                                    </tbody>
+                                </table>
 
                             @endif
 
