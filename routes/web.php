@@ -25,7 +25,6 @@
 	// Route::get('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@LoginPage'));
 	Route::post('/login',array('as'=>'LogIn' , 'uses' =>'SystemController@AuthenticationCheck'));
 
-      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
 	#Admin logut
 	Route::get('/logout/{name_slug}',array('as'=>'Logout' , 'uses' =>'SystemController@Logout'));
@@ -60,6 +59,8 @@
       Route::get('/participate/registration',array('as'=>'Participate Registration' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateRegistration'));
 
       Route::post('/participate/registration/save',array('as'=>'Registration Confirm' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@RegistrationConfirm'));
+
+      Route::get('/participate/profile',array('as'=>'Participate Profile' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateProfile'));
 
       Route::get('/participate/login',array('as'=>'Participate Login' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateLogin'));
 
@@ -112,6 +113,7 @@
 */
 Route::group(['middleware' => ['admin_auth']], function () {
 
+      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
@@ -420,6 +422,9 @@ Route::group(['middleware' => ['admin_auth']], function () {
 */
 Route::group(['middleware' => ['requester_auth']], function () {
 
+      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
+      
+
       Route::get('/requester/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
 
       Route::post('requester/profile/update',array('as'=>'Profile Update' , 'uses' =>'AdminRequesterController@ProfileUpdate'));
@@ -490,6 +495,7 @@ Route::group(['middleware' => ['requester_auth']], function () {
 */
 Route::group(['middleware' => ['surveyer_auth']], function () {
 
+      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
       Route::get('/surveyer/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminSurveyerController@Profile'));
 

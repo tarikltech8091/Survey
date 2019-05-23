@@ -66,8 +66,6 @@
                                                 @if(!empty($all_campaign))
                                                 @foreach($all_campaign as $key =>$list)
                                                     <option value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                                    <input type="hidden" class="form-control" name="payment_campaign_name" value="{{$list->campaign_name}}">
-                                                    <input type="hidden" class="form-control" name="payment_requester_id" value="{{$list->campaign_requester_id}}">
                                                 @endforeach
                                                 @endif
 
@@ -95,9 +93,9 @@
                                             <select id="form-field-select-3" class="form-control search-select"
                                                     name="payment_type">
                                                 <option value="">&nbsp;Please Select a Type</option>
+                                                    <option value="cash">Cash</option>
                                                     <option value="bkash">BKash</option>
                                                     <option value="rocket">Rocket</option>
-                                                    <option value="cash">Cash</option>
                                             </select>
                                         </div>
                                     </div>

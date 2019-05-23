@@ -117,7 +117,6 @@ class QuestionController extends Controller
 
                 $data['question_title']=$request->input('question_title');
                 $data['question_type']=$request->input('question_type');
-                // $data['question_campaign_name']=$request->input('question_campaign_name');
                 $data['question_campaign_name']=$question_campaign_name;
                 $data['question_campaign_id']=$request->input('question_campaign_id');
                 $data['question_position']=$request->input('question_position');
@@ -135,7 +134,6 @@ class QuestionController extends Controller
                 $data['question_updated_by'] = \Auth::user()->id;
                
 
-                // $insert=\DB::table('question_tbl')->insert($data);
 
                 $question_insert = \App\Question::firstOrCreate(
                     [
@@ -146,7 +144,7 @@ class QuestionController extends Controller
 
                 if($question_insert->wasRecentlyCreated){
 
-                    // \App\System::EventLogWrite('insert,question_tbl',json_encode($data));
+                    \App\System::EventLogWrite('insert,question_tbl',json_encode($data));
                     return redirect()->back()->with('message','Question Created Successfully');
 
                 }else return redirect()->back()->with('errormessage','Blog already created.');
@@ -180,10 +178,10 @@ class QuestionController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,question_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,question_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,question_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,question_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this questions. Please upload and publish any content to publish this content.';
@@ -240,7 +238,6 @@ class QuestionController extends Controller
 
                 $data['question_title']=$request->input('question_title');
                 $data['question_type']=$request->input('question_type');
-                // $data['question_campaign_name']=$request->input('question_campaign_name');
                 $data['question_campaign_name']=$question_campaign_name;
                 $data['question_campaign_id']=$request->input('question_campaign_id');
                 $data['question_position']=$request->input('question_position');
@@ -256,14 +253,14 @@ class QuestionController extends Controller
 
                 $update=\DB::table('question_tbl')->where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,question_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,question_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -278,10 +275,10 @@ class QuestionController extends Controller
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

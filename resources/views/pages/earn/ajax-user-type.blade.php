@@ -13,7 +13,7 @@
 
                     @if(!empty($all_surveyer))
                     @foreach($all_surveyer as $key =>$list)
-                        <option value="{{$list->id}}">{{$list->surveyer_name}}</option>
+                        <option value="{{$list->id}}">{{$list->surveyer_name}}  {{$list->surveyer_mobile}}</option>
                     @endforeach
                     @endif
 
@@ -35,7 +35,7 @@
 
                     @if(!empty($all_participate))
                     @foreach($all_participate as $key =>$value)
-                        <option value="{{$value->id}}">{{$value->participate_name}}</option>
+                        <option value="{{$value->id}}">{{$value->participate_name}}  {{$value->participate_mobile}}</option>
                     @endforeach
                     @endif
 

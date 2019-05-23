@@ -81,7 +81,6 @@ class ZoneController extends Controller
             'zone_name' => 'required',
             'zone_zip_code' => 'required',
             'zone_district' => 'required',
-            // 'zone_upzilla' => 'required',
             // 'zone_address_details' => 'required'
         ]);
 
@@ -100,7 +99,7 @@ class ZoneController extends Controller
                 $data['zone_name_slug']=$zone_name_slug;
                 $data['zone_zip_code']=$request->input('zone_zip_code');
                 $data['zone_district']=$request->input('zone_district');
-                $data['zone_upzilla']=$request->input('zone_upzilla');
+                // $data['zone_upzilla']=$request->input('zone_upzilla');
                 $data['zone_address_details']=$request->input('zone_address_details');
                 $data['zone_status']=0;
                 $data['zone_created_by']=\Auth::user()->id;
@@ -146,10 +145,10 @@ class ZoneController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,zone_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,zone_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,zone_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,zone_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this zone. Please upload and publish any content to publish this content.';
@@ -207,7 +206,7 @@ class ZoneController extends Controller
 
                     $update=\DB::table('zone_tbl')->where('id', $id)->update($data);
 
-                    // \App\System::EventLogWrite('update,zone_tbl',json_encode($data));
+                    \App\System::EventLogWrite('update,zone_tbl',json_encode($data));
 
                     return redirect()->back()->with('message','Content Updated Successfully !!');
                     
@@ -216,7 +215,7 @@ class ZoneController extends Controller
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -231,10 +230,10 @@ class ZoneController extends Controller
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,zone_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,zone_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,zone_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,zone_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

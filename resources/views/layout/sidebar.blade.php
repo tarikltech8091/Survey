@@ -270,7 +270,7 @@
 
 
 
-            <li class="{{(isset($page_title) && (strpos($page_title,'Participate')!== false )) ? 'active' : ''}}">
+            <!-- <li class="{{(isset($page_title) && (strpos($page_title,'Participate')!== false )) ? 'active' : ''}}">
                 <a href="javascript:void (0)">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                     <span class="title"> Participate </span><i class="icon-arrow"></i>
@@ -292,7 +292,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
 
 

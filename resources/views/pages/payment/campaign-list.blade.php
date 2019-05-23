@@ -93,7 +93,7 @@
                                                 <tr>
                                                     <td>{{($key+1+($perPage*$page))}}</td>
                                                     <td>{{ $list->payment_campaign_name }}</td>
-                                                    <td>{{ $list->payment_requester_id }}</td>
+                                                    <td>{{ $list->requester_mobile }}</td>
                                                     <td>{{ $list->payment_date }}</td>
                                                     <td>{{ $list->payment_type }}</td>
                                                     <td>{{ $list->payment_amount }}</td>
@@ -111,27 +111,27 @@
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                                 <li>
-                                                                    <a href="{{url('/campaign/payment/edit/id-'.$list->id)}}">
+                                                                    <a href="{{url('/campaign/payment/edit/id-'.$list->campaign_payment_id)}}">
                                                                         <i class="fa fa-pencil"></i> Edit
                                                                     </a>
                                                                 </li>
                                                                 <li>
                                                                     @if($list->payment_status == 1)
-                                                                        <a class="status-change" data-campaign-publish-status="0" data-campaign-id="{{ $list->id}}" title="Click for unpublish">
+                                                                        <a class="status-change" data-campaign-publish-status="0" data-campaign-id="{{ $list->campaign_payment_id}}" title="Click for unpublish">
                                                                             <i class="fa fa-lock"></i> Unpublish
                                                                         </a>
                                                                     @else
-                                                                        <a class="status-change " title="Click for publish" data-campaign-publish-status="1" data-campaign-id="{{ $list->id}}">
+                                                                        <a class="status-change " title="Click for publish" data-campaign-publish-status="1" data-campaign-id="{{ $list->campaign_payment_id}}">
                                                                             <i class="fa fa-unlock"></i> Publish
                                                                         </a>
                                                                     @endif
                                                                 </li>
                                                                 
-                                                                <!-- <li>
-                                                                    <a class="campaign_payment-delete" data-campaign-payment-id="{{$list->id}}">
+                                                                <li>
+                                                                    <a class="campaign_payment-delete" data-campaign-payment-id="{{$list->campaign_payment_id}}">
                                                                         <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                                     </a>
-                                                                </li> -->
+                                                                </li>
 
                                                             </ul>
                                                         </div>
@@ -241,11 +241,11 @@
 
 
             // campaign payment delete
-            /*$('.campaign_payment-delete').on('click', function (e) {
+            $('.campaign_payment-delete').on('click', function (e) {
                 e.preventDefault();
                 var id = $(this).data('campaign-payment-id');
                 bootbox.dialog({
-                    message: "Are you sure you want to delete this campaign ?",
+                    message: "Are you sure to delete this payment ?",
                     title: "<i class='glyphicon glyphicon-trash'></i> Delete !",
                     buttons: {
                         success: {
@@ -275,7 +275,12 @@
                         }
                     }
                 });
-            });*/
+            });
+
+
+
+
+
         })
     </script>
 @endsection

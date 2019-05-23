@@ -96,78 +96,91 @@ class RequesterController extends Controller
 
             try{
 
-                $success = \DB::transaction(function () use($request) {
+                $requester_mobile=$request->input('requester_mobile');
 
-                    $requester_profile_image='';
-                    $image_type='requester';
+                $requester_info =\App\Requester::where('requester_mobile',$requester_mobile)->first();
 
-                    $requester_name=$request->input('requester_name');
-                    $slug=explode(' ', strtolower($request->input('requester_name')));
-                    $requester_name_slug=implode('-', $slug);
-                    $data['requester_name_slug']=$requester_name_slug;
-
-                    if($request->file('requester_profile_image')!=null){
-                        #ImageUpload
-                        $image_wide = $request->file('requester_profile_image');
-                        $img_location_wide=$image_wide->getRealPath();
-                        $img_ext_wide=$image_wide->getClientOriginalExtension();
-                        $requester_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$requester_name);
-                    }
-
-                    $data['requester_name']=$request->input('requester_name');
-                    $data['requester_name_slug']=$requester_name_slug;
-                    $data['requester_email']=$request->input('requester_email');
-                    $data['requester_mobile']=$request->input('requester_mobile');
-                    $data['requester_join_date']=$request->input('requester_join_date');
-                    $data['requester_district']=$request->input('requester_district');
-                    $data['requester_post_code']=$request->input('requester_post_code');
-                    $data['requester_address']=$request->input('requester_address');
-                    $data['requester_nid']=$request->input('requester_nid');
-                    $data['requester_profile_image']=$requester_profile_image;
-                    $data['requester_status']=0;
-                    $data['requester_created_by']=\Auth::user()->id;
-                    $data['requester_updated_by']=\Auth::user()->id;
-
-                    $requester_insert=\App\Requester::insertGetId($data);
-
-                    /*$requester_insert = \App\Requester::firstOrCreate(
-                        [
-                            'requester_mobile' => $data['requester_mobile'],
-                        ],
-                        $data
-                    );*/
-
-                    $login_data['name']=ucwords($request->input('requester_name'));
-                    $login_data['name_slug']=$requester_name_slug;
-                    $login_data['user_type']='requester';
-                    $login_data['user_role']='requester';
-                    $login_data['email']=$request->input('requester_email');
-                    $login_data['user_mobile']=$request->input('requester_mobile');
-                    $login_data['user_profile_image']=$requester_profile_image;
-                    $login_data['requester_id']=$requester_insert;
-                    $login_data['login_status']='0';
-                    $login_data['status']='active';
-                    $login_data['password']=bcrypt($request->input('password'));
-
-                    $login_data_insert=\App\User::insertGetId($login_data);
+                if(empty($requester_info)){
 
 
-                    if(!$requester_insert || !$login_data_insert ){
-                        $error=1;
-                    }
+                    $success = \DB::transaction(function () use($request) {
 
-                    if(!isset($error)){
-                        \App\System::EventLogWrite('insert,requester_tbl',json_encode($data));
-                        \App\System::EventLogWrite('insert,users',json_encode($login_data));
-                        \DB::commit();
-                    }else{
-                        \DB::rollback();
-                        throw new Exception("Error Processing Request", 1);
-                    }
-                    
-                });
+                        $requester_profile_image='';
+                        $image_type='requester';
 
-                return redirect()->back()->with('message','requester Created Successfully');
+                        $requester_name=$request->input('requester_name');
+                        $slug=explode(' ', strtolower($request->input('requester_name')));
+                        $requester_name_slug=implode('-', $slug);
+                        $data['requester_name_slug']=$requester_name_slug;
+
+
+
+                        if($request->file('requester_profile_image')!=null){
+                            #ImageUpload
+                            $image_wide = $request->file('requester_profile_image');
+                            $img_location_wide=$image_wide->getRealPath();
+                            $img_ext_wide=$image_wide->getClientOriginalExtension();
+                            $requester_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$requester_name);
+                        }
+
+                        $data['requester_name']=$request->input('requester_name');
+                        $data['requester_name_slug']=$requester_name_slug;
+                        $data['requester_email']=$request->input('requester_email');
+                        $data['requester_mobile']=$request->input('requester_mobile');
+                        $data['requester_join_date']=$request->input('requester_join_date');
+                        $data['requester_district']=$request->input('requester_district');
+                        $data['requester_post_code']=$request->input('requester_post_code');
+                        $data['requester_address']=$request->input('requester_address');
+                        $data['requester_nid']=$request->input('requester_nid');
+                        $data['requester_profile_image']=$requester_profile_image;
+                        $data['requester_status']=0;
+                        $data['requester_created_by']=\Auth::user()->id;
+                        $data['requester_updated_by']=\Auth::user()->id;
+
+                        $requester_insert=\App\Requester::insertGetId($data);
+
+                        /*$requester_insert = \App\Requester::firstOrCreate(
+                            [
+                                'requester_mobile' => $data['requester_mobile'],
+                            ],
+                            $data
+                        );*/
+
+                        $login_data['name']=ucwords($request->input('requester_name'));
+                        $login_data['name_slug']=$requester_name_slug;
+                        $login_data['user_type']='requester';
+                        $login_data['user_role']='requester';
+                        $login_data['email']=$request->input('requester_email');
+                        $login_data['user_mobile']=$request->input('requester_mobile');
+                        $login_data['user_profile_image']=$requester_profile_image;
+                        $login_data['requester_id']=$requester_insert;
+                        $login_data['login_status']='0';
+                        $login_data['status']='active';
+                        $login_data['password']=bcrypt($request->input('password'));
+
+                        $login_data_insert=\App\User::insertGetId($login_data);
+
+
+                        if(!$requester_insert || !$login_data_insert ){
+                            $error=1;
+                        }
+
+                        if(!isset($error)){
+                            \App\System::EventLogWrite('insert,requester_tbl',json_encode($data));
+                            \App\System::EventLogWrite('insert,users',json_encode($login_data));
+                            \DB::commit();
+                        }else{
+                            \DB::rollback();
+                            throw new Exception("Error Processing Request", 1);
+                        }
+                        
+                    });
+
+                    return redirect()->back()->with('message','requester Created Successfully');
+
+                }else{
+                    return redirect()->back()->with('errormessage','Already you are registerd.');
+                }
 
 
             }catch (\Exception $e){
@@ -199,10 +212,10 @@ class RequesterController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,requester_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,requester_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,requester_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,requester_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this requester. Please upload and publish any content to publish this content.';
@@ -282,7 +295,7 @@ class RequesterController extends Controller
 
                     $update=\App\Requester::where('id', $id)->update($data);
 
-                    // \App\System::EventLogWrite('update,requester_tbl',json_encode($data));
+                    \App\System::EventLogWrite('update,requester_tbl',json_encode($data));
 
                     return redirect()->back()->with('message','Content Updated Successfully !!');
                     
@@ -291,7 +304,7 @@ class RequesterController extends Controller
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -304,10 +317,10 @@ class RequesterController extends Controller
     {
         $delete = \App\Requester::where('id',$id)->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,requester_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,requester_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,requester_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,requester_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

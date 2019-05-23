@@ -45,7 +45,7 @@
                     </style>
 
                     <div class="card-content" style="padding-bottom: 0px">
-                            <h5 class="center-align">Question Answer ({{isset($total_question)? $total_question :'0'}} / {{isset($select_question)? $select_question->question_position :''}})</h5>
+                            <h5 class="center-align">Question Answer ({{isset($select_question)? $select_question->question_position :''}} / {{isset($total_question)? $total_question :'0'}})</h5>
                         <div>
      
 

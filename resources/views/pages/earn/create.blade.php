@@ -95,9 +95,9 @@
                                             <select id="form-field-select-3" class="form-control search-select"
                                                     name="earn_paid_payment_type">
                                                 <option value="">&nbsp;Please Select a Type</option>
+                                                    <option value="cash">Cash</option>
                                                     <option value="bkash">BKash</option>
                                                     <option value="rocket">Rocket</option>
-                                                    <option value="cash">Cash</option>
                                             </select>
                                         </div>
                                     </div>

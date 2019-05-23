@@ -87,10 +87,12 @@
 
                                 <table>
                                     <tbody>
+
                                         <tr>
                                             <th>Name </th>
                                             <td>{{isset($participate_info->participate_name)? $participate_info->participate_name :'' }}</td>
                                         </tr>
+                                        
                                         <tr>
                                             <th>Mobile </th>
                                             <td>{{isset($participate_info->participate_mobile)? $participate_info->participate_mobile :'' }}</td>
@@ -111,12 +113,10 @@
                                             <td>{{isset($participate_info->participate_district)? $participate_info->participate_district :'' }}</td>
                                         </tr>  
 
-
                                         <tr>
                                             <th>Post Code </th>
                                             <td>{{isset($participate_info->participate_post_code)? $participate_info->participate_post_code :'' }}</td>
                                         </tr> 
-
 
                                         <tr>
                                             <th>NID </th>
@@ -137,7 +137,6 @@
                                             <th>Occupation </th>
                                             <td>{{isset($participate_info->participate_occupation)? $participate_info->participate_occupation :'' }}</td>
                                         </tr>                                
-
 
                                     </tbody>
                                 </table>

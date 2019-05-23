@@ -192,6 +192,29 @@ class PortalController extends Controller
     }
 
     
+    /********************************************
+    ## Participate Profile 
+     *********************************************/
+    public function ParticipateProfile()
+    {
+
+        
+        if(\Cookie::has('mobile')){
+            $cookie_value = \Cookie::get('mobile');
+
+            $participate_info=\DB::table('participate_tbl')->where('participate_mobile', $cookie_value)->first();
+            $data['participate_info'] = $participate_info;
+
+            $data['page_title'] = $this->page_title;
+            $data['page_desc'] = $this->page_desc;
+            return view('portal.campaign.profile',$data);
+
+        }else{
+            return redirect()->to('/participate/registration');
+        }
+
+
+    }
 
     /********************************************
     ## Participate Login 
@@ -199,7 +222,7 @@ class PortalController extends Controller
     public function ParticipateLogin()
     {
 
-        
+
         if(\Cookie::has('mobile')){
             $cookie_value = \Cookie::get('mobile');
 

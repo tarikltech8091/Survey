@@ -144,10 +144,10 @@ class CategoryController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,category_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,category_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,category_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,category_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this category. Please upload and publish any content to publish this content.';
@@ -197,7 +197,7 @@ class CategoryController extends Controller
 
 	                $update=\App\Category::where('id', $id)->update($data);
 
-	                // \App\System::EventLogWrite('update,category_tbl',json_encode($data));
+	                \App\System::EventLogWrite('update,category_tbl',json_encode($data));
 
 	                return redirect()->back()->with('message','Content Updated Successfully !!');
 	                
@@ -206,7 +206,7 @@ class CategoryController extends Controller
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -219,10 +219,10 @@ class CategoryController extends Controller
     {
         $delete = \App\Category::where('id',$id)->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,category_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,category_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,category_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,category_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

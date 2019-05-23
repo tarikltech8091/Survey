@@ -73,8 +73,6 @@
                                     @if(!empty($all_campaign))
                                     @foreach($all_campaign as $key =>$list)
                                         <option {{($edit->payment_campaign_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                        <input type="hidden" class="form-control" name="payment_campaign_name" value="{{$list->campaign_name}}">
-                                        <input type="hidden" class="form-control" name="payment_requester_id" value="{{$list->campaign_requester_id}}">
                                     @endforeach
                                     @endif
 

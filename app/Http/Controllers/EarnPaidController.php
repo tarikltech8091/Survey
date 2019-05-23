@@ -159,7 +159,7 @@ class EarnPaidController extends Controller
                         $data['earn_paid_amount']=$request->input('earn_paid_amount');
                         $data['payment_transaction_id']=$request->input('payment_transaction_id');
                         $data['earn_paid_description']=$request->input('earn_paid_description');
-                        $data['earn_paid_status']= 0;
+                        $data['earn_paid_status']= 1;
                         $data['earn_paid_created_by'] = \Auth::user()->id;
                         $data['earn_paid_updated_by'] = \Auth::user()->id;
 
@@ -197,9 +197,9 @@ class EarnPaidController extends Controller
 
                         if(!isset($error)){
                                
-                            if($current_data->earn_paid_user_type == 'surveyer'){
+                            if($earn_paid_user_type == 'surveyer'){
                                 \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));
-                            }elseif($current_data->earn_paid_user_type == 'participate'){
+                            }elseif($earn_paid_user_type == 'participate'){
                                 \App\System::EventLogWrite('update,participate_tbl',json_encode($participate_data));
                             }
                             \App\System::EventLogWrite('update,earn_paid_tbl',json_encode($data));
@@ -221,7 +221,7 @@ class EarnPaidController extends Controller
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in campaign Upload');
             }
 
@@ -249,10 +249,10 @@ class EarnPaidController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,earn_paid_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,earn_paid_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,earn_paid_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,earn_paid_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this earn payment. Please upload and publish any content to publish this content.';
@@ -385,7 +385,7 @@ class EarnPaidController extends Controller
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -454,7 +454,6 @@ class EarnPaidController extends Controller
             });
 
 
-            
                 echo 'Content deleted successfully.';
 
         }catch (\Exception $e){
