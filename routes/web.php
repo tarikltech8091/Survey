@@ -103,6 +103,7 @@
 
 
 
+// Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
 
 
@@ -113,7 +114,7 @@
 */
 Route::group(['middleware' => ['admin_auth']], function () {
 
-      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
+      Route::get('/admin/dashboard',array('as'=>'Admin Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
@@ -422,8 +423,8 @@ Route::group(['middleware' => ['admin_auth']], function () {
 */
 Route::group(['middleware' => ['requester_auth']], function () {
 
-      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
-      
+      Route::get('/requester/dashboard',array('as'=>'Requester Dashboard' , 'uses' =>'AdminRequesterController@Dashboard'));
+
 
       Route::get('/requester/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminRequesterController@Profile'));
 
@@ -445,6 +446,15 @@ Route::group(['middleware' => ['requester_auth']], function () {
       #Store
       Route::post('/requester/campaign/save',array('as'=>'Campaign Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Store'));
 
+      #Edit
+      Route::get('/requester/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Edit'));
+      #Update
+      Route::post('/requester/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Update'));
+      #Delete
+      Route::get('/requester/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Delete'));
+
+
+
       #Campaign Participate Countdown
       Route::get('/campaign/participate/countdown',array('as'=>'Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@getAllContentCountdown'));
 
@@ -453,15 +463,6 @@ Route::group(['middleware' => ['requester_auth']], function () {
 
       #Requester Payment List
       Route::get('/requester/payment/list',array('as'=>'Requester Payment List' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@RequesterPaymentList'));
-
-      #ChangeStatus
-      Route::get('/requester/campaign/change/status/{id}/{status}',array('as'=>'Campaign Status Change' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@ChangePublishStatus'));
-      #Edit
-      Route::get('/requester/campaign/edit/id-{id}',array('as'=>'Campaign Edit' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Edit'));
-      #Update
-      Route::post('/requester/campaign/update/id-{id}',array('as'=>'Campaign Update' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Update'));
-      #Delete
-      Route::get('/requester/campaign/delete/id-{id}',array('as'=>'Campaign Delete' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@Delete'));
 
 
 
@@ -472,7 +473,7 @@ Route::group(['middleware' => ['requester_auth']], function () {
       #getAllContent
       Route::get('/requester/question/list',array('as'=>'Get All Question Content' , 'desc'=>'entry & Edit', 'uses' =>'AdminRequesterController@getAllQuestion'));
       #Create
-      Route::get('/requester/question/create',array('as'=>'Question Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionCreate'));
+      Route::get('/requester/question/create',array('as'=>'Requester Question Create' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionCreate'));
       #Store
       Route::post('/requester/question/save',array('as'=>'Question Save' , 'desc'=>'entry & edit', 'uses' =>'AdminRequesterController@QuestionStore'));
       #ChangeStatus
@@ -495,7 +496,7 @@ Route::group(['middleware' => ['requester_auth']], function () {
 */
 Route::group(['middleware' => ['surveyer_auth']], function () {
 
-      Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
+      Route::get('/surveyer/dashboard',array('as'=>'Surveyer Dashboard' , 'uses' =>'AdminSurveyerController@Dashboard'));
 
       Route::get('/surveyer/profile',array('as'=>'Requester Profile' , 'uses' =>'AdminSurveyerController@Profile'));
 
@@ -514,7 +515,7 @@ Route::group(['middleware' => ['surveyer_auth']], function () {
       Route::get('/surveyer/participate/campaign/list',array('as'=>'Active Campaign List' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@getAllCampaign'));
 
       #Campaign Participate Countdown
-      Route::get('/surveyer/participate/countdown',array('as'=>'Surveyer Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@getAllContentCountdown'));
+      Route::get('/surveyer/participate/countdown',array('as'=>'Surveyer Campaign Participate Countdown' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@getAllContentCountdown'));
 
       #Campaign Answer Question
       Route::get('/surveyer/participate/question-{question_id}',array('as'=>'Surveyer Participate Question' , 'desc'=>'entry & edit', 'uses' =>'AdminSurveyerController@getAllSingleQuestionAnswer'));
@@ -528,7 +529,7 @@ Route::group(['middleware' => ['surveyer_auth']], function () {
 
 
       #getAllContent
-      Route::get('/surveyer/question/answer/list',array('as'=>'Question Answer List' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@getAllContent'));
+      Route::get('/surveyer/question/answer/list',array('as'=>'Surveyer Campaign Answer List' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@getAllContent'));
 
       #Create
       Route::get('/surveyer/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@FirstQuestionAnswer'));

@@ -73,22 +73,20 @@
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
                                             <strong>Requster Select</strong>
                                             <span class="symbol required" aria-required="true"></span>
                                         </label>
                                         <div class="col-sm-8">
-                                            <select id="form-field-select-3" class="form-control search-select"
+                                            <select id="form-field-select-3" class="form-control"
                                                     name="campaign_requester_id">
-                                                <option value="">&nbsp;Please Select a Requster</option>
 
-                                                @if(!empty($all_requester))
-                                                @foreach($all_requester as $key =>$list)
-                                                    <option value="{{$list->id}}">{{$list->requester_name}}  {{$list->requester_mobile}}</option>
-                                                    <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
-                                                    <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
-                                                @endforeach
+                                                @if(!empty($select_requester))
+                                                    <option value="{{$select_requester->id}}">{{$select_requester->requester_name}}  {{$select_requester->requester_mobile}}</option>
+                                                    <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$select_requester->requester_name}}">
+                                                    <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$select_requester->requester_mobile}}">
                                                 @endif
 
                                             </select>
@@ -197,7 +195,7 @@
                                     </div> -->
 
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="col-sm-2 control-label">
                                             <strong>Campaign Physical Prize</strong>
                                         </label>
@@ -224,7 +222,7 @@
                                         <div class="col-sm-4">
                                             <input type="number" class="form-control" name="campaign_total_num_of_zone">
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
 

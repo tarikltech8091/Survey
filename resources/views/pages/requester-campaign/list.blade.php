@@ -83,7 +83,7 @@
                                             <th>Total Days</th>
                                             <th>Total Cost</th>
                                             <th>Cost Paid</th>
-                                            <th>Total Zone</th>
+                                            <!-- <th>Total Zone</th> -->
                                             <th>Description</th>
                                             <th>Campaign Status</th>
                                             <th>Action</th>
@@ -103,7 +103,7 @@
                                                     <td>{{ $list->campaign_num_of_days }}</td>
                                                     <td>{{ $list->campaign_total_cost }}</td>
                                                     <td>{{ $list->campaign_total_cost_paid }}</td>
-                                                    <td>{{ $list->campaign_total_num_of_zone }}</td>
+                                                    <!-- <td>{{ $list->campaign_total_num_of_zone }}</td> -->
                                                     <td>{{ str_limit($list->campaign_description, 15)  }}</td>
 
                                                     <td>
@@ -149,7 +149,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="13">
+                                                <td colspan="12">
                                                     <div class="alert alert-success" role="alert">
                                                         <h4>No Data Available !</h4>
                                                     </div>
@@ -163,7 +163,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- END PANEL FOR Album LIST -->
                     {{--<div class="text-center">
                         {!!$content_all->links()!!}
                     </div>--}}

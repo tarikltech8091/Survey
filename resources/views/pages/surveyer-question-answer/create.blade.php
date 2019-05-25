@@ -15,6 +15,43 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3"></div>
+
+                                <form method="get"  action="{{url('/surveyer/question/answer/'.$surveyer_id.'/'.$campaign_id.'/1')}}">
+                                    
+                                    <div class="col-md-4">
+                                        <div class="form-group has-feedback ">
+                                            <label for="search_from">
+                                                <strong>Search Mobile</strong>
+                                            </label>
+
+                                            <input type="text" class="form-control" name="participate_mobile" placeholder="01*********" value="{{isset($_GET['participate_mobile'])? $_GET['participate_mobile'] :'' }}">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1" style="margin-top:22px;">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-primary btn-squared" value="Search">
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            <div class="col-md-4"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
                 <div class="panel-body">
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">
@@ -46,6 +83,7 @@
                             @if(isset($select_question) && !empty($select_question))
 
                                 <div class="row">
+
                                     <div class="col-md-12">
 
                                         @if($question_position == 1)
@@ -67,217 +105,224 @@
 
                                             @if(isset($select_question) && ($select_question->question_position) == 1)
 
-                                                <div class="col-md-6">
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Name</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" name="participate_name">
+
+                                                <div class="col-md-12">
+
+                                                    <div class="col-md-6">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Name</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" class="form-control" name="participate_name" value="{{isset($participate_info)? $participate_info->participate_name :''}}">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Join Date</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-5">
-                                                            <input type="date" class="form-control" name="participate_join_date">
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Join Date</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="date" class="form-control" name="participate_join_date" value="{{isset($participate_info)? $participate_info->participate_join_date :''}}">
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Mobile</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" name="participate_mobile">
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Mobile</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" class="form-control" name="participate_mobile" value="{{isset($participate_info)? $participate_info->participate_mobile :''}}">
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Email</strong>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input type="email" class="form-control" name="participate_email">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Email</strong>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="email" class="form-control" name="participate_email" value="{{isset($participate_info)? $participate_info->participate_email :''}}">
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate District</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select"
-                                                                    name="participate_district">
-                                                                <option value="">&nbsp;Please Select a Type</option>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate District</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_district">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
 
-                                                                @if(!empty($all_district))
-                                                                @foreach($all_district as $key =>$list)
-                                                                    <option value="{{$list}}">{{$list}}</option>
-                                                                @endforeach
-                                                                @endif
+                                                                    @if(!empty($all_district))
+                                                                    @foreach($all_district as $key =>$list)
+                                                                        <option {{(isset($participate_info)? $participate_info->participate_district : '' == $list)?'selected' :''}} value="{{$list}}">{{$list}}</option>
+                                                                    @endforeach
+                                                                    @endif
 
-                                                            </select>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong> Zone</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select" name="participate_zone">
-                                                                <option value="">&nbsp;Please Select a Type</option>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong> Zone</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_zone">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
 
-                                                                @if(!empty($all_zone))
-                                                                @foreach($all_zone as $key =>$list)
-                                                                    <option value="{{$list->zone_name}}">{{$list->zone_name}}</option>
-                                                                @endforeach
-                                                                @endif
+                                                                    @if(!empty($all_zone))
+                                                                    @foreach($all_zone as $key =>$list)
+                                                                        <option {{(isset($participate_info)? $participate_info->participate_zone : '' == $list->zone_name)?'selected' :''}}  value="{{$list->zone_name}}">{{$list->zone_name}}</option>
+                                                                    @endforeach
+                                                                    @endif
 
-                                                            </select>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Address</strong>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <textarea name="participate_address" class="form-control" cols="10" rows="7"></textarea>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Address</strong>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <textarea name="participate_address" class="form-control" cols="10" rows="7">{{isset($participate_info)? $participate_info->participate_address :''}}</textarea>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                </div>
-
-                                                <div class="col-md-6">
-
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Gender</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select"
-                                                                    name="participate_gender">
-                                                                <option value="">&nbsp;Please Select a Type</option>
-                                                                <option value="male">Male</option>
-                                                                <option value="female">Female</option>
-                                                                <option value="common">Common</option>
-                                                            </select>
-                                                        </div>
                                                     </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Age</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select" name="participate_age">
-                                                                <option value="">&nbsp;Please Select a Type</option>
-                                                                <option value="0-18">0-18</option>
-                                                                <option value="19-25">19-25</option>
-                                                                <option value="26-35">26-35</option>
-                                                                <option value="36-50">36-50</option>
-                                                                <option value="50-100">50-100</option>
-                                                            </select>
+                                                    <div class="col-md-6">
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Gender</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select"  name="participate_gender">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_gender :'') == "male")?'selected' :''}}  value="male">Male</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_gender :'')  == "female")?'selected' :''}}  value="female">Female</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_gender :'')  == "common")?'selected' :''}}  value="common">Common</option>
+
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Religion</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select"
-                                                                    name="participate_religion">
-                                                                <option value="">&nbsp;Please Select a Type</option>
-                                                                <option {{(old('participate_religion')== "islam") ? "selected" :''}}  value="islam">Islam</option>
-                                                                <option {{(old('participate_religion')== "christianity") ? "selected" :''}} value="christianity">Christianity</option>
-                                                                <option {{(old('participate_religion')== "hinduism") ? "selected" :''}} value="hinduism">Hinduism</option>
-                                                                <option {{(old('participate_religion')== "buddhism") ? "selected" :''}} value="buddhism">Buddhism</option>
-                                                            </select>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Age</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_age">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_age : '') == '0-18')?'selected' :''}}  value="0-18">0-18</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_age : '') == '19-25')?'selected' :''}}  value="19-25">19-25</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_age : '') == "26-35")?'selected' :''}} value="26-35">26-35</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_age : '') == '36-50')?'selected' :''}}  value="36-50">36-50</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_age : '') == '51-100')?'selected' :''}}  value="51-100">51-100</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-
-
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Occupation</strong>
-                                                            <span class="symbol required" aria-required="true"></span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select id="form-field-select-3" class="form-control search-select"
-                                                                    name="participate_occupation">
-                                                                <option value="">&nbsp;Please Select a Type</option>
-                                                                <option value="student">Student</option>
-                                                                <option value="teacher">Teacher</option>
-                                                                <option value="business">Business</option>
-                                                                <option value="govt-service">Govt. Service</option>
-                                                                <option value="private-service">Private Service</option>
-                                                            </select>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Religion</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_religion">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
+                                                                    <option  {{((isset($participate_info)? $participate_info->participate_religion : '') == 'islam')?'selected' :''}}  value="islam">Islam</option>
+                                                                    <option  {{((isset($participate_info)? $participate_info->participate_religion : '') == 'christianity')?'selected' :''}} value="christianity">Christianity</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_religion : '') == 'hinduism')?'selected' :''}} value="hinduism">Hinduism</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_religion : '') == 'buddhism')?'selected' :''}} value="buddhism">Buddhism</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Post Code</strong>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" name="participate_post_code">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Occupation</strong>
+                                                                <span class="symbol required" aria-required="true"></span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_occupation">
+                                                                    <option value="">&nbsp;Please Select a Type</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_occupation : '') == 'student')?'selected' :''}} value="student">Student</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_occupation : '') == 'teacher')?'selected' :''}} value="teacher">Teacher</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_occupation : '') == 'business')?'selected' :''}} value="business">Business</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_occupation : '') == 'govt-service')?'selected' :''}}  value="govt-service">Govt. Service</option>
+                                                                    <option {{((isset($participate_info)? $participate_info->participate_occupation : '') == 'private-service')?'selected' :''}} value="private-service">Private Service</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate NID</strong>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" name="participate_nid">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Post Code</strong>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" class="form-control" name="participate_post_code" value="{{isset($participate_info)? $participate_info->participate_post_code :''}}">
+                                                            </div>
                                                         </div>
-                                                    </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate NID</strong>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" class="form-control" name="participate_nid" value="{{isset($participate_info)? $participate_info->participate_nid :''}}">
+                                                            </div>
+                                                        </div>
 
 
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 control-label">
-                                                            <strong>Participate Image</strong>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <div class="fileupload fileupload-new" data-provides="fileupload">
-                                                                <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;"><img src="{{asset('assets/images/profile.png')}}" alt="">
-                                                                </div>
-                                                                <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 150px; max-height: 150px; line-height: 20px;"></div>
-                                                                <div class="user-edit-image-buttons">
-                                                                    <span class="btn btn-light-grey btn-file"><span class="fileupload-new"><i class="fa fa-picture"></i> Select image</span><span class="fileupload-exists"><i class="fa fa-picture"></i> Change</span>
-                                                                        <input type="file" name="participate_profile_image">
-                                                                    </span>
-                                                                    <a href="#" class="btn fileupload-exists btn-light-grey" data-dismiss="fileupload">
-                                                                        <i class="fa fa-times"></i> Remove
-                                                                    </a>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                <strong>Participate Image</strong>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                    <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;"><img src="{{asset('assets/images/profile.png')}}" alt="">
+                                                                    </div>
+                                                                    <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 150px; max-height: 150px; line-height: 20px;"></div>
+                                                                    <div class="user-edit-image-buttons">
+                                                                        <span class="btn btn-light-grey btn-file"><span class="fileupload-new"><i class="fa fa-picture"></i> Select image</span><span class="fileupload-exists"><i class="fa fa-picture"></i> Change</span>
+                                                                            <input type="file" name="participate_profile_image">
+                                                                        </span>
+                                                                        <a href="#" class="btn fileupload-exists btn-light-grey" data-dismiss="fileupload">
+                                                                            <i class="fa fa-times"></i> Remove
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
 
                                                 </div>
+
+
                                             @endif
 
 
@@ -386,6 +431,35 @@
 @section('JScript')
     <script>
         $(function () {
+
+
+            /* ===============================
+                Get Participate Value
+           * ============================= */
+
+            /*jQuery('.user_type').change(function(){
+
+                var user_type = jQuery(this).val();
+                var site_url = jQuery('.site_url').val();
+                if(user_type.length !=0){
+
+                    var request_url = site_url+'/ajax/payment/user/'+user_type;
+
+                    jQuery.ajax({
+                        url: request_url,
+                        type: "get",
+                        success:function(data){
+
+                            jQuery('.user_type_details').html(data);
+                        }
+                    });
+
+                }else alert("Please Select User Type");
+
+            });*/
+
+
+
             $('#question_answer').validate({
                 rules: {
 /*                    question_campaign_id: {

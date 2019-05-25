@@ -23,6 +23,14 @@ class AdminRequesterController extends Controller
         $this->page_desc = isset($description['desc']) ?  $description['desc']:$this->page_title;
         // \App\System::AccessLogWrite();
     }
+
+
+    public function Dashboard()
+    {
+
+        $data['page_title'] = $this->page_title;
+        return view('pages.admin-requester.index',$data);
+    }
     
 
     public function index()
@@ -228,7 +236,7 @@ class AdminRequesterController extends Controller
             $search_campaign_id = isset($_GET['search_campaign_id'])? $_GET['search_campaign_id']:0;
 
             $all_content->setPath(url('/campaign/participate/countdown'));
-            $pagination = $all_content->appends(['answer_campaign_id' => $search_campaign_id])->render();
+            $pagination = $all_content->appends(['search_campaign_id' => $search_campaign_id])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -300,7 +308,7 @@ class AdminRequesterController extends Controller
             ->orderBy('question_answer_tbl.id','DESC')
             ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
         	->paginate(20);
-        $all_content->setPath(url('/campaign/participate/countdown'));
+        $all_content->setPath(url('/campaign/participate/question-'.$answer_question_id));
         $pagination = $all_content->render();
         $data['perPage'] = $all_content->perPage();
         $data['pagination'] = $pagination;
@@ -331,7 +339,7 @@ class AdminRequesterController extends Controller
 
             $payment_status = isset($_GET['payment_status'])? $_GET['payment_status']:0;
 
-            $all_content->setPath(url('/campaign/payment/list'));
+            $all_content->setPath(url('/requester/payment/list'));
             $pagination = $all_content->appends(['payment_status' => $payment_status])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
@@ -339,7 +347,7 @@ class AdminRequesterController extends Controller
 
         } else{
             $all_content= \App\CampaignPayment::orderBy('id','DESC')->paginate(20);
-            $all_content->setPath(url('/campaign/payment/list'));
+            $all_content->setPath(url('/requester/payment/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
             $data['pagination'] = $pagination;
@@ -378,10 +386,9 @@ class AdminRequesterController extends Controller
                 ->paginate(20);
 
             $campaign_status = isset($_GET['campaign_status'])? $_GET['campaign_status']:0;
-            $blog_type = isset($_GET['blog_type'])? $_GET['blog_type']:'all';
 
             $all_content->setPath(url('/requester/campaign/list'));
-            $pagination = $all_content->appends(['campaign_status' => $campaign_status, 'BLOG_TYPE'=> $blog_type])->render();
+            $pagination = $all_content->appends(['campaign_status' => $campaign_status])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -408,7 +415,7 @@ class AdminRequesterController extends Controller
      *********************************************/
     public function Create()
     {
-        $data['all_requester'] = \App\Requester::where('requester_status','1')->where('id',\Auth::user()->requester_id)->orderby('id','desc')->get();
+        $data['select_requester'] = \App\Requester::where('id',\Auth::user()->requester_id)->first();
         $data['all_category'] = \App\Category::where('category_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
@@ -472,7 +479,6 @@ class AdminRequesterController extends Controller
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_unique_code']= time().'-'.mt_rand();
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
-                // $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
                 $data['campaign_total_cost_paid']=0;
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
@@ -487,7 +493,6 @@ class AdminRequesterController extends Controller
                 $data['campaign_created_by'] = \Auth::user()->id;
                 $data['campaign_updated_by'] = \Auth::user()->id;
 
-                // $insert=\DB::table('campaign_tbl')->insert($data);
 
                 $campaign_insert = \App\Campaign::firstOrCreate(
                     [
@@ -498,7 +503,7 @@ class AdminRequesterController extends Controller
 
                 if($campaign_insert->wasRecentlyCreated){
 
-                    // \App\System::EventLogWrite('insert,campaign_tbl',json_encode($data));
+                    \App\System::EventLogWrite('insert,campaign_tbl',json_encode($data));
                     return redirect()->back()->with('message','Campaign Created Successfully');
 
                 }else return redirect()->back()->with('errormessage','Campaign already created.');
@@ -514,35 +519,7 @@ class AdminRequesterController extends Controller
         }
     }
 
-    /********************************************
-    ## Change publish status for individual.
-     *********************************************/
-    /*public function ChangePublishStatus($id, $status)
-    {
-        //check if this campaign has any content published or not
-        $content_exists = \App\Campaign::where('id',$id)->where('campaign_requester_id',\Auth::user()->requester_id)->first();
-        if($content_exists)
-        {
-            $now = date('Y-m-d H:i:s');
-            if($status=='1'){
-                $data['campaign_status']=1;
-            } else{
-                $data['campaign_status']=0;
-            }
-            $update=\App\Campaign::where('id',$id)->update($data);
 
-            if($update) {
-                echo 'Status updated successfully.';
-                \App\System::EventLogWrite('update,campaign_status|Status updated successfully.',$id);
-            } else {
-                echo 'Status did not update.';
-                \App\System::EventLogWrite('update,campaign_status|Status did not updated.',$id);
-            }
-        } else{
-            echo 'There is no published content for this campaign. Please upload and publish any content to publish this content.';
-        }
-
-    }*/
 
     /********************************************
     ##  Edit View
@@ -550,7 +527,7 @@ class AdminRequesterController extends Controller
     public function Edit($id)
     {
         $data['edit'] = \App\Campaign::where('id', $id)->where('campaign_requester_id',\Auth::user()->requester_id)->first();
-        $data['all_requester'] = \App\Requester::where('requester_status','1')->where('id',\Auth::user()->requester_id)->orderby('id','desc')->get();
+        $data['select_requester'] = \App\Requester::where('id',\Auth::user()->requester_id)->first();
         $data['all_category'] = \App\Category::where('category_status','1')->orderby('id','desc')->get();
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
@@ -612,7 +589,6 @@ class AdminRequesterController extends Controller
                 $data['campaign_end_date']=$request->input('campaign_end_date');
                 $data['campaign_num_of_days']=$request->input('campaign_num_of_days');
                 $data['campaign_total_cost']=$request->input('campaign_total_cost');
-                // $data['campaign_total_cost_paid']=$request->input('campaign_total_cost_paid');
                 $data['campaign_total_cost_paid']=0;
                 $data['campaign_cost_for_surveyer']=$request->input('campaign_cost_for_surveyer');
                 $data['campaign_prize_amount']=$request->input('campaign_prize_amount');
@@ -626,14 +602,14 @@ class AdminRequesterController extends Controller
 
                 $update= \App\Campaign::where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,campaign_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,campaign_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -688,7 +664,7 @@ class AdminRequesterController extends Controller
             $question_name = isset($_GET['question_name'])? $_GET['question_name']:'';
             $question_campaign_id = isset($_GET['question_campaign_id'])? $_GET['question_campaign_id']:'';
 
-            $all_content->setPath(url('/questions/list'));
+            $all_content->setPath(url('/requester/question/list'));
             $pagination = $all_content->appends(['question_status' => $question_status, 'question_campaign_id' => $question_campaign_id ])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
@@ -700,7 +676,7 @@ class AdminRequesterController extends Controller
             ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_tbl.question_campaign_id')
             ->select('campaign_tbl.id AS campaign_id', 'campaign_tbl.*', 'question_tbl.*')
             ->paginate(20);
-            $all_content->setPath(url('/questions/list'));
+            $all_content->setPath(url('/requester/question/list'));
             $pagination = $all_content->render();
             $data['perPage'] = $all_content->perPage();
             $data['pagination'] = $pagination;
@@ -771,7 +747,6 @@ class AdminRequesterController extends Controller
                 $data['question_updated_by'] = \Auth::user()->id;
                
 
-                // $insert=\DB::table('question_tbl')->insert($data);
 
                 $question_insert = \App\Question::firstOrCreate(
                     [
@@ -782,7 +757,7 @@ class AdminRequesterController extends Controller
 
                 if($question_insert->wasRecentlyCreated){
 
-                    // \App\System::EventLogWrite('insert,question_tbl',json_encode($data));
+                    \App\System::EventLogWrite('insert,question_tbl',json_encode($data));
                     return redirect()->back()->with('message','Question Created Successfully');
 
                 }else return redirect()->back()->with('errormessage','Blog already created.');
@@ -891,14 +866,14 @@ class AdminRequesterController extends Controller
 
                 $update=\DB::table('question_tbl')->where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,question_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,question_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -923,5 +898,7 @@ class AdminRequesterController extends Controller
 
 
 /*--------------------------End-----------------------------------------*/
+
+
 
 }

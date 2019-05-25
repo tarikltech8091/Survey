@@ -70,24 +70,7 @@
                                             </div>
 
 
-                                            <div class="col-md-3">
-                                                <div class="form-group has-feedback ">
-                                                    <label for="search_from">
-                                                        <strong>Search by Surveyer : </strong>
-                                                    </label>
-                                                    <select class="form-control search-select" name="answer_surveyer_id">
-                                                        <option {{(isset($_GET['answer_surveyer_id']) && ($_GET['answer_surveyer_id']==0)) ? 'selected' : ''}} value="0"> All</option>
-
-                                                        @if(!empty($all_surveyer) && count($all_surveyer) > 0)
-                                                        @foreach($all_surveyer as $key => $value)
-                                                            <option {{(isset($_GET['answer_surveyer_id']) && ($_GET['answer_surveyer_id'] == $value->id)) ? 'selected' : ''}} value="{{$value->id}}">{{$value->surveyer_mobile}}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-1" style="margin-top:22px;">
+                                            <div class="col-md-1" style="margin-top:25px;">
                                                 <div class="form-group">
                                                     <input type="submit" class="btn btn-primary btn-squared" value="Search">
                                                 </div>
@@ -101,37 +84,6 @@
                         </div>
 
                     </div>
-
-                    @if(isset($_GET['answer_campaign_id']) && $_GET['answer_campaign_id'] != 0)
-
-                        <div class="tabbable">
-                            <div class="tab-content">
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-3">
-                                            <div class="form-group has-feedback ">
-                                                <label for="search_from">
-                                                    <strong>Search by Surveyer : </strong>
-                                                </label>
-                                                <select class="form-control search-select" name="answer_surveyer_id">
-                                                    <option {{(isset($_GET['answer_surveyer_id']) && ($_GET['answer_surveyer_id']==0)) ? 'selected' : ''}} value="0"> All</option>
-
-                                                    @if(!empty($all_surveyer) && count($all_surveyer) > 0)
-                                                    @foreach($all_surveyer as $key => $value)
-                                                        <option {{(isset($_GET['answer_surveyer_id']) && ($_GET['answer_surveyer_id'] == $value->id)) ? 'selected' : ''}} value="{{$value->id}}">{{$value->surveyer_mobile}}</option>
-                                                    @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    @endif
 
 
                     <div class="table-responsive">
@@ -151,7 +103,6 @@
                                 <th class="text-center" class="text-center">Option 4</th>
                                 <th class="text-center" class="text-center">New Option</th>
                                 <th class="text-center" class="text-center">Status</th>
-                                <th class="text-center" class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -179,31 +130,11 @@
                                             @endif
                                         </td>
 
-                                        <td style="width:14%" class="text-center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-purple"><i class="fa fa-wrench"></i> Action</button><button data-toggle="dropdown" class="btn btn-purple dropdown-toggle"><span class="caret"></span></button><ul class="dropdown-menu" role="menu">
-                                                    <!-- <li><a href="{{url('/surveyer/question/edit/id-'.$question->id)}}"><i class="fa fa-pencil"></i> Validate</a></li> -->
-                                                    <li>
-                                                        @if($question->question_answer_status == 1)
-                                                            <a class="status-change"
-                                                               data-publish-status="0" data-question-answer-id="{{ $question->question_answer_id}}" title="Click for unpublish">
-                                                                <i class="fa fa-unlock"></i> Un Publish
-                                                            </a>
-                                                        @else
-                                                            <a class="status-change " title="Click for publish"
-                                                               data-publish-status="1" data-question-answer-id="{{ $question->question_answer_id}}">
-                                                                <i class="fa fa-lock"></i> Publish
-                                                            </a>
-                                                        @endif
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr class="text-center">
-                                    <td colspan="13">No Data available</td>
+                                    <td colspan="11">No Data available</td>
                                 </tr>
                             @endif
                             </tbody>

@@ -23,6 +23,14 @@ class AdminSurveyerController extends Controller
     }
 
 
+    public function Dashboard()
+    {
+
+        $data['page_title'] = $this->page_title;
+        return view('pages.admin-surveyer.home',$data);
+    }
+
+
     public function index()
     {
         $data['page_title'] = $this->page_title;
@@ -152,7 +160,7 @@ class AdminSurveyerController extends Controller
         $v = \Validator::make(\Request::all(), $rules);
 
         if ($v->fails()) {
-            return redirect('surveyer//profile?tab=change_password')
+            return redirect('surveyer/profile?tab=change_password')
                 ->withErrors($v)
                 ->withInput();
         }
@@ -192,9 +200,21 @@ class AdminSurveyerController extends Controller
     public function getAllCampaign()
     {
 
-        $all_content= \App\Campaign::where('campaign_status',1)->orderBy('id','DESC')->get();
+        $data['surveyer_assign_info'] =  \App\SurveyerAssign::
+            where('surveyer_assign_tbl.assign_surveyer_id',\Auth::user()->surveyer_id)
+            ->orderby('id','desc')
+            ->select('surveyer_assign_tbl.id')
+            ->get()->toArray();
 
-        $data['all_content'] = $all_content;
+        if(!empty($data['surveyer_assign_info'])){
+
+            $all_content =  \App\Campaign::orderby('id','desc')
+            ->whereIn('campaign_tbl.id',$data['surveyer_assign_info'])
+            ->get();
+            $data['all_content'] = $all_content;
+
+        }
+
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
         return view('pages.surveyer-question-answer.campaign-list',$data);
@@ -243,8 +263,8 @@ class AdminSurveyerController extends Controller
 
             $search_campaign_id = isset($_GET['search_campaign_id'])? $_GET['search_campaign_id']:0;
 
-            $all_content->setPath(url('/campaign/participate/countdown'));
-            $pagination = $all_content->appends(['answer_campaign_id' => $search_campaign_id])->render();
+            $all_content->setPath(url('/surveyer/participate/countdown'));
+            $pagination = $all_content->appends(['search_campaign_id' => $search_campaign_id])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -272,9 +292,18 @@ class AdminSurveyerController extends Controller
 
         }
 
-        $data['all_campaign'] =  \App\Campaign::orderby('id','desc')
-        // ->where('campaign_requester_id',\Auth::user()->requester_id)
-        ->get();
+        $data['surveyer_assign_info'] =  \App\SurveyerAssign::
+        where('surveyer_assign_tbl.assign_surveyer_id',\Auth::user()->surveyer_id)
+        ->orderby('id','desc')
+        ->select('surveyer_assign_tbl.id')
+        ->get()->toArray();
+
+        if(!empty($data['surveyer_assign_info'])){
+
+            $data['all_campaign'] =  \App\Campaign::orderby('id','desc')
+            ->whereIn('campaign_tbl.id',$data['surveyer_assign_info'])
+            ->get();
+        }
 
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
@@ -318,7 +347,7 @@ class AdminSurveyerController extends Controller
             ->orderBy('question_answer_tbl.id','DESC')
             ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
             ->paginate(20);
-        $all_content->setPath(url('/campaign/participate/countdown'));
+        $all_content->setPath(url('/surveyer/participate/question-'.$answer_question_id));
         $pagination = $all_content->render();
         $data['perPage'] = $all_content->perPage();
         $data['pagination'] = $pagination;
@@ -370,11 +399,6 @@ class AdminSurveyerController extends Controller
                     });
                 }
 
-                if(isset($_GET['answer_surveyer_id']) && $_GET['answer_surveyer_id'] != 0){
-                    $query->where(function ($q){
-                        $q->where('answer_surveyer_id', $_GET['answer_surveyer_id']);
-                    });
-                }
             })
                 ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
                 ->join('surveyer_tbl', 'surveyer_tbl.id', '=', 'question_answer_tbl.answer_surveyer_id')
@@ -385,10 +409,9 @@ class AdminSurveyerController extends Controller
 
             $question_answer_status = isset($_GET['question_answer_status'])? $_GET['question_answer_status']:0;
             $answer_campaign_id = isset($_GET['answer_campaign_id'])? $_GET['answer_campaign_id']:0;
-            $answer_surveyer_id = isset($_GET['answer_surveyer_id'])? $_GET['answer_surveyer_id']:0;
 
             $all_content->setPath(url('/questions/answer/list'));
-            $pagination = $all_content->appends(['question_answer_status' => $question_answer_status, 'answer_campaign_id' => $answer_campaign_id, 'answer_surveyer_id' => $answer_surveyer_id])->render();
+            $pagination = $all_content->appends(['question_answer_status' => $question_answer_status, 'answer_campaign_id' => $answer_campaign_id])->render();
             $data['pagination'] = $pagination;
             $data['perPage'] = $all_content->perPage();
             $data['all_content'] = $all_content;
@@ -410,8 +433,19 @@ class AdminSurveyerController extends Controller
 
         }
 
-        $data['all_campaign'] = \DB::table('campaign_tbl')->where('campaign_status','1')->orderby('id','desc')->get();
-        $data['all_surveyer'] = \DB::table('surveyer_tbl')->where('surveyer_status','1')->orderby('id','desc')->get();
+
+        $data['surveyer_assign_info'] =  \App\SurveyerAssign::
+            where('surveyer_assign_tbl.assign_surveyer_id',\Auth::user()->surveyer_id)
+            ->orderby('id','desc')
+            ->select('surveyer_assign_tbl.id')
+            ->get()->toArray();
+
+        if(!empty($data['surveyer_assign_info'])){
+
+            $data['all_campaign'] =  \App\Campaign::orderby('id','desc')
+            ->whereIn('campaign_tbl.id',$data['surveyer_assign_info'])
+            ->get();
+        }
 
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
@@ -435,6 +469,14 @@ class AdminSurveyerController extends Controller
      *********************************************/
     public function FirstQuestionAnswer($surveyer_id, $campaign_id, $question_position)
     {
+
+
+        if(isset($_GET['participate_mobile'])){
+
+            $data['participate_info'] =  \App\Participate::where('participate_mobile',$_GET['participate_mobile'])->first();
+        }
+
+
         $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
@@ -480,12 +522,10 @@ class AdminSurveyerController extends Controller
 
         $v = \Validator::make($request->all(), [
             'participate_name' => 'required',
-            'participate_email' => 'required',
             'participate_mobile' => 'Required|regex:/^[^0-9]*(88)?0/|max:11',
             'participate_age' => 'required',
             'participate_join_date' => 'required',
             'participate_district' => 'required',
-            'participate_post_code' => 'required',
             'participate_address' => 'required',
             'participate_nid' => 'required',
             'participate_gender' => 'required',
@@ -611,8 +651,7 @@ class AdminSurveyerController extends Controller
                     $question_answer_data['answer_campaign_id']=$campaign_id;
                     $question_answer_data['answer_question_id']=$question_id;
                     $question_answer_data['answer_participate_mobile']=$request->input('participate_mobile');
-                    // $question_answer_data['question_answer_type']=$request->input('question_answer_type');
-                    $question_answer_data['question_answer_type']='easy';
+                    $question_answer_data['question_answer_type']=$select_question->question_type;
                     $question_answer_data['question_answer_title']=$request->input('question_answer_title');
                     $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
                     $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
@@ -665,17 +704,15 @@ class AdminSurveyerController extends Controller
 
 
                     if(!isset($error)){
-                        // \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
-                        // \App\System::EventLogWrite('insert,campaign_participate_tbl',json_encode($campaign_participate_data));
-                        // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                        \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
+                        \App\System::EventLogWrite('insert,campaign_participate_tbl',json_encode($campaign_participate_data));
+                        \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                         \DB::commit();
 
                         
                     }else{
                         \DB::rollback();
-                        // var_dump($campaign_participate_insertOrUpdate);
-                        // var_dump($error);
-                        // throw new Exception("Error Processing Request", 1);
+                        throw new Exception("Error Processing Request", 1);
                     }
 
 
@@ -683,8 +720,6 @@ class AdminSurveyerController extends Controller
                 });
 
                 return redirect()->to('/surveyer/all/question/answer/'.$participate_mobile.'/'.$surveyer_id.'/'.$campaign_id.'/'.$question_next_position)->with('message','Question Answer Successfully');
-
-
 
 
             }catch (\Exception $e){
@@ -708,17 +743,7 @@ class AdminSurveyerController extends Controller
     {
 
         $v = \Validator::make($request->all(), [
-            /*'participate_mobile' => 'required',
-            'question_title' => 'required',
-            'question_type' => 'required',
-            'question_campaign_name' => 'required',
-            'question_campaign_id' => 'required',
-            'question_position' => 'required',
-            'question_special' => 'required',
-            'question_option_1' => 'required',
-            'question_option_2' => 'required',
-            'question_option_3' => 'required',
-            'question_points' => 'required',*/
+            /*'participate_mobile' => 'required',*/
         ]);
 
 
@@ -730,7 +755,12 @@ class AdminSurveyerController extends Controller
                 $campaign_id = $request->input('answer_campaign_id');
                 $question_position = $request->input('answer_question_position');
                 $question_next_position = $question_position + 1;
-                $next_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_next_position)->where('question_status','1')->orderby('id','desc')->first();
+                $next_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_next_position)->where('question_status','1')->first();
+
+                if(!empty($next_question)){
+
+                }
+
                 $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
 
                 $participate_mobile = $request->input('campaign_participate_mobile');
@@ -757,8 +787,7 @@ class AdminSurveyerController extends Controller
                         $question_answer_data['answer_surveyer_id']=$surveyer_id;
                         $question_answer_data['answer_question_id']=$question_id;
                         $question_answer_data['answer_participate_mobile']=$request->input('campaign_participate_mobile');
-                        // $question_answer_data['question_answer_type']=$request->input('question_answer_type');
-                        $question_answer_data['question_answer_type']='easy';
+                        $question_answer_data['question_answer_type']=$select_question->question_type;
                         $question_answer_data['question_answer_title']=$request->input('question_answer_title');
                         $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
                         $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
@@ -810,7 +839,7 @@ class AdminSurveyerController extends Controller
                         }
 
                         if(!isset($error)){
-                            // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                            \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                             \DB::commit();
                             
                         }else{
@@ -818,7 +847,6 @@ class AdminSurveyerController extends Controller
                             throw new Exception("Error Processing Request", 1);
                         }
 
-                        // return redirect()->back()->with('message','Question Created Successfully');
 
                     }else{
                         return redirect()->to('/surveyer/question/answer/'.$surveyer_id.'/'.$campaign_id.'/1')->with('message','First Question Answer');

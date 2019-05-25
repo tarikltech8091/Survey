@@ -2,6 +2,8 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
+
+
             <!-- start: FORM VALIDATION 2 PANEL -->
             <div class="panel panel-default btn-squared">
                 <div class="panel-heading">
@@ -15,6 +17,23 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="tabbable">
+
+                    <ul id="myTab" class="nav nav-tabs tab-bricky">
+                        <li class="">
+                            <a href="{{url('/requester/campaign/create')}}">
+                                <i class="green fa fa-bell"></i> Add Campaign
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{url('/requester/campaign/list')}}">
+                                <i class="green clip-feed"></i> Campaign List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="panel-body">
                     @if($errors->count() > 0 )
                         <div class="alert alert-danger btn-squared">
@@ -88,16 +107,13 @@
                                 <span class="symbol required" aria-required="true"></span>
                             </label>
                             <div class="col-sm-8">
-                                <select id="form-field-select-3" class="form-control search-select"
+                                <select id="form-field-select-3" class="form-control"
                                         name="campaign_requester_id">
-                                    <option value="">&nbsp;Please Select a Type</option>
 
-                                    @if(!empty($all_requester))
-                                    @foreach($all_requester as $key =>$list)
-                                        <option {{($edit->campaign_requester_id == $list->id) ? 'selected' : ''}} value="{{$list->id}}">{{$list->requester_name}}</option>
-                                        <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$list->requester_name}}">
-                                        <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$list->requester_mobile}}">
-                                    @endforeach
+                                    @if(!empty($select_requester))
+                                        <option {{($edit->campaign_requester_id == $select_requester->id) ? 'selected' : ''}} value="{{$select_requester->id}}">{{$select_requester->requester_name}} {{$select_requester->requester_mobile}}</option>
+                                        <input type="hidden" class="form-control" name="campaign_requester_name" value="{{$select_requester->requester_name}}">
+                                        <input type="hidden" class="form-control" name="campaign_requester_mobile" value="{{$select_requester->requester_mobile}}">
                                     @endif
 
                                 </select>
@@ -176,7 +192,7 @@
                         </div> -->
 
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <strong>Campaign Physical Prize</strong>
                             </label>
@@ -203,7 +219,7 @@
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" value="{{isset($edit->campaign_total_num_of_zone)? $edit->campaign_total_num_of_zone:''}}" name="campaign_total_num_of_zone">
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -212,11 +228,9 @@
                                 <strong>Description</strong>
                             </label>
                             <div class="col-sm-6">
-                                <textarea name="campaign_description" value="{{isset($edit->campaign_description)? $edit->campaign_description:''}}" class="form-control" cols="10" rows="7"></textarea>
+                                <textarea name="campaign_description" class="form-control" cols="10" rows="7">{{isset($edit->campaign_description)? $edit->campaign_description:''}}</textarea>
                             </div>
                         </div>
-
-
 
                     
                         <div class="form-group">
@@ -267,6 +281,8 @@
 
                     </form>
                 </div>
+
+
             </div>
         </div>
     </div>

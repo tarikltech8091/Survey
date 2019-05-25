@@ -172,9 +172,10 @@
                                                                 </a>
                                                             </li> -->
                                                         </ul>
-                                                  @endif
-                                                @else
-                                                    <button type="button" class="btn btn-success"> Active</button>
+                                                    @else
+                                                        <button type="button" class="btn btn-success"> Active</button>
+                                                    @endif
+                                                
                                                 @endif
                                             </div>
                                         </td>

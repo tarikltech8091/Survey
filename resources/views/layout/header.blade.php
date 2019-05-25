@@ -43,7 +43,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             @if(\Auth::check())
-                                @if(\Auth::user()->user_type == "admin")
+                                @if((\Auth::user()->user_type == "admin") || (\Auth::user()->user_type == "requester") || (\Auth::user()->user_type == "surveyer"))
                                     <a href="{{url('admin/profile')}}">
                                         <i class="clip-user-2"></i>
                                         &nbsp;My Profile
@@ -54,11 +54,13 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            @if(\Auth::check() && \Auth::user()->user_type == "admin")
-                                <a href="{{ url('admin/profile?tab=change_password') }}">
-                                    <i class="fa fa-lock"></i>
-                                    &nbsp;Change Password
-                                </a>
+                            @if(\Auth::check())
+                                @if((\Auth::user()->user_type == "admin") || (\Auth::user()->user_type == "requester") || (\Auth::user()->user_type == "surveyer"))
+                                    <a href="{{ url('admin/profile?tab=change_password') }}">
+                                        <i class="fa fa-lock"></i>
+                                        &nbsp;Change Password
+                                    </a>
+                                @endif
                             @endif
                         </li>
                         <li>

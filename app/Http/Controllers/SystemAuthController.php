@@ -36,7 +36,13 @@ class SystemAuthController extends Controller
             if (!empty(\Auth::user()->user_type)) {
                 if (\Auth::user()->user_type == "admin") {
                     \App\User::LogInStatusUpdate("login");
-                    return redirect('dashboard');
+                    return redirect('admin/dashboard');
+                }else if (\Auth::user()->user_type == "surveyer") {
+                    \App\User::LogInStatusUpdate("login");
+                    return redirect('surveyer/dashboard');
+                }else if (\Auth::user()->user_type == "requester") {
+                    \App\User::LogInStatusUpdate("login");
+                    return redirect('requester/dashboard');
                 } else {
                     \App\User::LogInStatusUpdate("login");
                     return redirect('auth/login');
@@ -93,13 +99,13 @@ class SystemAuthController extends Controller
                 return redirect($url);
             } else if(\Auth::user()->user_type=="admin") {
                 \App\User::LogInStatusUpdate("login");
-                return redirect('/dashboard');
+                return redirect('/admin/dashboard');
             } else if(\Auth::user()->user_type=="surveyer") {
                 \App\User::LogInStatusUpdate("login");
-                return redirect('/dashboard');
+                return redirect('/surveyer/dashboard');
             } else if(\Auth::user()->user_type=="requester") {
                 \App\User::LogInStatusUpdate("login");
-                return redirect('/dashboard');
+                return redirect('/requester/dashboard');
             } else {
                 \App\User::LogInStatusUpdate("logout");
                 \Auth::logout();
