@@ -96,7 +96,6 @@
                                                         <option value="">&nbsp;Please Select a Type</option>
                                                         <option value="single">Single</option>
                                                         <option value="multi">Multi</option>
-                                                        <option value="text">Text</option>
                                                     </select>
                                                 </div>
                                             </div>

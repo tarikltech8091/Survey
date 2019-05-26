@@ -119,7 +119,7 @@ class SurveyerAssignController extends Controller
                 $insert=\DB::table('surveyer_assign_tbl')->insert($data);
                 // $update=\DB::table('campaign_tbl')->where('id', $data['payment_campaign_id'])->update($data);
 
-                // \App\System::EventLogWrite('insert,surveyer_assign_tbl',json_encode($data));
+                \App\System::EventLogWrite('insert,surveyer_assign_tbl',json_encode($data));
                 return redirect()->back()->with('message','Campaign Created Successfully');
 
 
@@ -154,10 +154,10 @@ class SurveyerAssignController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,assign_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,assign_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,assign_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,assign_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this content. Please upload and publish any content to publish this content.';
@@ -203,8 +203,8 @@ class SurveyerAssignController extends Controller
                     }
 
                     if(!isset($error)){
-                        /*\App\System::EventLogWrite('update,surveyer_assign_tbl',json_encode($data));
-                        \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));*/
+                        \App\System::EventLogWrite('update,surveyer_assign_tbl',json_encode($data));
+                        \App\System::EventLogWrite('update,surveyer_tbl',json_encode($surveyer_data));
                         \DB::commit();
                     }else{
                         \DB::rollback();
@@ -216,7 +216,7 @@ class SurveyerAssignController extends Controller
 
             }catch (\Exception $e){
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 echo 'Something wrong happend in Success Published.';
 
             }
@@ -282,14 +282,14 @@ class SurveyerAssignController extends Controller
 
                 $update=\DB::table('surveyer_assign_tbl')->where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,surveyer_assign_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,surveyer_assign_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -304,10 +304,10 @@ class SurveyerAssignController extends Controller
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,surveyer_assign_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,surveyer_assign_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,surveyer_assign_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,surveyer_assign_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }

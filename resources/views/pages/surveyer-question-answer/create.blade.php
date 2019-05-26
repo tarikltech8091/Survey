@@ -44,7 +44,9 @@
 
                                 </form>
 
-                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <h5 class="text-right">Question Answer ({{isset($select_question)? $select_question->question_position :''}} / {{isset($total_question)? $total_question :'0'}})</h5>
+                            </div>
 
                         </div>
 
@@ -83,7 +85,6 @@
                             @if(isset($select_question) && !empty($select_question))
 
                                 <div class="row">
-
                                     <div class="col-md-12">
 
                                         @if($question_position == 1)

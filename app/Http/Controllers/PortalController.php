@@ -35,17 +35,16 @@ class PortalController extends Controller
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
 
+        $participate_mobile='01821166739';
 
-
-        // \Cookie::queue(\Cookie::forget('mobile'));
-        // \Cookie::forget('mobile');
+        /*\Cookie::queue(\Cookie::forget('mobile'));
+        \Cookie::forget('mobile');
 
         if(\Cookie::has('mobile')){
             $cookie_value = \Cookie::get('mobile');
-            // var_dump($cookie_value);
         }else{
-            \Cookie::queue('mobile', '01821166739', 144000); //100 days
-        }
+            \Cookie::queue('mobile', $participate_mobile, 144000); //100 days
+        }*/
 
         return view('portal.campaign.registration',$data);
     }
@@ -78,6 +77,8 @@ class PortalController extends Controller
 
 
             try{
+
+                $participate_mobile=$request->input('participate_mobile');
 
                 $success = \DB::transaction(function () use($request) {
 
@@ -129,7 +130,6 @@ class PortalController extends Controller
                     );
 
 
-                    \Cookie::queue('mobile', $data['participate_mobile'], 144000); //100 days
 
 
                     /*$registration_data=array(
@@ -164,8 +164,9 @@ class PortalController extends Controller
                     }
 
                     if(!isset($error)){
-                        // \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
+                        \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
                         // \App\System::EventLogWrite('insert,users',json_encode($registration_data));
+
                         \DB::commit();
                         
                     }else{
@@ -175,6 +176,8 @@ class PortalController extends Controller
 
 
                 });
+
+                    \Cookie::queue('mobile', $participate_mobile, 144000); //100 days
 
                     return redirect()->to('/participate/registration')->with('message','Participate added successfully.');
 
@@ -517,6 +520,8 @@ class PortalController extends Controller
 
             $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
             $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+            $data['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
+
             $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
             $data['all_district']=\App\Common::AllDistrict();
             $data['all_zone']=\App\Zone::where('zone_status',1)->get();
@@ -554,7 +559,7 @@ class PortalController extends Controller
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
         $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
-        $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
+        $data['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
 
         $data['all_district']=\App\Common::AllDistrict();
         $data['all_zone']=\App\Zone::where('zone_status',1)->get();
@@ -912,7 +917,7 @@ class PortalController extends Controller
                         }
 
                         if(!isset($error)){
-                            // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                            \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                             \DB::commit();
                             
                         }else{
@@ -966,10 +971,10 @@ class PortalController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,question_answer_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,question_answer_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,question_answer_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,question_answer_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this questions. Please upload and publish any content to publish this content.';
@@ -992,6 +997,8 @@ class PortalController extends Controller
 
             $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
             $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+            $data['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
+
             $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
             $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->get();
 
@@ -1202,18 +1209,6 @@ class PortalController extends Controller
             return redirect()->back()->withErrors($v)->withInput();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

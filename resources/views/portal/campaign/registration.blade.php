@@ -83,13 +83,7 @@
                                             <input type="email" name="participate_email" placeholder="Participate Email"/>
                                         </div>
                                     </div>
-                                    <div class="row" style="margin: 0 3px">
-                                        <strong>Password</strong>
 
-                                        <div class="input-field col s12">
-                                            <input type="password" name="password" placeholder="Password"/>
-                                        </div>
-                                    </div>
                                     <div class="row" style="margin: 0 3px">
                                         <strong>Address</strong>
 

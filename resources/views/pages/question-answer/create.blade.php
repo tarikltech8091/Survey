@@ -46,6 +46,9 @@
                             @if(isset($select_question) && !empty($select_question))
 
                                 <div class="row">
+
+                                     <h5 class="text-center">Question Answer ({{isset($select_question)? $select_question->question_position :''}} / {{isset($total_question)? $total_question :'0'}})</h5>
+                                     
                                     <div class="col-md-12">
 
                                         @if($question_position == 1)

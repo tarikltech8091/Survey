@@ -88,7 +88,6 @@
                                     <option value="">&nbsp;Please Select a Type</option>
                                     <option {{($edit->question_type == 'multi') ? "selected" :''}} value="multi">Multi</option>
                                     <option {{($edit->question_type == 'single') ? "selected" :''}} value="single">Single</option>
-                                    <option {{($edit->question_type == 'text') ? "selected" :''}}  value="text">Text</option>
                                 </select>
                             </div>
                         </div>

@@ -251,6 +251,7 @@ class QuestionAnswerController extends Controller
         $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+        $data['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
         $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
         $data['all_district']=\App\Common::AllDistrict();
         $data['all_zone']=\App\Zone::where('zone_status',1)->get();
@@ -271,8 +272,8 @@ class QuestionAnswerController extends Controller
         $data['select_surveyer'] = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
         $data['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
         $data['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+        $data['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
         $data['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
-        $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
 
         $data['all_district']=\App\Common::AllDistrict();
         $data['all_zone']=\App\Zone::where('zone_status',1)->get();
@@ -479,9 +480,9 @@ class QuestionAnswerController extends Controller
 
 
                     if(!isset($error)){
-                        // \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
-                        // \App\System::EventLogWrite('insert,campaign_participate_tbl',json_encode($campaign_participate_data));
-                        // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                        \App\System::EventLogWrite('insert,participate_tbl',json_encode($data));
+                        \App\System::EventLogWrite('insert,campaign_participate_tbl',json_encode($campaign_participate_data));
+                        \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                         \DB::commit();
 
                         
@@ -622,7 +623,7 @@ class QuestionAnswerController extends Controller
                         }
 
                         if(!isset($error)){
-                            // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                            \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                             \DB::commit();
                             
                         }else{
@@ -676,10 +677,10 @@ class QuestionAnswerController extends Controller
 
             if($update) {
                 echo 'Status updated successfully.';
-                // \App\System::EventLogWrite('update,question_answer_status|Status updated successfully.',$id);
+                \App\System::EventLogWrite('update,question_answer_status|Status updated successfully.',$id);
             } else {
                 echo 'Status did not update.';
-                // \App\System::EventLogWrite('update,question_answer_status|Status did not updated.',$id);
+                \App\System::EventLogWrite('update,question_answer_status|Status did not updated.',$id);
             }
         } else{
             echo 'There is no published content for this questions. Please upload and publish any content to publish this content.';
@@ -707,10 +708,10 @@ class QuestionAnswerController extends Controller
 
             if($update) {
                 echo 'Validate updated successfully.';
-                // \App\System::EventLogWrite('update,question_answer_validate|Validate updated successfully.',$id);
+                \App\System::EventLogWrite('update,question_answer_validate|Validate updated successfully.',$id);
             } else {
                 echo 'Validate did not update.';
-                // \App\System::EventLogWrite('update,question_answer_validate|Validate did not updated.',$id);
+                \App\System::EventLogWrite('update,question_answer_validate|Validate did not updated.',$id);
             }
         } else{
             echo 'There is no validate content for this questions. Please upload and validate any content to validate this content.';
@@ -774,14 +775,14 @@ class QuestionAnswerController extends Controller
 
                 $update=\DB::table('question_tbl')->where('id', $id)->update($data);
 
-                // \App\System::EventLogWrite('update,question_tbl',json_encode($data));
+                \App\System::EventLogWrite('update,question_tbl',json_encode($data));
 
                 return redirect()->back()->with('message','Content Updated Successfully !!');
 
             }catch (\Exception $e){
 
                 $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-                // \App\System::ErrorLogWrite($message);
+                \App\System::ErrorLogWrite($message);
                 return redirect()->back()->with('errormessage','Something wrong happend in Content Update !!');
             }
         }else return redirect()->back()->withErrors($v)->withInput();
@@ -796,10 +797,10 @@ class QuestionAnswerController extends Controller
             ->where('id',$id)
             ->delete();
         if($delete) {
-            // \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
+            \App\System::EventLogWrite('delete,question_tbl|Content deleted successfully.',$id);
             echo 'Content deleted successfully.';
         } else {
-            // \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
+            \App\System::EventLogWrite('delete,question_tbl|Content did not delete.',$id);
             echo 'Content did not delete successfully.';
         }
     }
@@ -991,7 +992,7 @@ class QuestionAnswerController extends Controller
 
                     if(!isset($error)){
 
-                        // \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
+                        \App\System::EventLogWrite('insert,question_answer_tbl',json_encode($question_answer_data));
                         \DB::commit();
 
                         
