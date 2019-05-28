@@ -79,7 +79,7 @@
                                                         @if(!empty($all_campaign))
                                                         @foreach($all_campaign as $key =>$list)
                                                             <option value="{{$list->id}}">{{$list->campaign_name}}</option>
-                                                            <input type="hidden" class="form-control" name="assign_campaign_name" value="{{$list->campaign_name}}">
+                                                            <!-- <input type="hidden" class="form-control" name="assign_campaign_name" value="{{$list->campaign_name}}"> -->
                                                         @endforeach
                                                         @endif
 
@@ -101,8 +101,8 @@
                                                         @if(!empty($all_surveyer))
                                                         @foreach($all_surveyer as $key =>$list)
                                                             <option value="{{$list->id}}">{{$list->surveyer_name}}</option>
-                                                            <input type="hidden" class="form-control" name="assign_surveyer_name" value="{{$list->surveyer_name}}">
-                                                            <input type="hidden" class="form-control" name="assign_surveyer_mobile" value="{{$list->surveyer_mobile}}">
+                                                            <!-- <input type="hidden" class="form-control" name="assign_surveyer_name" value="{{$list->surveyer_name}}"> -->
+                                                            <!-- <input type="hidden" class="form-control" name="assign_surveyer_mobile" value="{{$list->surveyer_mobile}}"> -->
                                                             
                                                         @endforeach
                                                         @endif

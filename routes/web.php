@@ -37,7 +37,7 @@
       Route::get('/',array('as'=>'LogIn' , 'uses' =>'SystemAuthController@authLogin'));
 
 	Route::get('/auth',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
-	Route::get('auth/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
+	Route::get('/auth/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
 	Route::post('auth/post/login',array('as'=>'Sign in' , 'uses' =>'SystemAuthController@authPostLogin'));
 	Route::post('auth/registration',array('as'=>'Registration' , 'uses' =>'SystemAuthController@authRegistration'));
 	Route::post('auth/forget/password',array('as'=>'Forgot Password' , 'uses' =>'SystemAuthController@authForgotPasswordConfirm'));
@@ -103,7 +103,7 @@
 
 
 
-// Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
+Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
 
 
@@ -130,7 +130,7 @@ Route::group(['middleware' => ['admin_auth']], function () {
       #################*/
 
       #getAllContent
-      Route::get('/category/list',array('as'=>' Category List' , 'desc'=>'entry & Edit', 'uses' =>'CategoryController@getAllContent'));
+      Route::get('/category/list',array('as'=>'Category List' , 'desc'=>'entry & Edit', 'uses' =>'CategoryController@getAllContent'));
       #Create
       Route::get('/category/create',array('as'=>'Category Create' , 'desc'=>'entry & edit', 'uses' =>'CategoryController@Create'));
       #Store
@@ -152,7 +152,7 @@ Route::group(['middleware' => ['admin_auth']], function () {
       #################*/
 
       #getAllContent
-      Route::get('/zone/list',array('as'=>' Zone List' , 'desc'=>'entry & Edit', 'uses' =>'ZoneController@getAllContent'));
+      Route::get('/zone/list',array('as'=>'Zone List' , 'desc'=>'entry & Edit', 'uses' =>'ZoneController@getAllContent'));
       #Create
       Route::get('/zone/create',array('as'=>'Zone Create' , 'desc'=>'entry & edit', 'uses' =>'ZoneController@Create'));
       #Store

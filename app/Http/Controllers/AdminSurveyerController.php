@@ -255,6 +255,7 @@ class AdminSurveyerController extends Controller
                     });
                 }
             })
+                ->where('answer_surveyer_id', \Auth::user()->surveyer_id)
                 ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
                 ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
                 ->orderBy('question_answer_tbl.id','DESC')

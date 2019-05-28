@@ -62,7 +62,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-
+                                        <h5 class="text-center">( Please maintain sequential question position. )</h5>
+                                        
                                         <form role="form" class="form-horizontal" action="{{ url('/question/save') }}"
                                               id="question" method="post" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">

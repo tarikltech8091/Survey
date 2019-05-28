@@ -39,6 +39,11 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 	        echo "Hello API";
 	    });
 
+    	Route::get('/getMSISDN', array('as'=>'getMSISDN', 'uses'=>'ApiController@GetMSISDN'));
+
+    	Route::get('/participateRegistration', array('as'=>'getMSISDN', 'uses'=>'ApiController@participateRegistration'));
+    	Route::get('/getParticipateInfo', array('as'=>'getMSISDN', 'uses'=>'ApiController@getParticipateInfo'));
+
 	});
 
 });

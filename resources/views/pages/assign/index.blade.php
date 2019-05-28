@@ -176,9 +176,9 @@
                                                     <li>
                                                         <a class="success-status" data-success-status="1" data-surveyer-id="{{ $surveyer->id}}" title="Click for unpublish"><i class="fa fa-pencil"></i> Prize Confirm</a>
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <a data-toggle="modal" data-target="#RejectDetailsModal"  data-id="" class="text_none" href=""><i class="fa fa-external-link"></i> Prize Reject</a>
-                                                    </li>
+                                                    </li> -->
                                                     <li>
                                                         <a class="surveyer-delete" data-surveyer-id="{{ $surveyer->id}}">
                                                             <i class="fa fa-trash-o" aria-hidden="true"></i> Delete

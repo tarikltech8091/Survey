@@ -78,13 +78,8 @@
 			<div class="col-md-12 alert alert-success dash_pad_0">
 				<div class="row page_row_dash">
 
-					<div class="col-md-3" style="margin-top: 20px;">
+					<div class="col-md-3" style="margin-top: 20px;  padding-left: 50px;">
 						<div class="report_view reprt_color_1 cursor dashborad_menus centered">
-							<!-- <p>
-								<a href="#" style="color: #ffffff;">
-									<i class="fa fa-list" aria-hidden="true"></i>
-								</a>
-							</p> -->
 							<p class="report_name">	
 								<a href="#">Total Participate</a>
 							</p><br>
@@ -97,12 +92,8 @@
 					@if(!empty($numberOfQuestions))
 					@foreach($numberOfQuestions as $key => $list)
 
-						<div class="col-md-3" style="margin-top: 20px;">
+						<div class="col-md-3" style="margin-top: 20px;  padding-left: 50px;">
 							<div class="report_view reprt_color_1 cursor dashborad_menus centered">
-								<!-- <p>	
-									<a href="#" style="color: #ffffff;"><i class="fa fa-list" aria-hidden="true"></i>
-									</a>
-								</p> -->
 
 								<p class="report_name">	
 									<a href="{{url('/campaign/participate/question-'.$list->answer_question_id)}}">{{$list->question_answer_title}} </a>

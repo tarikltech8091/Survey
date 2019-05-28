@@ -89,9 +89,9 @@ class SurveyerAssignController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'assign_surveyer_id' => 'required',
-            'assign_surveyer_name' => 'required',
+            // 'assign_surveyer_name' => 'required',
             'assign_campaign_id' => 'required',
-            'assign_campaign_name' => 'required',
+            // 'assign_campaign_name' => 'required',
             'assign_zone' => 'required',
             'assign_target' => 'required',
             'surveyer_prize_amount' => 'required',
@@ -103,11 +103,17 @@ class SurveyerAssignController extends Controller
 
             try{
 
+                $assign_campaign_id=$request->input('assign_campaign_id');
+                $assign_surveyer_id=$request->input('assign_surveyer_id');
+
+                $campaign_info = \App\Campaign::where('id',$assign_campaign_id)->first();
+                $surveyer_info = \App\Surveyer::where('id',$assign_surveyer_id)->first();
+
                 $data['assign_surveyer_id']=$request->input('assign_surveyer_id');
-                $data['assign_surveyer_name']=$request->input('assign_surveyer_name');
-                $data['assign_surveyer_mobile']=$request->input('assign_surveyer_mobile');
+                $data['assign_surveyer_name']=$surveyer_info->surveyer_name;
+                $data['assign_surveyer_mobile']=$surveyer_info->surveyer_mobile;
                 $data['assign_campaign_id']=$request->input('assign_campaign_id');
-                $data['assign_campaign_name']=$request->input('assign_campaign_name');
+                $data['assign_campaign_name']=$campaign_info->campaign_name;
                 $data['assign_zone']=$request->input('assign_zone');
                 $data['assign_target']=$request->input('assign_target');
                 $data['surveyer_prize_amount']=$request->input('surveyer_prize_amount');
@@ -250,9 +256,9 @@ class SurveyerAssignController extends Controller
     {
         $v = \Validator::make($request->all(), [
             'assign_surveyer_id' => 'required',
-            'assign_surveyer_name' => 'required',
+            // 'assign_surveyer_name' => 'required',
             'assign_campaign_id' => 'required',
-            'assign_campaign_name' => 'required',
+            // 'assign_campaign_name' => 'required',
             'assign_zone' => 'required',
             'assign_target' => 'required',
             'surveyer_prize_amount' => 'required',
@@ -269,11 +275,17 @@ class SurveyerAssignController extends Controller
 				return redirect()->back()->with('message','Content Not Found !!');
 
 
+                $assign_campaign_id=$request->input('assign_campaign_id');
+                $assign_surveyer_id=$request->input('assign_surveyer_id');
+
+                $campaign_info = \App\Campaign::where('id',$assign_campaign_id)->first();
+                $surveyer_info = \App\Surveyer::where('id',$assign_surveyer_id)->first();
+
                 $data['assign_surveyer_id']=$request->input('assign_surveyer_id');
-                $data['assign_surveyer_name']=$request->input('assign_surveyer_name');
-                $data['assign_surveyer_mobile']=$request->input('assign_surveyer_mobile');
+                $data['assign_surveyer_name']=$surveyer_info->surveyer_name;
+                $data['assign_surveyer_mobile']=$surveyer_info->surveyer_mobile;
                 $data['assign_campaign_id']=$request->input('assign_campaign_id');
-                $data['assign_campaign_name']=$request->input('assign_campaign_name');
+                $data['assign_campaign_name']=$campaign_info->campaign_name;
                 $data['assign_zone']=$request->input('assign_zone');
                 $data['assign_target']=$request->input('assign_target');
                 $data['surveyer_prize_amount']=$request->input('surveyer_prize_amount');

@@ -36,20 +36,20 @@ class SystemAuthController extends Controller
             if (!empty(\Auth::user()->user_type)) {
                 if (\Auth::user()->user_type == "admin") {
                     \App\User::LogInStatusUpdate("login");
-                    return redirect('admin/dashboard');
+                    return redirect('/admin/dashboard');
                 }else if (\Auth::user()->user_type == "surveyer") {
                     \App\User::LogInStatusUpdate("login");
-                    return redirect('surveyer/dashboard');
+                    return redirect('/surveyer/dashboard');
                 }else if (\Auth::user()->user_type == "requester") {
                     \App\User::LogInStatusUpdate("login");
-                    return redirect('requester/dashboard');
+                    return redirect('/requester/dashboard');
                 } else {
                     \App\User::LogInStatusUpdate("login");
-                    return redirect('auth/login');
+                    return redirect('/auth/login');
                 }
             } else {
                 \Auth::logout();
-                return redirect('auth/login')->with('errormessage', 'Whoops, looks like something went wrong!.');
+                return redirect('/auth/login')->with('errormessage', 'Whoops, looks like something went wrong!.');
             }
         } else {
             $data['page_title'] = $this->page_title;
@@ -94,26 +94,36 @@ class SystemAuthController extends Controller
             \Session::put('email', \Auth::user()->email);
             \Session::put('last_login', Auth::user()->last_login);
             if (\Session::has('pre_login_url') ) {
+
                 $url = \Session::get('pre_login_url');
                 \Session::forget('pre_login_url');
                 return redirect($url);
-            } else if(\Auth::user()->user_type=="admin") {
+
+            } else if(\Auth::user()->user_type == "admin") {
+
                 \App\User::LogInStatusUpdate("login");
                 return redirect('/admin/dashboard');
+
             } else if(\Auth::user()->user_type=="surveyer") {
+
                 \App\User::LogInStatusUpdate("login");
                 return redirect('/surveyer/dashboard');
+
             } else if(\Auth::user()->user_type=="requester") {
+
                 \App\User::LogInStatusUpdate("login");
                 return redirect('/requester/dashboard');
+
             } else {
+
                 \App\User::LogInStatusUpdate("logout");
                 \Auth::logout();
-                return redirect('auth/login')
+                return redirect('/auth/login')
                     ->with('errormessage',"Sorry, You don't have permission to access this page.");
+
             }
         } else {
-            return redirect('auth/login')
+            return redirect('/auth/login')
                 ->with('errormessage',"Incorrect combinations.Please try again.");
         }
     }
