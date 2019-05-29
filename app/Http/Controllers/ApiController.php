@@ -21,17 +21,16 @@ class ApiController extends Controller
     public function GetAccessToken(Request $request){
 
         $now=date('Y-m-d H:i:s');
-        // try{
+        try{
 
+            $user_app_key = $request->input('user_app_key');
 
-            // $user_app_key = $request->input('user_app_key');
+            if(empty($user_app_key))
+                throw new \Exception("User APP Key is Required.");
 
-            // if(empty($user_app_key))
-            //     throw new \Exception("User APP Key is Required.");
-
-            // $data['user_app_key'] = $user_app_key;
-            $data['name'] = 'reet';
-            // $data['name_slug'] = 'aeerppww';
+            $data['user_app_key'] = $user_app_key;
+            $data['name'] = 'naim';
+            // $data['name_slug'] = 'naim';
             // $data['name_slug'] = $request->input('name_slug');
             $data['login_status'] = 0;
             $data['status'] = 'active';
@@ -44,14 +43,13 @@ class ApiController extends Controller
 
             if(!empty($request->input('user_mobile')))
                 $data['user_mobile'] =$request->input('user_mobile');
-                $data['user_mobile'] ='01912552254';
 
-            // if(!empty($request->input('user_imei_info')))
-            //     $data['user_imei_info'] = $request->input('user_imei_info');
+            if(!empty($request->input('user_imei_info')))
+                $data['user_imei_info'] = $request->input('user_imei_info');
 
 
             $user_info = \App\User::updateOrCreate(
-                // ['user_app_key' =>$data['user_app_key']],$data
+                ['user_app_key' =>$data['user_app_key']],
                 ['user_mobile' =>$data['user_mobile']],$data
             );
 
@@ -77,25 +75,23 @@ class ApiController extends Controller
 
             $response["access_token"]= $token;
 
-
-
             // \App\System::APILogWrite(\Request::all(),$response);
             return \Response::json($response);
 
 
-        // }catch(\Exception $e){
-        //     $response["errors"]= [
-        //         "statusCode"=> 501,
-        //         "errorMessage"=> $e->getMessage(),
-        //         "serverReferenceCode"=> $now,
-        //     ];
+        }catch(\Exception $e){
+            $response["errors"]= [
+                "statusCode"=> 501,
+                "errorMessage"=> $e->getMessage(),
+                "serverReferenceCode"=> $now,
+            ];
 
-        //     $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
 
-        //     \App\System::ErrorLogWrite($message);
-        //     \App\System::APILogWrite(\Request::all(),$response);
-        //     return \Response::json($response);
-        // }
+            \App\System::ErrorLogWrite($message);
+            \App\System::APILogWrite(\Request::all(),$response);
+            return \Response::json($response);
+        }
     }
 
     /********************************************
@@ -287,7 +283,39 @@ class ApiController extends Controller
                         );
 
 
-                        $participate_registration_info=\DB::table('participate_tbl')->insertGetId($client_registration_confirm);
+
+
+                        $participate_registration_update=array(
+                            'participate_name' => $userinfo['participate_name'],
+                            'participate_name_slug' => $participate_name_slug,
+                            'participate_email' => $userinfo['participate_email'],
+                            'participate_mobile' =>$userinfo['participate_mobile'],
+                            'participate_age' => $userinfo['participate_age'],
+                            'participate_join_date' =>$userinfo['participate_join_date'],
+                            'participate_district' => $userinfo['participate_district'],
+                            'participate_post_code' => $userinfo['participate_post_code'],
+                            'participate_address' =>$userinfo['participate_address'],
+                            'participate_nid' => $userinfo['participate_nid'],
+                            'participate_gender' => $userinfo['participate_gender'],
+                            'participate_religion' => $userinfo['participate_religion'],
+                            'participate_occupation' => $userinfo['participate_occupation'],
+                            'participate_zone' => $userinfo['participate_zone'],
+                            'participate_profile_image' => $participate_profile_image,
+                            'updated_at' => $now,
+                        );
+
+
+                        $participate_info=\DB::table('participate_tbl')->where('participate_mobile',$userinfo['participate_mobile'])->first();
+
+                        if(empty($participate_info)){
+
+                            $participate_registration_info=\DB::table('participate_tbl')->insertGetId($participate_registration_confirm);
+
+                        }else{
+
+                            $participate_registration_info=\DB::table('participate_tbl')->where('participate_mobile',$userinfo['participate_mobile'])->update($participate_registration_confirm);
+
+                        }
 
                         // \App\System::EventLogWrite('insert,participate_tbl',json_encode($participate_registration_confirm));
 
@@ -355,9 +383,9 @@ class ApiController extends Controller
 
 
     /********************************************
-    ## ClientDirectLogin
+    ## SurveyerLogin
     *********************************************/
-    public function ClientDirectLogin(){
+    public function SurveyerLogin(){
         $now=date('Y-m-d H:i:s');
         try{
 
@@ -371,17 +399,14 @@ class ApiController extends Controller
 
             if(!empty($get_info) && !empty($logininfo)){
 
-                    $user_mobile = $logininfo['mobile'];
-                    $push_token = $logininfo['push_token'];
-                    $user_platform =$logininfo['user_platform'];
+                    $user_mobile = $logininfo['user_mobile'];
 
+                    $surveyer_info=\DB::table('users')->where('user_mobile',$user_mobile)->where('status','1')->first();
 
-                    $client_user_info=\DB::table('users')->where('mobile',$user_mobile)->where('status','1')->first();
-
-                if(!empty($client_user_info)){
+                if(!empty($surveyer_info)){
 
                         $credentials = [
-                            'mobile' =>$user_mobile,
+                            'user_mobile' =>$user_mobile,
                         ];
 
                         $response["success"]= [
@@ -390,21 +415,17 @@ class ApiController extends Controller
                             "serverReferenceCode"=>$now
                         ];
 
-                        $response["logininfo"]= $client_user_info;
+                        $response["logininfo"]= $surveyer_info;
 
                         $requestlog_update_data=[
                             "request_response"=>json_encode($response),
                             "updated_at"=>$now,
                         ];
                         $user_update_data=[
-                            "push_token"=>$push_token,
-                            "user_platform"=>$user_platform,
                             "updated_at"=>$now,
                         ];
                                                 
-                        $client_registration_update=\DB::table('users')->where('id', $client_user_info->id)->update($user_update_data);
-
-                        \DB::table('request_log')->where('request_id',$this->request_id)->update($requestlog_update_data);
+                        $client_registration_update=\DB::table('users')->where('id', $surveyer_info->id)->update($user_update_data);
 
                         \App\Api::ResponseLogWrite('Successfully Login.',json_encode($response));
 
@@ -416,8 +437,6 @@ class ApiController extends Controller
                         "errorMessage"=> "Invalid user or block user.",
                         "serverReferenceCode"=> $now
                     ];
-
-                    \DB::table('request_log')->where('request_id',$this->request_id)->update(array("request_response" =>json_encode($response),"updated_at"=>$now));
 
                     \App\Api::ResponseLogWrite('Invalid user.',json_encode($response));
 
@@ -432,8 +451,6 @@ class ApiController extends Controller
                         "serverReferenceCode"=> $now
                     ];
 
-                \DB::table('request_log')->where('request_id',$this->request_id)->update(array("request_response" =>json_encode($response),"updated_at"=>$now));
-
                 \App\Api::ResponseLogWrite('IMEI Number or Access Token is invalid',json_encode($response));
 
                 return \Response::json($response);
@@ -446,8 +463,6 @@ class ApiController extends Controller
                     "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
                     "serverReferenceCode"=> $now,
                 ];
-
-            \DB::table('request_log')->where('request_id',$this->request_id)->update(array("request_response" =>json_encode($response),"updated_at"=>$now));
 
             $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
 
@@ -469,14 +484,9 @@ class ApiController extends Controller
         try{
 
             $accessinfo = \Request::input('accessinfo');
-            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
-            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
             $userinfo = \Request::input('userinfo');
 
-
-
-            $get_info=\DB::table('table_app_token')->where('imei_no',$imei_no)->where('access_token',$access_token)->first();
-            if(!empty($get_info) && !empty($userinfo)){
+            if(!empty($userinfo)){
 
                 $user_id=$accessinfo['user_id'];
                 $user_info=\DB::table('users')->where('id',$user_id)->first();
@@ -497,17 +507,7 @@ class ApiController extends Controller
                     $email=$user_info->email;
                 }
 
-                //if(!empty($userinfo['user_profile_image'])){
-
-                    //$file_data = $userinfo['user_profile_image'];
-
-                    //$image_path =\App\Admin::AppProfileImageUpload($file_data,$name_slug);
-                    //$user_image=$image_path;
-
-                //}
-                //else{
-                    $user_image=$user_info->user_profile_image;
-                //}
+                $user_image='';
 
                 $users_update_data=[
                                 "name"=>$name,
@@ -519,7 +519,6 @@ class ApiController extends Controller
 
                 $response["success"]= [
                     "statusCode"=> 200,
-                    //"successMessage"=> $user_image,
                     "successMessage"=> "Successfully updated",
                     "serverReferenceCode"=>$now
                 ];
@@ -529,7 +528,6 @@ class ApiController extends Controller
                     "request_response"=>json_encode($response),
                     "updated_at"=>$now,
                 ];
-                \DB::table('request_log')->where('request_id',$this->request_id)->update($requestlog_update_data);
                 $user_update_info=\DB::table('users')->where('id',$accessinfo['user_id'])->update($users_update_data);
 
                 $update_user_info=\DB::table('users')->where('id',$user_id)->first();
@@ -547,8 +545,6 @@ class ApiController extends Controller
                     "serverReferenceCode"=> $now
                 ];
 
-                \DB::table('request_log')->where('request_id',$this->request_id)->update(array("request_response" =>json_encode($response),"updated_at"=>$now));
-
                 \App\Api::ResponseLogWrite('IMEI Number or Access Token is invalid',json_encode($response));
 
                 return \Response::json($response);
@@ -561,8 +557,6 @@ class ApiController extends Controller
                 "errorMessage"=>  $e->getMessage(),
                 "serverReferenceCode"=> $now,
             ];
-
-            \DB::table('request_log')->where('request_id',$this->request_id)->update(array("request_response" =>json_encode($response),"updated_at"=>$now));
 
             $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
 
