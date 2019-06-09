@@ -203,7 +203,7 @@ class AdminSurveyerController extends Controller
         $data['surveyer_assign_info'] =  \App\SurveyerAssign::
             where('surveyer_assign_tbl.assign_surveyer_id',\Auth::user()->surveyer_id)
             ->orderby('id','desc')
-            ->select('surveyer_assign_tbl.id')
+            ->select('surveyer_assign_tbl.assign_campaign_id')
             ->get()->toArray();
 
         if(!empty($data['surveyer_assign_info'])){

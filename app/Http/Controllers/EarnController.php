@@ -90,7 +90,7 @@ class EarnController extends Controller
 
         if($v->passes()){
 
-            // try{
+            try{
 
 
 

@@ -42,7 +42,33 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
     	Route::get('/getMSISDN', array('as'=>'getMSISDN', 'uses'=>'ApiController@GetMSISDN'));
 
     	Route::get('/participateRegistration', array('as'=>'getMSISDN', 'uses'=>'ApiController@participateRegistration'));
-    	Route::get('/getParticipateInfo', array('as'=>'getMSISDN', 'uses'=>'ApiController@getParticipateInfo'));
+    	Route::get('/getParticipateInfo', array('as'=>'Get Participate Info', 'uses'=>'ApiController@getParticipateInfo'));
+    	Route::get('/getCampaignInfo', array('as'=>'Get Campaign Info', 'uses'=>'ApiController@getCampaignInfo'));
+
+    	Route::get('/getCampaignParticipateInfo', array('as'=>'Get Campaign Participate Info', 'uses'=>'ApiController@getCampaignParticipateInfo'));
+
+    	Route::get('/getQuestionAnswerInfo', array('as'=>'Get Question Answer Info', 'uses'=>'ApiController@getQuestionAnswerInfo'));
+
+
+    	Route::get('/getCampaignDetails', array('as'=>'Get Campaign Details', 'uses'=>'ApiController@getCampaignDetails'));
+    	Route::get('/getParticipateQuestionInfo', array('as'=>'Get Participate Question Info', 'uses'=>'ApiController@getParticipateQuestionInfo'));
+
+    	Route::get('/participateQuestionAnswerStore', array('as'=>'Participate Question Answer Store', 'uses'=>'ApiController@participateQuestionAnswerStore'));
+    	Route::get('/getParticipateQuestionInfo', array('as'=>'Get Participate Question Info', 'uses'=>'ApiController@getParticipateQuestionInfo'));
+
+
+    	Route::get('/getSurveyerInfo', array('as'=>'Get Surveyer Info', 'uses'=>'ApiController@getSurveyerInfo'));
+
+    	Route::get('/getSurveyerCampaignInfo', array('as'=>'Get Surveyer Campaign Info', 'uses'=>'ApiController@getSurveyerCampaignInfo'));
+
+    	Route::get('/getAllContentCountdown', array('as'=>'Get All Contenrt Countdown', 'uses'=>'ApiController@getAllContentCountdown'));
+
+    	Route::get('/getAllSingleQuestionAnswer', array('as'=>'Get All Single Question Answer', 'uses'=>'ApiController@getAllSingleQuestionAnswer'));
+
+    	Route::get('/getAllSingleQuestionAnswer', array('as'=>'Get All Contenrt Countdown', 'uses'=>'ApiController@getAllSingleQuestionAnswer'));
+
+
+    	
 
 	});
 
