@@ -52,11 +52,15 @@
 
       Route::get('/hello',array('as'=>'hello' , 'uses' =>'PortalQuestionController@getAllContent'));
 
+      // Route::get('/test',array('as'=>'test' , 'uses' =>'PortalController@test'));
 
 
 
       #PortalCampaign
       Route::get('/participate/registration',array('as'=>'Participate Registration' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@ParticipateRegistration'));
+
+      #PortalAjaxGetZone
+      Route::get('/portal/ajax/get/zone/by/district-{district}',array('as'=>'Portal Ajax Get Zone' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@PortalAjaxGetZone'));
 
       Route::post('/participate/registration/save',array('as'=>'Registration Confirm' , 'desc'=>'entry & Edit', 'uses' =>'PortalController@RegistrationConfirm'));
 
@@ -533,6 +537,9 @@ Route::group(['middleware' => ['surveyer_auth']], function () {
 
       #Create
       Route::get('/surveyer/question/answer/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@FirstQuestionAnswer'));
+
+      #AjaxGetZone
+      Route::get('/ajax/get/zone/by/district-{district}',array('as'=>'Ajax Get Zone' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@AjaxGetZone'));
 
       Route::get('/surveyer/all/question/answer/{participate_mobile}/{surveyer_id}/{campaign_id}/{question_position}',array('as'=>'All Question Answer Create' , 'desc'=>'entry & Edit', 'uses' =>'AdminSurveyerController@QuestionAnswer'));
       

@@ -109,7 +109,7 @@
                                     <div class="row">
                                         <div class="col s12">
                                             <strong>District Select</strong>
-                                            <select name="participate_district"  class="browser-default" style="background-color: #cccccc; border: 2px #9e9e9e solid;">
+                                            <select name="participate_district"  class="browser-default select_district" style="background-color: #cccccc; border: 2px #9e9e9e solid;">
                                                 <option value=""selected>Please Select a District</option>
                                                 @if(!empty($all_district))
                                                 @foreach($all_district as $key =>$list)
@@ -120,8 +120,11 @@
                                         </div>
                                     </div>
 
+                                    <div class="district_zone">
 
-                                    <div class="row">
+                                    </div>
+
+                                    <!-- <div class="row">
                                         <div class="col s12">
                                             <strong>Zone Select</strong>
                                             <select name="participate_zone"  class="browser-default" style="background-color: #cccccc; border: 2px #9e9e9e solid;">
@@ -134,7 +137,7 @@
                                                 @endif
                                         </select>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="row">
                                         <div class="col s12">
@@ -224,7 +227,38 @@
     <script type="text/javascript">
         $(document).ready(function(){
             var site_url = $('.site_url').val();
+
+
+            /* ===============================
+                Ajax zone view by district 
+           * ============================= */
+
+            jQuery('.select_district').change(function(){
+
+                var district = jQuery(this).val();
+                var site_url = jQuery('.site_url').val();
+                if(district.length !=0){
+
+                    var request_url = site_url+'/portal/ajax/get/zone/by/district-'+district;
+
+                    jQuery.ajax({
+                        url: request_url,
+                        type: "get",
+                        success:function(data){
+
+                            jQuery('.district_zone').html(data);
+                        }
+                    });
+
+                }else alert("Please Select District");
+
+            });
+
+
         });
+
+
+
         
     </script>
 @endsection

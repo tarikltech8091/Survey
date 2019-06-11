@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Exception;
 use Db;
 use App\User;
+Use Crypt;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 class PortalController extends Controller
@@ -35,9 +37,9 @@ class PortalController extends Controller
         $data['page_title'] = $this->page_title;
         $data['page_desc'] = $this->page_desc;
 
-        $participate_mobile='01821166739';
+        /*$participate_mobile='01821166739';
 
-        /*\Cookie::queue(\Cookie::forget('mobile'));
+        \Cookie::queue(\Cookie::forget('mobile'));
         \Cookie::forget('mobile');
 
         if(\Cookie::has('mobile')){
@@ -47,6 +49,33 @@ class PortalController extends Controller
         }*/
 
         return view('portal.campaign.registration',$data);
+    }
+
+    /********************************************
+    ## test 
+    *********************************************/
+    /*public function test()
+    {
+
+            // Use Crypt::decrypt();
+
+            $value = Crypt::decrypt('$2y$10$3fOEuruEkPyuF5SsRkKZ9eK094gBKwM3k7V3tw/KDv1a63qML.PYu');
+            // $value = 'ss';
+            echo $value;
+
+    }*/
+
+
+    /********************************************
+    ##  PortalAjaxGetZone
+     *********************************************/
+    public function PortalAjaxGetZone($district)
+    {
+
+        $data['zone_info'] =  \App\Zone::where('zone_district',$district)->orderby('id','desc')->get();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('portal.campaign.ajax-zone',$data);
     }
 
     /********************************************

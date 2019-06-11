@@ -114,109 +114,108 @@ class ApiController extends Controller
 
             $user_mobile = substr($request->input('user_mobile'), -11);
 
-            if(!empty($request->input('user_mobile'))){
+            $mobile_num_count=strlen($user_mobile);
 
-                $data['name'] = 'Unknown';
-                $data['name_slug'] = 'unknown';
-                $data['user_type'] = 'app';
-                $data['user_role'] = 'app';
-                $data['user_mobile'] = substr($request->input('user_mobile'), -11);
-                $data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
-                $data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
-                $data['user_profile_image'] = '';
-                $data['email'] = !empty($request->input('email'))?$request->input('email'):'unknown@unknown.com';
-                $data['password']=\Hash::make('1234');
+            if(is_numeric($user_mobile) && $mobile_num_count == 11){
 
-            }else{
+                if(!empty($request->input('user_mobile'))){
 
-                /*$data['name'] = 'Anonymous';
-                $data['name_slug'] = 'anonymous';
-                $data['user_type'] = 'app';
-                $data['user_role'] = 'app';
-                $data['user_mobile'] = 'anonymous';
-                $data['user_app_key'] = 'anonymous';
-                $data['user_imei_info'] = 'anonymous';
-                $data['user_profile_image'] = '';
-                $data['email'] = 'anonymous@anonymous.com';
-                $data['password']=\Hash::make('1234');*/
+                    $data['name'] = 'Unknown';
+                    $data['name_slug'] = 'unknown';
+                    $data['user_type'] = 'app';
+                    $data['user_role'] = 'app';
+                    $data['user_mobile'] = substr($request->input('user_mobile'), -11);
+                    $data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
+                    $data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
+                    $data['user_profile_image'] = '';
+                    $data['email'] = !empty($request->input('email'))?$request->input('email'):'unknown@unknown.com';
+                    $data['password']=\Hash::make('1234');
 
-            }
+                }else{
+
+                    $response["errors"]= [
+                        "statusCode"=> 403,
+                        "successMessage"=> 'Mobile number is required.',
+                        "serverReferenceCode"=>$now
+                    ];
+
+                    \App\System::APILogWrite(\Request::all(),$response);
+                    return \Response::json($response);
+
+                }
+
                 $data['login_status'] = 0;
                 $data['status'] = 'active';
 
-
-            $current_user =\DB::table('users')->where('user_mobile', $user_mobile)->first();
-
-            if(empty($current_user)){
-
-                $user_info =\DB::table('users')->insert($data);
-
-                // $user_info = \App\User::firstOrCreate(
-                //     ['user_mobile' =>$data['user_mobile']],
-                //     $data
-                // );
-
-                /*$data['app_key'] = $app_key;
-                $data['name'] = 'naim';
-                // $data['name_slug'] = 'naim';
-                // $data['name_slug'] = $request->input('name_slug');
-                $data['login_status'] = 0;
-                $data['status'] = 'active';
-                // $data['created_by'] = 1;
-                // $data['updated_by'] = 1;
-                $data['user_type'] = 'app';
-                // $data['email'] = 'Surveyapp@gmail.com';
-                $data['user_role'] = 'Surveyapp';
-                $data['password']=\Hash::make('1234');
-
-                if(!empty($request->input('user_mobile')))
-                    $data['user_mobile'] =$request->input('user_mobile');
-
-                if(!empty($request->input('user_imei_info')))
-                    $data['user_imei_info'] = $request->input('user_imei_info');*/
-
+                    
                 /*$user_info = \App\User::updateOrCreate(
                     ['user_app_key' =>$data['user_app_key']],
-                    ['user_mobile' =>$data['user_mobile']],$data
+                    ['user_mobile' =>$data['user_mobile']],
+                    $data
                 );*/
 
-                if($user_info)
-                // if($user_info->wasRecentlyCreated)
-                    $success_message ="Registration Successfully Completed";
-                else $success_message ="Already Registered";
 
-                #ForToken
-                $response["iTunes"]= 1;
-                $data['password']='1234';
-                $response["success"]= [
-                    "statusCode"=> 200,
-                    "successMessage"=> $success_message,
-                    "serverReferenceCode"=>$now
-                ];
+                $current_user =\DB::table('users')->where('user_mobile', $user_mobile)->first();
+
+                if(empty($current_user)){
+
+                    $user_info =\DB::table('users')->insert($data);
+
+                    if($user_info)
+
+                        $success_message ="Registration Successfully Completed";
+
+                    else $success_message ="Already Registered";
+
+                    #ForToken
+                    $response["iTunes"]= 1;
+                    $data['password']='1234';
+
+                    $response["success"]= [
+                        "statusCode"=> 200,
+                        "successMessage"=> $success_message,
+                        "serverReferenceCode"=>$now
+                    ];
+
+                }else{
+
+
+                    $update_data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
+                    $update_data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
+                    $update_data['user_profile_image'] = '';
+
+
+                    $user_info =\DB::table('users')->where('user_mobile', $user_mobile)->update($update_data);
+
+                    $response["iTunes"]= 1;
+                    $data['password']='1234';
+                    $response["success"]= [
+                            "statusCode"=> 200,
+                            "errorMessage"=> "Already Register User",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                }
 
 
                 if(!$token = \JWTAuth::attempt($data))
-
                 // if(!$token = auth('api')->attempt($data))
-
                     throw new \Exception("Something Wrong In Token");
 
                 $response["access_token"]= $token;
 
-                // \App\System::APILogWrite(\Request::all(),$response);
+                \App\System::APILogWrite(\Request::all(),$response);
                 return \Response::json($response);
 
             }else{
 
-
                 $response["errors"]= [
-                        "statusCode"=> 403,
-                        "errorMessage"=> "Already Register User",
-                        "serverReferenceCode"=> $now
-                    ];
+                    "statusCode"=> 403,
+                    "successMessage"=> 'Mobile number is to be 11 digit.',
+                    "serverReferenceCode"=>$now
+                ];
 
-                \App\Api::ResponseLogWrite('Already Register User',json_encode($response));
-
+                \App\System::APILogWrite(\Request::all(),$response);
                 return \Response::json($response);
 
             }
@@ -399,6 +398,7 @@ class ApiController extends Controller
                             $img_location_wide=$image_wide->getRealPath();
                             $img_ext_wide=$image_wide->getClientOriginalExtension();
                             $participate_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$participate_name);*/
+
                             $participate_profile_image="";
 
                         }else{
@@ -525,13 +525,11 @@ class ApiController extends Controller
     }
 
 
-
-
-
     /********************************************
-    ## SurveyerLogin
+    ## SurveyerOrRequesterLogin
     *********************************************/
-    public function SurveyerLogin(){
+    public function SurveyerOrRequesterLogin(){
+
         $now=date('Y-m-d H:i:s');
         try{
 
@@ -540,20 +538,27 @@ class ApiController extends Controller
             $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
             $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
 
-            $get_info=\DB::table('table_app_token')->where('imei_no',$imei_no)->where('access_token',$access_token)->first();
 
-
-            if(!empty($get_info) && !empty($logininfo)){
+            if( !empty($logininfo)){
 
                     $user_mobile = $logininfo['user_mobile'];
+                    $password = $logininfo['password'];
+                    $user_role = $logininfo['user_role'];
 
-                    $surveyer_info=\DB::table('users')->where('user_mobile',$user_mobile)->where('status','1')->first();
+                    $surveyer_info=\DB::table('users')->where('user_mobile',$user_mobile)->where('user_role', $user_role)->where('status','1')->first();
 
                 if(!empty($surveyer_info)){
 
-                        $credentials = [
-                            'user_mobile' =>$user_mobile,
-                        ];
+
+                    $credentials = [
+                        'user_mobile' =>$user_mobile,
+                        'password'=>$password,
+                        'status'=>'active',
+                    ];
+
+
+                    if(\Auth::attempt($credentials)){
+
 
                         $response["success"]= [
                             "statusCode"=> 200,
@@ -577,6 +582,20 @@ class ApiController extends Controller
 
                         return \Response::json($response);
 
+
+                    }else{
+
+                        $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Incorrect combinations. Please try again.",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                        \App\Api::ResponseLogWrite('Incorrect combinations.Please try again.',json_encode($response));
+
+                        return \Response::json($response);
+                    }
+
                 }else{
                     $response["errors"]= [
                         "statusCode"=> 403,
@@ -593,7 +612,7 @@ class ApiController extends Controller
 
                 $response["errors"]= [
                         "statusCode"=> 403,
-                        "errorMessage"=> "IMEI Number or Access Token is invalid",
+                        "errorMessage"=> "Please provide user mobile and password.",
                         "serverReferenceCode"=> $now
                     ];
 
@@ -719,6 +738,7 @@ class ApiController extends Controller
     *********************************************/
 
     public function getParticipateInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -789,6 +809,7 @@ class ApiController extends Controller
     *********************************************/
 
     public function getCampaignInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -859,6 +880,7 @@ class ApiController extends Controller
     *********************************************/
 
     public function getCampaignParticipateInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -874,7 +896,10 @@ class ApiController extends Controller
 
                 $participate_mobile=$userinfo['participate_mobile'];
 
-                $all_content= \App\CampaignParticipate::where('campaign_participate_mobile', $participate_mobile)->orderBy('id','DESC')->get();
+                $all_content= \App\CampaignParticipate::where('campaign_participate_mobile', $participate_mobile)
+                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'campaign_participate_tbl.participate_campaign_id')
+                ->select('campaign_tbl.id AS campaign_id', 'campaign_tbl.*', 'campaign_participate_tbl.*')
+                ->orderBy('id','DESC')->get();
 
 
                 $response["success"]= [
@@ -1110,7 +1135,7 @@ class ApiController extends Controller
                 $response['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
 
                 $response['all_district']=\App\Common::AllDistrict();
-                $response['all_zone']=\App\Zone::where('zone_status',1)->get();
+                // $response['all_zone']=\App\Zone::where('zone_status',1)->get();
 
                 $response["success"]= [
                     "statusCode"=> 200,
@@ -1167,6 +1192,7 @@ class ApiController extends Controller
     *********************************************/
 
     public function participateQuestionAnswerStore(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1180,11 +1206,11 @@ class ApiController extends Controller
             $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
 
 
-            if( !empty($userinfo)){
+            if( !empty($userinfo) &&  !empty($campaigninfo) &&  !empty($questionanswerinfo)){
 
                 $answer_campaign_id=$campaigninfo['campaign_id'];
 
-                $answer_question_position=$campaigninfo['question_position'];
+                $answer_question_position=$questionanswerinfo['question_position'];
 
                 $question_next_position = $answer_question_position + 1;
 
@@ -1371,10 +1397,11 @@ class ApiController extends Controller
 
 
     /********************************************
-    ## getParticipateQuestionInfo
+    ## ParticipateQuestionInfo
     *********************************************/
 
-    public function getParticipateQuestionInfo(){
+    public function ParticipateQuestionInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1456,11 +1483,25 @@ class ApiController extends Controller
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     /********************************************
     ## getSurveyerInfo
     *********************************************/
 
     public function getSurveyerInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1526,25 +1567,12 @@ class ApiController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /********************************************
     ## getSurveyerCampaignInfo
     *********************************************/
 
     public function getSurveyerCampaignInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1628,7 +1656,7 @@ class ApiController extends Controller
     ## getAllContentCountdown
     *********************************************/
 
-    public function getAllContentCountdown(){
+    public function getSurveyerAllContentCountdown(){
 
         $now=date('Y-m-d H:i:s');
 
@@ -1763,11 +1791,13 @@ class ApiController extends Controller
 
 
 
+
     /********************************************
     ## getAllSingleQuestionAnswer
     *********************************************/
 
     public function getAllSingleQuestionAnswer(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1869,14 +1899,12 @@ class ApiController extends Controller
     }
 
 
-
-
-
     /********************************************
     ## getSurveyerPaymentInfo
     *********************************************/
 
     public function getSurveyerPaymentInfo(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1947,13 +1975,12 @@ class ApiController extends Controller
     }
 
 
-
-
     /********************************************
     ## getSurveyerQuestionAnswerList
     *********************************************/
 
     public function getSurveyerQuestionAnswerList(){
+
         $now=date('Y-m-d H:i:s');
 
         try{
@@ -1972,45 +1999,58 @@ class ApiController extends Controller
                 $surveyer_info =  \App\Surveyer::
                     where('surveyer_mobile',$surveyer_mobile)
                     ->first();
-                
-                $all_content=\DB::table('question_answer_tbl')
-                                ->where('question_answer_tbl.answer_surveyer_id',$surveyer_info->id)
-                                ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
-                                ->join('surveyer_tbl', 'surveyer_tbl.id', '=', 'question_answer_tbl.answer_surveyer_id')
-                                ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
-                                ->orderBy('question_answer_tbl.id','DESC')
-                                ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*', 'surveyer_tbl.*', 'question_tbl.*', 'question_answer_tbl.*')
-                                ->get();
 
-                $response['all_content'] = $all_content;
+                if(!empty($userinfo)){
+                    
+                    $all_content=\DB::table('question_answer_tbl')
+                                    ->where('question_answer_tbl.answer_surveyer_id',$surveyer_info->id)
+                                    ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                                    ->join('surveyer_tbl', 'surveyer_tbl.id', '=', 'question_answer_tbl.answer_surveyer_id')
+                                    ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                                    ->orderBy('question_answer_tbl.id','DESC')
+                                    ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*', 'surveyer_tbl.*', 'question_tbl.*', 'question_answer_tbl.*')
+                                    ->get();
 
-
-                $surveyer_assign_info =  \App\SurveyerAssign::
-                    where('surveyer_assign_tbl.assign_surveyer_mobile',$surveyer_mobile)
-                    ->orderby('id','desc')
-                    ->select('surveyer_assign_tbl.id')
-                    ->get()->toArray();
-
-                if(!empty($data['surveyer_assign_info'])){
-
-                    $response['all_campaign'] =  \App\Campaign::orderby('id','desc')
-                    ->whereIn('campaign_tbl.id',$surveyer_assign_info)
-                    ->get();
-                }
+                    $response['all_content'] = $all_content;
 
 
+                    $surveyer_assign_info =  \App\SurveyerAssign::
+                        where('surveyer_assign_tbl.assign_surveyer_mobile',$surveyer_mobile)
+                        ->orderby('id','desc')
+                        ->select('surveyer_assign_tbl.id')
+                        ->get()->toArray();
 
-                    $response["success"]= [
-                        "statusCode"=> 200,
-                        "successMessage"=> "Get Surveyer Info Successfully.",
-                        "serverReferenceCode"=>$now
-                    ];
+                    if(!empty($data['surveyer_assign_info'])){
+
+                        $response['all_campaign'] =  \App\Campaign::orderby('id','desc')
+                        ->whereIn('campaign_tbl.id',$surveyer_assign_info)
+                        ->get();
+                    }
 
 
-                    \App\System::APILogWrite(\Request::all(),$response);
+
+                        $response["success"]= [
+                            "statusCode"=> 200,
+                            "successMessage"=> "Get Surveyer Info Successfully.",
+                            "serverReferenceCode"=>$now
+                        ];
+
+
+                        \App\System::APILogWrite(\Request::all(),$response);
+                        return \Response::json($response);
+
+                }else{
+
+                    $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Invalid Surveyer",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                    \App\Api::ResponseLogWrite('Invalid User Info',json_encode($response));
+
                     return \Response::json($response);
-
-
+                }
 
             }else{
 
@@ -2043,7 +2083,6 @@ class ApiController extends Controller
 
 
     }
-
 
 
     /********************************************
@@ -2131,7 +2170,6 @@ class ApiController extends Controller
     }
 
 
-
     /********************************************
     ## FirstQuestionAnswerStore
     *********************************************/
@@ -2153,12 +2191,7 @@ class ApiController extends Controller
 
             if(!empty($userinfo) && !empty($campaigninfo)  && !empty($answerinfo)){
 
-
-            
-
                 $next_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_next_position)->where('question_status','1')->first();
-
-
 
                 $success = \DB::transaction(function () use($request) {
 
@@ -2363,8 +2396,6 @@ class ApiController extends Controller
 
 
     }
-
-
 
 
     /********************************************
@@ -2637,6 +2668,365 @@ class ApiController extends Controller
 
 
 
+
+
+
+
+
+    /********************************************
+    ## RequesterAllContentCountdown
+    *********************************************/
+
+    public function RequesterAllContentCountdown(){
+
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if(!empty($userinfo)){
+
+                $campaign_id=$userinfo['campaign_id'];
+                $requester_id=$userinfo['requester_id'];
+
+            
+                if(isset($campaign_id)){
+
+                    $total_participate =  \App\CampaignParticipate::where(function($query){
+                        if(isset($campaign_id)){
+                            $query->where(function ($q){
+                                $q->where('participate_campaign_id', $campaign_id);
+                            });
+                        }
+                    })
+                        ->orderBy('id','DESC')
+                        ->count();
+
+                    $response['total_participate'] = $total_participate;
+
+
+                    $numberOfQuestions = \DB::table('question_answer_tbl')->where('answer_campaign_id', $campaign_id)->select('answer_question_id','question_answer_title',DB::raw('count(*) as num'))->groupBy('answer_question_id','question_answer_title')->get();
+                    $response['numberOfQuestions'] = $numberOfQuestions;
+
+
+                    $all_content =  \App\QuestionAnswer::where(function($query){
+                        if(isset($campaign_id)){
+                            $query->where(function ($q){
+                                $q->where('answer_campaign_id', $campaign_id);
+                            });
+                        }
+                    })
+                        ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                        ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                        ->orderBy('question_answer_tbl.id','DESC')
+                        ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                        ->get();
+
+                    $response['all_content'] = $all_content;
+
+                }
+
+
+                $response['all_campaign'] =  \App\Campaign::orderby('id','desc')->where('campaign_requester_id', $requester_id)->get();
+
+
+
+
+                $response["success"]= [
+                    "statusCode"=> 200,
+                    "successMessage"=> "Question Answer Successfully.",
+                    "serverReferenceCode"=>$now
+                ];
+
+
+                \App\System::APILogWrite(\Request::all(),$response);
+                return \Response::json($response);
+
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "Invalid User or invalid campaign",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('Invalid User or invalid campaign',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
+
+
+    /********************************************
+    ## getRequesterAllSingleQuestionAnswer
+    *********************************************/
+
+    public function getRequesterAllSingleQuestionAnswer(){
+
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if(!empty($userinfo)){
+
+                $campaign_id=$userinfo['campaign_id'];
+                $requester_id=$userinfo['requester_id'];
+                $answer_question_id=$userinfo['answer_question_id'];
+
+                $total_content= \DB::table('question_answer_tbl')
+                    ->where('answer_question_id',$answer_question_id)->count();
+                $response['total_content'] = $total_content;
+
+                $question_answer_option_1 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_1','!=', '')->count();
+                $response['question_answer_option_1'] = $question_answer_option_1;
+
+                $question_answer_option_2 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_2','!=', '')->count();
+                $response['question_answer_option_2'] = $question_answer_option_2;
+
+
+                $question_answer_option_3 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_3','!=', '')->count();
+                $response['question_answer_option_3'] = $question_answer_option_3;
+
+
+                $question_answer_option_4 = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_option_4','!=', '')->count();
+                $response['question_answer_option_4'] = $question_answer_option_4;
+
+
+                $question_answer_text_value = \DB::table('question_answer_tbl')->where('answer_question_id', $answer_question_id)->where('question_answer_text_value','!=', '')->count();
+                $response['question_answer_text_value'] = $question_answer_text_value;
+
+                $all_content= \DB::table('question_answer_tbl')
+                    ->where('answer_question_id',$answer_question_id)
+                    ->join('campaign_tbl', 'campaign_tbl.id', '=', 'question_answer_tbl.answer_campaign_id')
+                    ->join('question_tbl', 'question_tbl.id', '=', 'question_answer_tbl.answer_question_id')
+                    ->orderBy('question_answer_tbl.id','DESC')
+                    ->select('question_answer_tbl.id AS question_answer_id', 'campaign_tbl.*' , 'question_tbl.*', 'question_answer_tbl.*')
+                    ->get();
+
+                $response['all_content'] = $all_content;
+
+
+
+                $response["success"]= [
+                    "statusCode"=> 200,
+                    "successMessage"=> "Question Answer Successfully.",
+                    "serverReferenceCode"=>$now
+                ];
+
+
+                \App\System::APILogWrite(\Request::all(),$response);
+                return \Response::json($response);
+
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "Invalid User or invalid campaign",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('Invalid User or invalid campaign',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
+
+
+    /********************************************
+    ## RequesterPaymentList
+    *********************************************/
+
+    public function RequesterPaymentList(){
+
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if(!empty($userinfo)){
+
+                $campaign_id=$userinfo['campaign_id'];
+                $requester_id=$userinfo['requester_id'];
+
+                $all_content= \App\CampaignPayment::orderBy('id','DESC')->get();
+                $response['all_content'] = $all_content;
+
+                $response['all_data'] =  \App\CampaignPayment::orderby('id','desc')->get();
+                $response['requester_info'] =  \App\Requester::where('id', $requester_id)->orderby('id','desc')->first();
+
+                $response["success"]= [
+                    "statusCode"=> 200,
+                    "successMessage"=> "Get Request Payment Successfully.",
+                    "serverReferenceCode"=>$now
+                ];
+
+
+                \App\System::APILogWrite(\Request::all(),$response);
+                return \Response::json($response);
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "Invalid User or invalid campaign",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('Invalid User or invalid campaign',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
+
+
+    /********************************************
+    ## RequesterCampaignList
+    *********************************************/
+
+    public function RequesterCampaignList(){
+
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if(!empty($userinfo)){
+
+                $campaign_id=$userinfo['campaign_id'];
+                $requester_id=$userinfo['requester_id'];
+
+                $all_content= \App\Campaign::orderBy('id','DESC')->where('campaign_requester_id',$requester_id)->get();
+
+                $response['all_content'] = $all_content;
+
+                $response['all_data'] =  \App\Campaign::orderby('id','desc')->where('campaign_requester_id',$requester_id)->get();
+
+                $response["success"]= [
+                    "statusCode"=> 200,
+                    "successMessage"=> "Get All Campaign Successfully.",
+                    "serverReferenceCode"=>$now
+                ];
+
+
+                \App\System::APILogWrite(\Request::all(),$response);
+                return \Response::json($response);
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "Invalid User or invalid campaign",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('Invalid User or invalid campaign',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
 
 
 

@@ -160,7 +160,7 @@
                                                                 <span class="symbol required" aria-required="true"></span>
                                                             </label>
                                                             <div class="col-sm-9">
-                                                                <select id="form-field-select-3" class="form-control search-select" name="participate_district">
+                                                                <select id="form-field-select-3" class="form-control search-select select_district" name="participate_district">
                                                                     <option value="">&nbsp;Please Select a Type</option>
 
                                                                     @if(!empty($all_district))
@@ -173,7 +173,11 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group">
+                                                        <div class="district_zone">
+
+                                                        </div>
+
+                                                        <!-- <div class="form-group">
                                                             <label class="col-sm-3 control-label">
                                                                 <strong> Zone</strong>
                                                                 <span class="symbol required" aria-required="true"></span>
@@ -190,7 +194,7 @@
 
                                                                 </select>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
 
                                                         <div class="form-group">
@@ -434,36 +438,37 @@
         $(function () {
 
 
+
             /* ===============================
-                Get Participate Value
+                Ajax zone view by district 
            * ============================= */
 
-            /*jQuery('.user_type').change(function(){
+            jQuery('.select_district').change(function(){
 
-                var user_type = jQuery(this).val();
+                var district = jQuery(this).val();
                 var site_url = jQuery('.site_url').val();
-                if(user_type.length !=0){
+                if(district.length !=0){
 
-                    var request_url = site_url+'/ajax/payment/user/'+user_type;
+                    var request_url = site_url+'/ajax/get/zone/by/district-'+district;
 
                     jQuery.ajax({
                         url: request_url,
                         type: "get",
                         success:function(data){
 
-                            jQuery('.user_type_details').html(data);
+                            jQuery('.district_zone').html(data);
                         }
                     });
 
-                }else alert("Please Select User Type");
+                }else alert("Please Select District");
 
-            });*/
+            });
 
 
 
             $('#question_answer').validate({
                 rules: {
-/*                    question_campaign_id: {
+                    /*question_campaign_id: {
                         required: true
                     },
                     question_type: {

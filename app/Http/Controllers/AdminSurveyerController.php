@@ -495,6 +495,20 @@ class AdminSurveyerController extends Controller
 
 
     /********************************************
+    ##  AjaxGetZone
+     *********************************************/
+    public function AjaxGetZone($district)
+    {
+
+        $data['zone_info'] =  \App\Zone::where('zone_district',$district)->orderby('id','desc')->get();
+        $data['page_title'] = $this->page_title;
+        $data['page_desc'] = $this->page_desc;
+        return view('pages.surveyer-question-answer.ajax-zone',$data);
+    }
+
+
+
+    /********************************************
     ##  QuestionAnswer View
      *********************************************/
     public function QuestionAnswer($campaign_participate_mobile, $surveyer_id, $campaign_id, $question_position)
