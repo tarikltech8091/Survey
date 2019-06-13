@@ -30,6 +30,7 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
     });
 
 	Route::group(['middleware' => 'jwt-auth'], function () {
+        
 
 	   	Route::get('hello',function (){
 	        echo "Hello All";
@@ -40,6 +41,9 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 	    });
 
     	Route::get('/getMSISDN', array('as'=>'getMSISDN', 'uses'=>'ApiController@GetMSISDN'));
+
+
+
 
     	Route::post('/participateRegistration', array('as'=>'Participate Registration', 'uses'=>'ApiController@participateRegistration'));
 
@@ -56,11 +60,19 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 
     	Route::post('/getCampaignDetails', array('as'=>'Get Campaign Details', 'uses'=>'ApiController@getCampaignDetails'));
     	
-    	Route::post('/getParticipateQuestionInfo', array('as'=>'Get Participate Question Info', 'uses'=>'ApiController@getParticipateQuestionInfo'));
+        Route::post('/getParticipateQuestionInfo', array('as'=>'Surveyer Registration', 'uses'=>'ApiController@getParticipateQuestionInfo'));
+
+    	Route::post('/surveyerRegistration', array('as'=>'Surveyer Registration', 'uses'=>'ApiController@surveyerRegistration'));
 
     	Route::post('/participateQuestionAnswerStore', array('as'=>'Participate Question Answer Store', 'uses'=>'ApiController@participateQuestionAnswerStore'));
     	
     	Route::post('/ParticipateQuestionInfo', array('as'=>'Get Participate Question Info', 'uses'=>'ApiController@ParticipateQuestionInfo'));
+
+
+
+
+
+
 
 
     	Route::post('/getSurveyerInfo', array('as'=>'Get Surveyer Info', 'uses'=>'ApiController@getSurveyerInfo'));
@@ -86,6 +98,10 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 
 
 
+
+
+
+        Route::post('/requesterRegistration', array('as'=>'Requester Registration', 'uses'=>'ApiController@requesterRegistration'));
 
     	Route::post('/RequesterAllContentCountdown', array('as'=>'Requester All Content Countdown', 'uses'=>'ApiController@RequesterAllContentCountdown'));
 

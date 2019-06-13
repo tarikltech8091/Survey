@@ -94,8 +94,7 @@ class ApiController extends Controller
             \App\System::APILogWrite(\Request::all(),$response);
             return \Response::json($response);
         }
-    }
-*/
+    }*/
 
 
     /********************************************
@@ -202,7 +201,8 @@ class ApiController extends Controller
                 // if(!$token = auth('api')->attempt($data))
                     throw new \Exception("Something Wrong In Token");
 
-                $response["access_token"]= $token;
+                // $response["access_token"]= $token;
+                $response["token"]= $token;
 
                 \App\System::APILogWrite(\Request::all(),$response);
                 return \Response::json($response);
@@ -361,6 +361,8 @@ class ApiController extends Controller
 
     }
 
+    
+
     /********************************************
     ## participateRegistration
     *********************************************/
@@ -383,6 +385,9 @@ class ApiController extends Controller
                 if(is_numeric($participate_mobile) && strlen($participate_mobile)==11){
 
 
+                    $success = \DB::transaction(function () use($userinfo) {
+
+
                         $participate_profile_image='';
                         $image_type='participate';
 
@@ -391,19 +396,19 @@ class ApiController extends Controller
                         $slug=explode(' ', strtolower($userinfo['participate_name']));
                         $participate_name_slug=implode('-', $slug);
 
-                        if($request->file('participate_profile_image')!=null){
+                        /*if($request->file('participate_profile_image')!=null){
 
                             #ImageUpload
-                            /*$image_wide = $request->file('participate_profile_image');
+                            $image_wide = $request->file('participate_profile_image');
                             $img_location_wide=$image_wide->getRealPath();
                             $img_ext_wide=$image_wide->getClientOriginalExtension();
-                            $participate_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$participate_name);*/
+                            $participate_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$participate_name);
 
                             $participate_profile_image="";
 
-                        }else{
+                        }else{*/
                             $participate_profile_image="";
-                        }
+                        // }
 
 
                         $participate_registration_confirm=array(
@@ -464,6 +469,53 @@ class ApiController extends Controller
                         }
 
                         // \App\System::EventLogWrite('insert,participate_tbl',json_encode($participate_registration_confirm));
+
+
+
+                        $login_data['name']=ucwords($userinfo['participate_name']);
+                        $login_data['name_slug']=$participate_name_slug;
+                        $login_data['user_type']='participate';
+                        $login_data['user_role']='participate';
+                        $login_data['email']=$userinfo['participate_email'];
+                        $login_data['user_mobile']=$userinfo['participate_mobile'];
+                        $login_data['user_profile_image']=$participate_profile_image;
+                        $login_data['login_status']='0';
+                        $login_data['status']='active';
+                        $login_data['updated_at']=$now;
+
+                        // $login_data_insert=\App\User::insertGetId($login_data);
+
+                        $login_data_insert = \App\User::updateOrCreate(
+                            [
+                                'user_mobile' => $login_data['user_mobile'],
+                            ],
+                            $login_data
+                        );
+
+
+
+                        if(!$participate_registration_info || !$login_data_insert){
+                            $error=1;
+                        }
+
+
+                        if(!isset($error)){
+
+                            // \App\System::EventLogWrite('insert,participate_tbl',json_encode($participate_registration_confirm));
+                            \DB::commit();
+
+                            
+                        }else{
+                            \DB::rollback();
+                            throw new Exception("Error Processing Request", 1);
+                        }
+
+
+
+                    });
+
+
+
 
                         $response["success"]= [
                             "statusCode"=> 200,
@@ -642,6 +694,8 @@ class ApiController extends Controller
      /********************************************
      ## ProfileUpdate 
      *********************************************/
+
+
     public function ProfileUpdate(){
 
         $now=date('Y-m-d H:i:s');
@@ -1135,7 +1189,7 @@ class ApiController extends Controller
                 $response['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
 
                 $response['all_district']=\App\Common::AllDistrict();
-                // $response['all_zone']=\App\Zone::where('zone_status',1)->get();
+                $response['all_zone']=\App\Zone::where('zone_status',1)->get();
 
                 $response["success"]= [
                     "statusCode"=> 200,
@@ -1493,6 +1547,183 @@ class ApiController extends Controller
 
 
 
+    /********************************************
+    ## surveyerRegistration
+    *********************************************/
+
+    public function surveyerRegistration(){
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if( !empty($userinfo)){
+
+                $surveyer_mobile=$userinfo['surveyer_mobile'];
+
+                if(is_numeric($surveyer_mobile) && strlen($surveyer_mobile) == 11){
+
+                    $surveyer_info =\App\Requester::where('surveyer_mobile',$surveyer_mobile)->first();
+
+                    if(empty($surveyer_info)){
+
+                        $success = \DB::transaction(function () use($request) {
+
+                            $surveyer_profile_image='';
+                            $image_type='surveyer';
+
+
+                            $surveyer_name=$userinfo['surveyer_name'];
+
+                            $slug=explode(' ', strtolower($userinfo['surveyer_name']));
+                            $surveyer_name_slug=implode('-', $slug);
+                            $data['surveyer_name_slug']=$surveyer_name_slug;
+
+                            /*if($request->file('surveyer_profile_image')!=null){
+                                #Image
+                                $image = $request->file('surveyer_profile_image');
+                                $img_location=$image->getRealPath();
+                                $img_ext=$image->getClientOriginalExtension();
+                                $surveyer_profile_image=\App\Admin::CommonImageUpload($img_location,$img_ext,$image_type,$surveyer_name);
+                            }*/
+
+
+                            $data['surveyer_name']=$userinfo['surveyer_name'];
+                            $data['surveyer_name_slug']=$surveyer_name_slug;
+                            $data['surveyer_email']=$userinfo['surveyer_email'];
+                            $data['surveyer_mobile']=$userinfo['surveyer_mobile'];
+                            $data['surveyer_join_date']=$userinfo['surveyer_join_date'];
+                            $data['surveyer_district']=$userinfo['surveyer_district'];
+                            $data['surveyer_post_code']=$userinfo['surveyer_post_code'];
+                            $data['surveyer_address']=$userinfo['surveyer_address'];
+                            $data['surveyer_nid']=$userinfo['surveyer_nid'];
+                            $data['surveyer_zone']=$userinfo['surveyer_zone'];
+                            $data['surveyer_profile_image']='';
+                            $data['surveyer_status']=0;
+                           
+
+                            $surveyer_insert=\App\Surveyer::insertGetId($data);
+
+                            $surveyer_info=\App\Surveyer::where('id', $id)->first();
+
+                            $login_data['name']=ucwords($userinfo['surveyer_name']);
+                            $login_data['name_slug']=$surveyer_name_slug;
+                            $login_data['user_type']='surveyer';
+                            $login_data['user_role']='surveyer';
+                            $login_data['email']=$userinfo['surveyer_email'];
+                            $login_data['user_mobile']=$userinfo['surveyer_mobile'];
+                            $login_data['user_profile_image']=$surveyer_profile_image;
+                            $login_data['surveyer_id']=$surveyer_insert;
+                            $login_data['login_status']='0';
+                            $login_data['status']='active';
+                            $login_data['password']=bcrypt($userinfo['password']);
+                            $login_data['updated_at']=$now;
+
+                            // $login_data_insert=\App\User::insertGetId($login_data);
+
+                            $login_data_insert = \App\User::updateOrCreate(
+                                [
+                                    'user_mobile' => $login_data['user_mobile'],
+                                ],
+                                $login_data
+                            );
+
+
+                            if(!$surveyer_insert || !$login_data_insert ){
+                                $error=1;
+                            }
+
+                            if(!isset($error)){
+                                \App\System::EventLogWrite('insert,surveyer_tbl',json_encode($data));
+                                \App\System::EventLogWrite('insert,users',json_encode($login_data));
+                                \DB::commit();
+                            }else{
+                                \DB::rollback();
+                                throw new Exception("Error Processing Request", 1);
+                            }
+                            
+                        });
+
+
+                        $response["success"]= [
+                            "statusCode"=> 200,
+                            "successMessage"=> "Surveyer Created Successfully.",
+                            "serverReferenceCode"=>$now
+                        ];
+
+                        $response["surveyerinfo"]=$surveyer_info;
+
+
+                        \App\Api::ResponseLogWrite('Surveyer Created Successfully',json_encode($response));
+                        return \Response::json($response);
+
+
+
+                    }else{
+
+                        $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Already you are registerd.",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                        \App\Api::ResponseLogWrite('Invalid Mobile Number.',json_encode($response));
+
+                        return \Response::json($response);
+                    }
+
+
+
+                }else{
+
+                    $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Invalid Mobile Number.",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                    \App\Api::ResponseLogWrite('Invalid Mobile Number.',json_encode($response));
+
+                    return \Response::json($response);
+                } 
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "IMEI Number or Access Token is invalid",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('IMEI Number or Access Token is invalid',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
 
 
 
@@ -2217,53 +2448,53 @@ class ApiController extends Controller
                         $participate_profile_image='';
                         $image_type='participate';
 
-                        $participate_name=$request->input('participate_name');
-                        $slug=explode(' ', strtolower($request->input('participate_name')));
+                        $participate_name=$answerinfo['participate_name'];
+
+                        $slug=explode(' ', strtolower($answerinfo['participate_name']));
                         $participate_name_slug=implode('-', $slug);
                         $data['participate_name_slug']=$participate_name_slug;
 
-                        if($request->file('participate_profile_image')!=null){
+                        /*if($request->file('participate_profile_image')!=null){
                             #ImageUpload
                             $image_wide = $request->file('participate_profile_image');
                             $img_location_wide=$image_wide->getRealPath();
                             $img_ext_wide=$image_wide->getClientOriginalExtension();
                             $participate_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$participate_name);
-                        }
+                        }*/
 
-                        $data['participate_name']=$request->input('participate_name');
-                        $data['participate_name_slug']=$request->input('participate_name_slug');
-                        $data['participate_email']=$request->input('participate_email');
-                        $data['participate_mobile']=$request->input('participate_mobile');
-                        $data['participate_age']=$request->input('participate_age');
-                        $data['participate_join_date']=$request->input('participate_join_date');
-                        $data['participate_district']=$request->input('participate_district');
-                        $data['participate_post_code']=$request->input('participate_post_code');
-                        $data['participate_address']=$request->input('participate_address');
-                        $data['participate_nid']=$request->input('participate_nid');
-                        $data['participate_gender']=$request->input('participate_gender');
-                        $data['participate_religion']=$request->input('participate_religion');
-                        $data['participate_occupation']=$request->input('participate_occupation');
-                        $data['participate_zone']=$request->input('participate_zone');
+
+                        $data['participate_name']=$answerinfo['participate_name'];
+                        $data['participate_name_slug']=$answerinfo['participate_name_slug'];
+                        $data['participate_email']=$answerinfo['participate_email'];
+                        $data['participate_mobile']=$answerinfo['participate_mobile'];
+                        $data['participate_age']=$answerinfo['participate_age'];
+                        $data['participate_join_date']=$answerinfo['participate_join_date'];
+                        $data['participate_district']=$answerinfo['participate_district'];
+                        $data['participate_post_code']=$answerinfo['participate_post_code'];
+                        $data['participate_address']=$answerinfo['participate_address'];
+                        $data['participate_nid']=$answerinfo['participate_nid'];
+                        $data['participate_gender']=$answerinfo['participate_gender'];
+                        $data['participate_religion']=$answerinfo['participate_religion'];
+                        $data['participate_occupation']=$answerinfo['participate_occupation'];
+                        $data['participate_zone']=$answerinfo['participate_zone'];
                         $data['agreed_user']=0;
                         $data['participate_profile_image']=$participate_profile_image;
-                        /*$data['participate_created_by'] = \Auth::user()->id;
-                        $data['participate_updated_by'] = \Auth::user()->id;*/
+
 
 
 
                         $campaign_participate_data['participate_campaign_id']=$campaign_id;
                         $campaign_participate_data['participate_campaign_name']=$select_campaign->campaign_name;
-                        $campaign_participate_data['campaign_participate_mobile']=$request->input('participate_mobile');
-                        $campaign_participate_data['campaign_participate_occupation']=$request->input('participate_occupation');
-                        $campaign_participate_data['campaign_participate_age']=$request->input('participate_age');
-                        $campaign_participate_data['campaign_participate_district']=$request->input('participate_district');
-                        $campaign_participate_data['campaign_participate_post_code']=$request->input('participate_post_code');
-                        $campaign_participate_data['campaign_participate_zone']=$request->input('participate_zone');
-                        $campaign_participate_data['campaign_participate_address']=$request->input('participate_address');
-                        $campaign_participate_data['participate_prize_amount']=$request->input('participate_prize_amount');
+
+                        $campaign_participate_data['campaign_participate_mobile']=$answerinfo['participate_mobile'];
+                        $campaign_participate_data['campaign_participate_occupation']=$answerinfo['participate_occupation'];
+                        $campaign_participate_data['campaign_participate_age']=$answerinfo['participate_age'];
+                        $campaign_participate_data['campaign_participate_district']=$answerinfo['participate_district'];
+                        $campaign_participate_data['campaign_participate_post_code']=$answerinfo['participate_post_code'];
+                        $campaign_participate_data['campaign_participate_zone']=$answerinfo['participate_zone'];
+                        $campaign_participate_data['campaign_participate_address']=$answerinfo['participate_address'];
+                        $campaign_participate_data['participate_prize_amount']=$answerinfo['participate_prize_amount'];
                         $campaign_participate_data['campaign_participate_status']=1;
-                        /*$campaign_participate_data['campaign_participate_created_by'] = \Auth::user()->id;
-                        $campaign_participate_data['campaign_participate_updated_by'] = \Auth::user()->id;*/
 
 
 
@@ -2275,7 +2506,7 @@ class ApiController extends Controller
                         );
 
 
-                        $campaign_participate_info = \DB::table('campaign_participate_tbl')->where('participate_campaign_id',$campaign_id)->where('campaign_participate_mobile',$request->input('participate_mobile'))->first();
+                        $campaign_participate_info = \DB::table('campaign_participate_tbl')->where('participate_campaign_id',$campaign_id)->where('campaign_participate_mobile',$answerinfo['participate_mobile'])->first();
 
                         if(!empty($campaign_participate_info)){
 
@@ -2292,19 +2523,19 @@ class ApiController extends Controller
                     $question_answer_data['answer_surveyer_id']=$surveyer_id;
                     $question_answer_data['answer_campaign_id']=$campaign_id;
                     $question_answer_data['answer_question_id']=$question_id;
-                    $question_answer_data['answer_participate_mobile']=$request->input('participate_mobile');
-                    $question_answer_data['question_answer_type']=$select_question->question_type;
-                    $question_answer_data['question_answer_title']=$request->input('question_answer_title');
-                    $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
-                    $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
-                    $question_answer_data['question_answer_option_3']=$request->input('question_option_3');
-                    $question_answer_data['question_answer_option_4']=$request->input('question_option_4');
-                    $question_answer_data['question_answer_text_value']=$request->input('question_option_new');
-                    $question_answer_data['question_answer_status']=0;
-                    /*$question_answer_data['question_answer_created_by'] = \Auth::user()->id;
-                    $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;*/
 
-                    $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$request->input('participate_mobile'))->first();
+                    $question_answer_data['answer_participate_mobile']=$answerinfo['participate_mobile'];
+                    $question_answer_data['question_answer_type']=$select_question->question_type;
+                    $question_answer_data['question_answer_title']=$answerinfo['question_answer_title'];
+                    $question_answer_data['question_answer_option_1']=$answerinfo['question_option_1'];
+                    $question_answer_data['question_answer_option_2']=$answerinfo['question_option_2'];
+                    $question_answer_data['question_answer_option_3']=$answerinfo['question_option_3'];
+                    $question_answer_data['question_answer_option_4']=$answerinfo['question_option_4'];
+                    $question_answer_data['question_answer_text_value']=$answerinfo['question_option_new'];
+                    $question_answer_data['question_answer_status']=0;
+
+
+                    $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$answerinfo['participate_mobile'])->first();
 
                     if(!empty($question_answer_info)){
 
@@ -2312,13 +2543,13 @@ class ApiController extends Controller
 
                     }else{
 
-                        $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->first();
+                        $participate_info = \DB::table('participate_tbl')->where('participate_mobile',$answerinfo['participate_mobile'])->first();
 
                         if(!empty($participate_info)){
 
                             $participate_points=($participate_info->participate_total_earn_points)+($select_question->question_points);
 
-                            $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$request->input('participate_mobile'))->update(array( 'participate_total_earn_points' => $participate_points));
+                            $participate_point_update = \DB::table('participate_tbl')->where('participate_mobile',$answerinfo['participate_mobile'])->update(array( 'participate_total_earn_points' => $participate_points));
 
                             if(!$participate_point_update){
                                 $error=1;
@@ -2522,14 +2753,15 @@ class ApiController extends Controller
 
                 $total_question = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->get();
 
-                $participate_mobile = $request->input('campaign_participate_mobile');
+                $participate_mobile = $campaigninfo['participate_mobile'];
 
                 $success = \DB::transaction(function () use($request) {
 
-                    $surveyer_id = $request->input('answer_surveyer_id');
-                    $campaign_id = $request->input('answer_campaign_id');
-                    $question_position = $request->input('answer_question_position');
-                    $participate_mobile = $request->input('campaign_participate_mobile');
+                    $surveyer_id = $answerinfo['answer_surveyer_id'];
+                    $campaign_id = $answerinfo['answer_campaign_id'];
+                    $question_position = $answerinfo['answer_question_position'];
+                    $participate_mobile = $answerinfo['campaign_participate_mobile'];
+
 
                     $select_surveyer = \DB::table('surveyer_tbl')->where('id',$surveyer_id)->where('surveyer_status','1')->orderby('id','desc')->first();
                     $select_campaign = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
@@ -2545,17 +2777,18 @@ class ApiController extends Controller
                         $question_answer_data['answer_campaign_id']=$campaign_id;
                         $question_answer_data['answer_surveyer_id']=$surveyer_id;
                         $question_answer_data['answer_question_id']=$question_id;
-                        $question_answer_data['answer_participate_mobile']=$request->input('campaign_participate_mobile');
-                        $question_answer_data['question_answer_type']=$select_question->question_type;
-                        $question_answer_data['question_answer_title']=$request->input('question_answer_title');
-                        $question_answer_data['question_answer_option_1']=$request->input('question_option_1');
-                        $question_answer_data['question_answer_option_2']=$request->input('question_option_2');
-                        $question_answer_data['question_answer_option_3']=$request->input('question_option_3');
-                        $question_answer_data['question_answer_option_4']=$request->input('question_option_4');
-                        $question_answer_data['question_answer_text_value']=$request->input('question_option_new');
-                        $question_answer_data['question_answer_status']=0;
-                        $question_answer_data['question_answer_created_by'] = \Auth::user()->id;
-                        $question_answer_data['question_answer_updated_by'] = \Auth::user()->id;
+
+                        $question_answer_data['answer_participate_mobile'] = $answerinfo['campaign_participate_mobile'];
+                        $question_answer_data['question_answer_type'] = $select_question->question_type;
+                        $question_answer_data['question_answer_title'] = $answerinfo['question_answer_title'];
+                        $question_answer_data['question_answer_option_1'] = $answerinfo['question_option_1'];
+                        $question_answer_data['question_answer_option_2'] = $answerinfo['question_option_2'];
+                        $question_answer_data['question_answer_option_3'] = $answerinfo['question_option_3'];
+                        $question_answer_data['question_answer_option_4'] = $answerinfo['question_option_4'];
+                        $question_answer_data['question_answer_text_value'] = $answerinfo['question_option_new'];
+                        $question_answer_data['question_answer_status'] = 0;
+
+
 
                         $question_answer_info = \DB::table('question_answer_tbl')->where('answer_question_id',$question_id)->where('answer_campaign_id',$campaign_id)->where('answer_participate_mobile',$participate_mobile)->first();
                         
@@ -2670,6 +2903,182 @@ class ApiController extends Controller
 
 
 
+    /********************************************
+    ## requesterRegistration
+    *********************************************/
+
+    public function requesterRegistration(){
+        $now=date('Y-m-d H:i:s');
+
+        try{
+
+            $accessinfo = \Request::input('accessinfo');
+            $userinfo = \Request::input('userinfo');
+            $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
+            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+
+
+            if( !empty($userinfo)){
+
+                $requester_mobile=$userinfo['requester_mobile'];
+
+                if(is_numeric($requester_mobile) && strlen($requester_mobile) == 11){
+
+
+                    $requester_info =\App\Requester::where('requester_mobile',$requester_mobile)->first();
+
+                    if(empty($requester_info)){
+
+
+                        $success = \DB::transaction(function () use($request) {
+
+                            $requester_profile_image='';
+                            $image_type='requester';
+
+                            $requester_name=$userinfo['requester_name'];
+
+                            $slug=explode(' ', strtolower($userinfo['requester_name']));
+                            $requester_name_slug=implode('-', $slug);
+                            $data['requester_name_slug']=$requester_name_slug;
+
+
+
+                            /*if($request->file('requester_profile_image')!=null){
+                                #ImageUpload
+                                $image_wide = $request->file('requester_profile_image');
+                                $img_location_wide=$image_wide->getRealPath();
+                                $img_ext_wide=$image_wide->getClientOriginalExtension();
+                                $requester_profile_image=\App\Admin::CommonImageUpload($img_location_wide,$img_ext_wide,$image_type,$requester_name);
+                            }*/
+
+                            $data['requester_name']=$userinfo['requester_name'];
+                            $data['requester_name_slug']=$requester_name_slug;
+                            $data['requester_email']=$userinfo['requester_email'];
+                            $data['requester_mobile']=$userinfo['requester_mobile'];
+                            $data['requester_join_date']=$userinfo['requester_join_date'];
+                            $data['requester_district']=$userinfo['requester_district'];
+                            $data['requester_post_code']=$userinfo['requester_post_code'];
+                            $data['requester_address']=$userinfo['requester_address'];
+                            $data['requester_nid']=$userinfo['requester_nid'];
+                            $data['requester_profile_image']=$requester_profile_image;
+                            $data['requester_status']=0;
+
+                            $requester_insert=\App\Requester::insertGetId($data);
+
+
+                            $login_data['name']=ucwords($userinfo['requester_name']);
+                            $login_data['name_slug']=$requester_name_slug;
+                            $login_data['user_type']='requester';
+                            $login_data['user_role']='requester';
+                            $login_data['email']=$userinfo['requester_email'];
+                            $login_data['user_mobile']=$userinfo['requester_mobile'];
+                            $login_data['user_profile_image']=$requester_profile_image;
+                            $login_data['requester_id']=$requester_insert;
+                            $login_data['login_status']='0';
+                            $login_data['status']='active';
+                            $login_data['password']=bcrypt($userinfo['password']);
+
+
+                            // $login_data_insert=\App\User::insertGetId($login_data);
+
+                            $login_data_insert = \App\User::updateOrCreate(
+                                [
+                                    'user_mobile' => $login_data['user_mobile'],
+                                ],
+                                $login_data
+                            );
+
+
+                            if(!$requester_insert || !$login_data_insert ){
+                                $error=1;
+                            }
+
+                            if(!isset($error)){
+                                \App\System::EventLogWrite('insert,requester_tbl',json_encode($data));
+                                \App\System::EventLogWrite('insert,users',json_encode($login_data));
+                                \DB::commit();
+                            }else{
+                                \DB::rollback();
+                                throw new Exception("Error Processing Request", 1);
+                            }
+                            
+                        });
+
+                        
+
+                        $response["success"]= [
+                            "statusCode"=> 200,
+                            "successMessage"=> "Requester Created Successfully.",
+                            "serverReferenceCode"=>$now
+                        ];
+
+                        $response["participateinfo"]=$participate_registration_info;
+
+
+                        \App\Api::ResponseLogWrite('Requester Created Successfully',json_encode($response));
+                        return \Response::json($response);
+
+
+                    }else{
+
+                        $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Already you are registerd.",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                        \App\Api::ResponseLogWrite('Invalid Mobile Number.',json_encode($response));
+
+                        return \Response::json($response);
+                    }
+
+
+
+                }else{
+
+                    $response["errors"]= [
+                            "statusCode"=> 403,
+                            "errorMessage"=> "Invalid Mobile Number.",
+                            "serverReferenceCode"=> $now
+                        ];
+
+                    \App\Api::ResponseLogWrite('Invalid Mobile Number.',json_encode($response));
+
+                    return \Response::json($response);
+                } 
+
+
+            }else{
+
+                $response["errors"]= [
+                        "statusCode"=> 403,
+                        "errorMessage"=> "IMEI Number or Access Token is invalid",
+                        "serverReferenceCode"=> $now
+                    ];
+
+                \App\Api::ResponseLogWrite('IMEI Number or Access Token is invalid',json_encode($response));
+
+                return \Response::json($response);
+            }
+
+        }catch(\Exception $e){
+
+            $response["errors"]= [
+                    "statusCode"=> 501,
+                    "errorMessage"=> "Missing or incorrect data, Sorry the requested resource does not exist",
+                    "serverReferenceCode"=> $now,
+                ];
+
+
+            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
+
+            \App\System::ErrorLogWrite($message);
+            \App\Api::ResponseLogWrite($message,json_encode($response));
+            return \Response::json($response);
+        }
+
+
+    }
 
 
 
