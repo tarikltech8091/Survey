@@ -173,6 +173,7 @@ class AdminSurveyerController extends Controller
                 \Auth::user()->password)) {
                 $update_password=array(
                     'password' => bcrypt($request->input('new_password')),
+                    'plain_password' => $request->input('new_password'),
                     'updated_at' => $now
                 );
                 try {

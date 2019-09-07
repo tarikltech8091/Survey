@@ -19,122 +19,125 @@ class ApiController extends Controller
     /********************************************
     ## GetAccessToken
      *********************************************/
-    /*public function GetAccessToken(Request $request){
-
-        $now=date('Y-m-d H:i:s');
-
-        try{
-
-            $accessinfo[] =""; 
-
-            $imei_no = $request->input('imei_no');
-            $app_key = $request->input('app_key');
-
-
-            if(empty($app_key))
-                throw new \Exception("User APP Key is Required.");
-
-            $data['imei_no'] = $imei_no;
-            $data['app_key'] = $app_key;
-
-            // $data['access_token'] = $app_key;
-            $data['client_ip'] = $accessinfo['client_ip'];
-            $data['access_browser'] = $accessinfo['access_browser'];
-            $data['access_city'] = $accessinfo['access_city'];
-            $data['access_division'] = $accessinfo['access_division'];
-            $data['access_country'] = $accessinfo['access_country'];
-            $data['referenceCode'] = $now;
-            $data['token_status'] = '1';
-
-
-            if(!empty($request->input('imei_no')))
-                $data['imei_no'] = $request->input('imei_no');
-
-
-            $user_info = \App\AppToken::updateOrCreate(
-                ['app_key' =>$data['app_key']],
-                ['imei_no' =>$data['imei_no']],
-                $data
-            );
-
-            if($user_info->wasRecentlyCreated)
-                $success_message ="App install Successfully";
-            else $success_message ="Already installed";
-
-            #ForToken
-            $response["success"]= [
-                "statusCode"=> 200,
-                "successMessage"=> $success_message,
-                "serverReferenceCode"=>$now
-            ];
-
-
-            if(!$token = \JWTAuth::attempt($data))
-
-            // if(!$token = auth('api')->attempt($data))
-
-                throw new \Exception("Something Wrong In Token");
-
-            $response["access_token"]= $token;
-
-            // \App\System::APILogWrite(\Request::all(),$response);
-            return \Response::json($response);
-
-
-        }catch(\Exception $e){
-            $response["errors"]= [
-                "statusCode"=> 501,
-                "errorMessage"=> $e->getMessage(),
-                "serverReferenceCode"=> $now,
-            ];
-
-            $message = "Message : ".$e->getMessage().", File : ".$e->getFile().", Line : ".$e->getLine();
-
-            \App\System::ErrorLogWrite($message);
-            \App\System::APILogWrite(\Request::all(),$response);
-            return \Response::json($response);
-        }
-    }*/
-
-
-    /********************************************
-    ## GetAccessToken
-     *********************************************/
     public function GetAccessToken(Request $request){
 
         $now=date('Y-m-d H:i:s');
 
         try{
 
+
+            $accessinfo = \Request::input('accessinfo');
+
+            $imei_no= isset($accessinfo['imei_no']) ? \App\Api::IMEIChecker($accessinfo['imei_no']):'';
+            $app_key= isset($accessinfo['app_key']) ? \App\Api::AppKeyChecker($accessinfo['app_key']):'';
+            $user_mobile= isset($accessinfo['user_mobile']) ? \App\Api::AppKeyChecker($accessinfo['user_mobile']):'';
+            $email= isset($accessinfo['email']) ? \App\Api::AppKeyChecker($accessinfo['email']):'';
+           
+
+
             $app_key = $request->input('user_app_key');
 
             if(empty($app_key))
                 throw new \Exception("User APP Key is Required.");
 
-            $user_mobile = substr($request->input('user_mobile'), -11);
 
-            $mobile_num_count=strlen($user_mobile);
+            if(!empty($request->input('user_mobile'))){
 
-            if(is_numeric($user_mobile) && $mobile_num_count == 11){
 
-                if(!empty($request->input('user_mobile'))){
+                $user_mobile = substr($request->input('user_mobile'), -11);
 
-                    $data['name'] = 'Unknown';
-                    $data['name_slug'] = 'unknown';
-                    $data['user_type'] = 'app';
-                    $data['user_role'] = 'app';
-                    $data['user_mobile'] = substr($request->input('user_mobile'), -11);
-                    $data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
-                    $data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
-                    $data['user_profile_image'] = '';
-                    $data['email'] = !empty($request->input('email'))?$request->input('email'):'unknown@unknown.com';
-                    $data['password']=\Hash::make('1234');
+                $mobile_num_count=strlen($user_mobile);
+
+                if(is_numeric($user_mobile) && $mobile_num_count == 11){
+
+
+                    $data['login_status'] = 0;
+                    $data['status'] = 'active';
+
+                        
+                    /*$user_info = \App\User::updateOrCreate(
+                        ['user_app_key' =>$data['user_app_key']],
+                        ['user_mobile' =>$data['user_mobile']],
+                        $data
+                    );*/
+
+
+                    $current_user =\DB::table('users')->where('user_mobile', $user_mobile)->first();
+
+                    if(empty($current_user)){
+
+
+                        $data['name'] = 'Unknown';
+                        $data['name_slug'] = 'unknown';
+                        $data['user_type'] = 'app';
+                        $data['user_role'] = 'app';
+                        $data['user_mobile'] = $user_mobile;
+                        $data['user_app_key'] = $app_key;
+                        $data['user_imei_info'] = $imei_no;
+                        $data['user_profile_image'] = '';
+                        $data['email'] = $email;
+                        $data['password']=\Hash::make('1234');
+                        $data['plain_password']='1234';
+
+
+
+                        $user_info =\DB::table('users')->insert($data);
+
+                        if($user_info)
+
+                            $success_message ="Registration Successfully Completed";
+
+                        else $success_message ="Already Registered";
+
+                        #ForToken
+                        $response["iTunes"]= 1;
+                        $data['password']='1234';
+
+                        $response["success"]= [
+                            "statusCode"=> 200,
+                            "successMessage"=> $success_message,
+                            "serverReferenceCode"=>$now
+                        ];
+
+                    }else{
+
+                        $update_data['user_mobile'] = $user_mobile;
+                        $update_data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
+                        $update_data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
+                        $update_data['user_profile_image'] = '';
+
+                        $user_info =\DB::table('users')->where('user_mobile', $user_mobile)->update($update_data);
+
+                        $response["iTunes"]= 1;
+                        $data['user_mobile'] = $user_mobile;
+                        $data['password']=$current_user->plain_password;
+                        // $data['password']='1234';
+                        $response["success"]= [
+                                "statusCode"=> 200,
+                                "errorMessage"=> "Already Register User",
+                                "serverReferenceCode"=> $now
+                            ];
+
+                    }
+
+
+
+                    if(!$token = \JWTAuth::attempt($data))
+                    // if(!$token = auth('api')->attempt($data))
+                        throw new \Exception("Something Wrong In Token");
+
+
+                    // $response["access_token"]= $token;
+                    $response["token"]= $token;
+
+                    \App\System::APILogWrite(\Request::all(),$response);
+                    return \Response::json($response);
 
                 }else{
 
                     $response["errors"]= [
                         "statusCode"=> 403,
-                        "successMessage"=> 'Mobile number is required.',
+                        "successMessage"=> 'Mobile number is to be 11 digit.',
                         "serverReferenceCode"=>$now
                     ];
 
@@ -143,75 +146,12 @@ class ApiController extends Controller
 
                 }
 
-                $data['login_status'] = 0;
-                $data['status'] = 'active';
-
-                    
-                /*$user_info = \App\User::updateOrCreate(
-                    ['user_app_key' =>$data['user_app_key']],
-                    ['user_mobile' =>$data['user_mobile']],
-                    $data
-                );*/
-
-
-                $current_user =\DB::table('users')->where('user_mobile', $user_mobile)->first();
-
-                if(empty($current_user)){
-
-                    $user_info =\DB::table('users')->insert($data);
-
-                    if($user_info)
-
-                        $success_message ="Registration Successfully Completed";
-
-                    else $success_message ="Already Registered";
-
-                    #ForToken
-                    $response["iTunes"]= 1;
-                    $data['password']='1234';
-
-                    $response["success"]= [
-                        "statusCode"=> 200,
-                        "successMessage"=> $success_message,
-                        "serverReferenceCode"=>$now
-                    ];
-
-                }else{
-
-
-                    $update_data['user_app_key'] = !empty($request->input('user_app_key'))?$request->input('user_app_key'):'anonymous';
-                    $update_data['user_imei_info'] = !empty($request->input('user_imei_info'))?$request->input('user_imei_info'):'anonymous';;
-                    $update_data['user_profile_image'] = '';
-
-
-                    $user_info =\DB::table('users')->where('user_mobile', $user_mobile)->update($update_data);
-
-                    $response["iTunes"]= 1;
-                    $data['password']='1234';
-                    $response["success"]= [
-                            "statusCode"=> 200,
-                            "errorMessage"=> "Already Register User",
-                            "serverReferenceCode"=> $now
-                        ];
-
-                }
-
-
-                if(!$token = \JWTAuth::attempt($data))
-                // if(!$token = auth('api')->attempt($data))
-                    throw new \Exception("Something Wrong In Token");
-
-                // $response["access_token"]= $token;
-                $response["token"]= $token;
-
-                \App\System::APILogWrite(\Request::all(),$response);
-                return \Response::json($response);
 
             }else{
 
                 $response["errors"]= [
                     "statusCode"=> 403,
-                    "successMessage"=> 'Mobile number is to be 11 digit.',
+                    "successMessage"=> 'Mobile number is required.',
                     "serverReferenceCode"=>$now
                 ];
 
@@ -349,15 +289,18 @@ class ApiController extends Controller
 
         if (isset($mobile_number)) {
 
-            $response =\App\Subscription::MnpIPBlockCheck($mobile_number);
+            // $response =\App\Subscription::MnpIPBlockCheck($mobile_number);
+            $response = ['msisdn'=>$mobile_number,'operator'=>'Unknown'];
+            \App\System::APILogWrite(\Request::all(),$response);
+            return \Response::json($response);
 
         } else {
-            // return response()->json(['msisdn'=>'NO_MSISDN','operator'=>'blink']);
-            $response = ['msisdn'=>'NO_MSISDN','operator'=>'blink'];
+            return response()->json(['msisdn'=>'NO_MSISDN','operator'=>'Unknown']);
+            // $response = ['msisdn'=>'NO_MSISDN','operator'=>'Unknown'];
         }
 
-        \App\System::APILogWrite(\Request::all(),$response);
-        return \Response::json($response);
+        /*\App\System::APILogWrite(\Request::all(),$response);
+        return \Response::json($response);*/
 
     }
 
@@ -375,7 +318,7 @@ class ApiController extends Controller
             $accessinfo = \Request::input('accessinfo');
             $userinfo = \Request::input('userinfo');
             $imei_no= isset($accessinfo['imei_no']) ? trim($accessinfo['imei_no']):'';
-            $access_token= isset($accessinfo['access_token']) ? trim($accessinfo['access_token']):'';
+            $access_token= isset($accessinfo['token']) ? trim($accessinfo['token']):'';
 
 
             if( !empty($userinfo)){
@@ -1180,25 +1123,22 @@ class ApiController extends Controller
 
                 $participate_mobile=$userinfo['participate_mobile'];                
 
-                $response['select_campaign'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
+                $response['select_campaign_info'] = \DB::table('campaign_tbl')->where('id',$campaign_id)->where('campaign_status','1')->orderby('id','desc')->first();
 
-                $response['select_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
+                $response['select_question_info'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_position',$question_position)->where('question_status','1')->orderby('id','desc')->first();
 
-                $response['all_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
+                $response['all_question_info'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->orderby('id','desc')->get();
 
                 $response['total_question'] = \DB::table('question_tbl')->where('question_campaign_id',$campaign_id)->where('question_status','1')->select(DB::raw('count(*) as user_count'))->count();
 
-                $response['all_district']=\App\Common::AllDistrict();
-                $response['all_zone']=\App\Zone::where('zone_status',1)->get();
+                $response['all_district_info']=\App\Common::AllDistrict();
+                $response['all_zone_info']=\App\Zone::where('zone_status',1)->get();
 
                 $response["success"]= [
                     "statusCode"=> 200,
                     "successMessage"=> "Get question info successfully.",
                     "serverReferenceCode"=>$now
                 ];
-
-                $response["campaign_info"]=$campaign_info;
-                $response["question_answer_info"]=$all_content;
 
 
                 \App\Api::ResponseLogWrite('Get question info successfully',json_encode($response));
@@ -1493,8 +1433,8 @@ class ApiController extends Controller
                     "serverReferenceCode"=>$now
                 ];
 
-                $response["campaign_info"]=$campaign_info;
-                $response["question_answer_info"]=$all_content;
+                /*$response["campaign_info"]=$campaign_info;
+                $response["question_answer_info"]=$all_content;*/
 
 
                 \App\Api::ResponseLogWrite('Get question info successfully',json_encode($response));
@@ -1622,6 +1562,7 @@ class ApiController extends Controller
                             $login_data['login_status']='0';
                             $login_data['status']='active';
                             $login_data['password']=bcrypt($userinfo['password']);
+                            $login_data['plain_password']=$userinfo['password'];
                             $login_data['updated_at']=$now;
 
                             // $login_data_insert=\App\User::insertGetId($login_data);
@@ -2977,6 +2918,7 @@ class ApiController extends Controller
                             $login_data['login_status']='0';
                             $login_data['status']='active';
                             $login_data['password']=bcrypt($userinfo['password']);
+                            $login_data['plain_password']=$userinfo['password'];
 
 
                             // $login_data_insert=\App\User::insertGetId($login_data);

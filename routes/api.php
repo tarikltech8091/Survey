@@ -40,12 +40,8 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 	        echo "Hello API";
 	    });
 
-    	Route::get('/getMSISDN', array('as'=>'getMSISDN', 'uses'=>'ApiController@GetMSISDN'));
 
-
-
-
-    	Route::post('/participateRegistration', array('as'=>'Participate Registration', 'uses'=>'ApiController@participateRegistration'));
+    	Route::get('/participateRegistration', array('as'=>'Participate Registration', 'uses'=>'ApiController@participateRegistration'));
 
     	Route::post('/SurveyerOrRequesterLogin', array('as'=>'Surveyer Or Requester Login', 'uses'=>'ApiController@SurveyerOrRequesterLogin'));
 
@@ -60,7 +56,7 @@ Route::group(['prefix' => '/v1','middleware' => ['api']], function() {
 
     	Route::post('/getCampaignDetails', array('as'=>'Get Campaign Details', 'uses'=>'ApiController@getCampaignDetails'));
     	
-        Route::post('/getParticipateQuestionInfo', array('as'=>'Surveyer Registration', 'uses'=>'ApiController@getParticipateQuestionInfo'));
+        Route::post('/getParticipateQuestionInfo', array('as'=>'Get Participate Question Info', 'uses'=>'ApiController@getParticipateQuestionInfo'));
 
     	Route::post('/surveyerRegistration', array('as'=>'Surveyer Registration', 'uses'=>'ApiController@surveyerRegistration'));
 

@@ -20,6 +20,8 @@ class Question extends Model
         'question_option_3',
         'question_option_4',
         'question_option_new',
+        'question_image',
+        'question_video',
         'question_special',
         'question_points',
         'question_published_date',

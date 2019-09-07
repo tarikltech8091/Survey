@@ -185,6 +185,7 @@ class AdminController extends Controller
                 \Auth::user()->password)) {
                 $update_password=array(
                     'password' => bcrypt($request->input('new_password')),
+                    'plain_password' => $request->input('new_password'),
                     'updated_at' => $now
                 );
                 try {
@@ -273,6 +274,7 @@ class AdminController extends Controller
                     'email' => $request->input('email'),
                     'user_mobile' => $request->input('user_mobile'),
                     'password' => bcrypt($request->input('password')),
+                    'plain_password' => $request->input('password'),
                     'user_profile_image' => $user_profile_image,
                     'login_status' => 0,
                     'status' => "deactivate",

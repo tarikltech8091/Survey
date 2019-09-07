@@ -121,11 +121,15 @@ Route::group(['middleware' => ['admin_auth']], function () {
       Route::get('/admin/dashboard',array('as'=>'Admin Dashboard' , 'uses' =>'SystemAuthController@Dashboard'));
 
       Route::get('/admin/profile',array('as'=>'Admin Profile' , 'uses' =>'AdminController@Profile'));
+
       Route::get('/admin/user/management',array('as'=>'Admin User management' , 'uses' =>'AdminController@UserManagement'));
+
       Route::post('/admin/user/create',array('as'=>'Admin User create' , 'uses' =>'AdminController@CreateUser'));
 
       Route::post('admin/profile/update',array('as'=>'Profile Update' , 'uses' =>'AdminController@ProfileUpdate'));
+
       Route::post('admin/profile/image/update',array('as'=>'Profile Image Update' , 'uses' =>'AdminController@ProfileImageUpdate'));
+      
       Route::post('admin/change/password',array('as'=>'User Change Password' , 'uses' =>'AdminController@UserChangePassword'));
 
 

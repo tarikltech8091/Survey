@@ -211,6 +211,7 @@ class SystemAuthController extends Controller
             'status' => 'active',
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
+            'plain_password' => $request->input('password'),
             'created_at' => $now,
             'updated_at' => $now,
         );
@@ -311,6 +312,7 @@ class SystemAuthController extends Controller
         if ($new_password == $repeat_password) {
             $update_password=array(
                 'password' => bcrypt($request->input('password')),
+                'plain_password' => $request->input('password'),
                 'updated_at' => $now
             );
             try {

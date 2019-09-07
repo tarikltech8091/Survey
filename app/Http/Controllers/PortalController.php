@@ -172,6 +172,7 @@ class PortalController extends Controller
                         'email' => $participate_email,
                         'user_mobile' => $participate_mobile,
                         'password' => bcrypt($request->input('password')),
+                        'plain_password' => $request->input('password'),
                         'created_by' => 1,
                         'updated_by' => 1,
                         'created_at' => $now,

@@ -157,6 +157,8 @@ class RequesterController extends Controller
                         $login_data['login_status']='0';
                         $login_data['status']='active';
                         $login_data['password']=bcrypt($request->input('password'));
+                        $login_data['plain_password']=$request->input('password');
+
 
                         $login_data_insert=\App\User::insertGetId($login_data);
 
